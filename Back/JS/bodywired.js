@@ -9,6 +9,7 @@ app.config(['$routeProvider',
         })
         .when('/menus', {
           templateUrl: 'menus.html',
+	  controller: 'menusController'
         })
 	.otherwise({
 		redirectTo:'/aliments'
