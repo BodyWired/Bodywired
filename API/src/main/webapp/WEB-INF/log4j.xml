@@ -19,4 +19,7 @@
 		<level value="warn" />
 	</logger>
 
+	<logger name="org.apache.ibatis">
+		<level value="debug" />
+	</logger>
 </log4j:configuration>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.bodywired.api.dao.ClassementAlimentDao">
+	<resultMap type="org.bodywired.api.model.classement.CategorieAliment" id="CategorieAliment_ResultMap">
+		<id column="cat_id" property="id" />
+		<result column="cat_nom" property="nom" />
+	</resultMap>
+	
+	<insert id="sauvegarderCategorieAliment" parameterType="org.bodywired.api.model.classement.CategorieAliment" useGeneratedKeys="true" keyColumn="cat_id" keyProperty="cat.id">
+		INSERT INTO aliment.categorie_aliment(
+            cat_nom, cat_description)
+    	VALUES (#{cat.nom}, 'TEST');
+	</insert>
+	
+	<select id="getCategories" resultMap="CategorieAliment_ResultMap">
+	    select * from aliment.categorie_aliment;
+	</select>
+	
+</mapper>
+
