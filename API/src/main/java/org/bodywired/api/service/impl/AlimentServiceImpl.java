@@ -8,22 +8,22 @@ import org.bodywired.api.model.Aliment;
 import org.bodywired.api.model.Declinaison;
 import org.bodywired.api.model.classement.CategorieAliment;
 import org.bodywired.api.service.AlimentService;
+import org.bodywired.api.wrapper.RechercheWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AlimentServiceImpl implements AlimentService {
-	
+
 	@Autowired
-	private AlimentDao alimentDao;
-	
+	private AlimentDao				alimentDao;
+
 	@Autowired
-	private ClassementAlimentDao classementAlimentDao;
+	private ClassementAlimentDao	classementAlimentDao;
 
 	@Override
-	public boolean ajouterAlimentDansCategorie(
-			CategorieAliment categorieAliment, Aliment aliment) {
-		if (categorieAliment.getId() == null) {
+	public boolean ajouterAlimentDansCategorie ( CategorieAliment categorieAliment, Aliment aliment ) {
+		if ( categorieAliment.getId() == null ) {
 			classementAlimentDao.sauvegarderCategorieAliment(categorieAliment);
 		}
 		aliment.setCategorieAliment(categorieAliment);
@@ -31,23 +31,32 @@ public class AlimentServiceImpl implements AlimentService {
 	}
 
 	@Override
-	public boolean ajouterDeclinaisonAliment(Aliment aliment,
-			Declinaison declinaison) {
-		if (aliment.getId() == null) {
+	public boolean ajouterDeclinaisonAliment ( Aliment aliment, Declinaison declinaison ) {
+		if ( aliment.getId() == null ) {
 			ajouterAlimentDansCategorie(aliment.getCategorieAliment(), aliment);
 		}
 		declinaison.setAliment(aliment);
-		return alimentDao.sauvegarderDeclinaison(declinaison)==1;
+		return alimentDao.sauvegarderDeclinaison(declinaison) == 1;
 	}
 
 	@Override
-	public void sauvegarderAlmient(Aliment aliment) {
+	public void sauvegarderAliment ( Aliment aliment ) {
 		alimentDao.sauvegarderAliment(aliment);
 	}
 
 	@Override
-	public List<CategorieAliment> getCategoriesAliements() {
-		return classementAlimentDao.getCategories();
+	public List <CategorieAliment> getCategoriesAliments () {
+		return alimentDao.getCategoriesAliments();
+	}
+
+	@Override
+	public int getTotal () {
+		return alimentDao.getTotal();
+	}
+
+	@Override
+	public List <Aliment> getAliments ( RechercheWrapper wrapper ) {
+		return alimentDao.getAliments(wrapper);
 	}
 
 }
