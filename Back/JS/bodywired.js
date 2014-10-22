@@ -19,4 +19,8 @@ app.config(['$routeProvider',
 
 app.controller("globalController",['$scope',function($scope){
 	$scope.menus=menu;
+
+	$scope.$on('$routeChangeSuccess', function(next, current) { 
+   		//Détecte changement page
+ 	});
 }]);
