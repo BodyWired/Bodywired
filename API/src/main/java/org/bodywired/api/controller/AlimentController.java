@@ -8,6 +8,7 @@ import org.bodywired.api.service.AlimentService;
 import org.bodywired.api.wrapper.RechercheWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,7 +28,7 @@ public class AlimentController {
 	 */
 	@RequestMapping ( value = BodywiredURL.ajouterALIMENT, method = RequestMethod.GET )
 	public @ResponseBody
-	String ajouterAliment ( @RequestParam Aliment aliment ) {
+	String ajouterAliment ( @ModelAttribute Aliment aliment  ) {
 		alimentService.sauvegarderAliment(aliment);
 		return "OK";
 	}
@@ -54,7 +55,7 @@ public class AlimentController {
 	 */
 	@RequestMapping ( value = BodywiredURL.listerALIMENTS, method = RequestMethod.GET )
 	public @ResponseBody
-	List <Aliment> listerAliments ( @RequestParam RechercheWrapper wrapper ) {
+	List <Aliment> listerAliments ( @ModelAttribute RechercheWrapper wrapper ) {
 		return alimentService.getAliments(wrapper);
 	}
 
