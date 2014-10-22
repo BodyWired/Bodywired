@@ -19,6 +19,8 @@ app.controller("alimentsController",['$scope','$modal',function($scope,$modal){
 			size: 'lg'
     		});
 	};
+
+	loadAliments();
 }]);
 
 app.controller('formulaireAlimentsCtrl', function ($scope, $modalInstance) {
