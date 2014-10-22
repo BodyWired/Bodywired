@@ -17,10 +17,19 @@ app.config(['$routeProvider',
     }
 ]);
 
-app.controller("globalController",['$scope',function($scope){
+app.controller("globalController",['$scope','$location',function($scope,$location){
 	$scope.menus=menu;
 
 	$scope.$on('$routeChangeSuccess', function(next, current) { 
    		//Détecte changement page
  	});
+
+	$scope.getClass = function(path) {
+	    if ($location.hash() == path) {
+	      return "'active'"
+	    } else {
+	      return ""
+	    }
+	};
+
 }]);
