@@ -20,8 +20,13 @@ app.config(['$routeProvider',
 app.controller("globalController",['$scope','$location',function($scope,$location){
 	$scope.menus=menu;
 
+	/*
 	$scope.$on('$routeChangeSuccess', function(next, current) { 
-   		//Détecte changement page
+   		var items = document.getElementsById("menu-item");
+		var i;
+		for (i = 0; i < items.length; i++) {
+		    items[i].setAttribute("ng-class",getClass(item[i].getAttribute("ng-href"));
+		}
  	});
 
 	$scope.getClass = function(path) {
@@ -30,6 +35,16 @@ app.controller("globalController",['$scope','$location',function($scope,$locatio
 	    } else {
 	      return ""
 	    }
-	};
+	};*/
 
+}]);
+
+app.controller("menuItemController",['$scope','$location',function ($scope,$location) {
+		$scope.getClass = function(path){
+			if ("#"+$location.path() == path) {
+	    		return "active"
+	    	} else {
+	    		return ""
+	    	}
+		};		
 }]);
