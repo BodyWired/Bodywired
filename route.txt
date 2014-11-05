@@ -1,0 +1,14 @@
+****************************
+*           NEED           *
+****************************
+User:
+	Post:
+		http://bodywired.com/user/enregistrement {login, email, password}
+		http://bodywired.com/user/connexion {email, password} return example {id:'0', login:'TwX', email:'twx@twx.fr', name:'Alexandre', lastname:'FRANCOIS'}
+		http://bodywired.com/user/edit {id:'0', login:'TwX', email:'twx@twx.fr', name:'Alexandre', lastname:'FRANCOIS'}
+	Get:
+
+****************************
+*          EXIST           *
+**************************** 
+
