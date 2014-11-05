@@ -1,0 +1,11 @@
+#URL disponibles :
+ - aliment/ajouter [POST]
+ - aliment/lister/{offset}/{limit} [GET]
+ - aliment/total [GET]
+ - categorie/ajouter [POST]
+ - categorie/lister [GET]
+ - declinaison/ajouter [POST]
+ - declinaison/lister [GET]
+ - declinaison/etat/ajouter [POST]
+ - declinaison/etat/lister [GET]
+ - nutriments/lister [GET]
