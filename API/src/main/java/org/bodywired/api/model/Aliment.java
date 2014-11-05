@@ -9,9 +9,13 @@ import org.bodywired.api.model.classement.CategorieAliment;
 public class Aliment extends AbstractBaseModel {
 	private String nom;
 
-	public Aliment(String nom) {
-		this.nom = nom;
+	public Aliment() {
 		declinaisons = new HashSet<Declinaison>();
+	}
+
+	public Aliment(String nom) {
+		this();
+		this.nom = nom;
 	}
 
 	/*Variete variete;
@@ -34,6 +38,10 @@ public class Aliment extends AbstractBaseModel {
 	
 	public CategorieAliment getCategorieAliment() {
 		return categorieAliment;
+	}
+	
+	public void setNom(String nom) {
+		this.nom = nom;
 	}
 
 }
