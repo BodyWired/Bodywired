@@ -1,5 +1,7 @@
 package org.bodywired.api.service.impl;
 
+import java.util.List;
+
 import org.bodywired.api.dao.NutritionDao;
 import org.bodywired.api.model.ApportNutritionnel;
 import org.bodywired.api.model.Declinaison;
@@ -15,34 +17,40 @@ import org.springframework.stereotype.Service;
 public class NutritionServiceImpl implements NutritionService {
 
 	@Autowired
-	private NutritionDao nutritionDao;
-	
+	private NutritionDao	nutritionDao;
+
 	@Autowired
-	private AlimentService alimentService;
-	
+	private AlimentService	alimentService;
+
 	@Override
-	public boolean sauvegarderApportNutritionnel(
-			ApportNutritionnel apportNutritionnel, Declinaison declinaison) {
-		if (declinaison.getId() == null) {
+	public boolean sauvegarderApportNutritionnel ( ApportNutritionnel apportNutritionnel,
+			Declinaison declinaison ) {
+		if ( declinaison.getId() == null ) {
 			alimentService.ajouterDeclinaisonAliment(declinaison.getAliment(), declinaison);
 		}
-		
+
 		nutritionDao.sauvegarderCholesterol(apportNutritionnel.getCholesterol());
 		nutritionDao.sauvegarderEau(apportNutritionnel.getEau());
 		nutritionDao.sauvegarderGlucide(apportNutritionnel.getGlucide());
 		nutritionDao.sauvegarderLipide(apportNutritionnel.getLipide());
-		
-		for (Mineral mineral : apportNutritionnel.getMineraux()) {
+
+		for ( Mineral mineral : apportNutritionnel.getMineraux() ) {
 			nutritionDao.sauvegarderMineral(mineral);
 		}
-		for (OligoElement ol : apportNutritionnel.getOligoElements()) {
+		for ( OligoElement ol : apportNutritionnel.getOligoElements() ) {
 			nutritionDao.sauvegarderOligoElement(ol);
 		}
-		for (Vitamine vit : apportNutritionnel.getVitamines()) {
+		for ( Vitamine vit : apportNutritionnel.getVitamines() ) {
 			nutritionDao.sauvegarderVitamine(vit);
 		}
-		
+
 		return nutritionDao.sauvegarderApportNutritionnel(apportNutritionnel) == 1;
+	}
+
+	@Override
+	public List <ApportNutritionnel> getNutriments () {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
