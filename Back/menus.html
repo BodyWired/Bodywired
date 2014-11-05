@@ -1,6 +1,6 @@
 <header class="row">
 	<div class="col-md-2">
-		<button type="button" class="btn btn-default" ng-click="add()"><span class="glyphicon glyphicon-plus" style="color:green"></span> Ajouter un aliment</button>
+		<button type="button" class="btn btn-default" ng-click="add()"><span class="glyphicon glyphicon-plus" style="color:green"></span> Ajouter un menu</button>
 	</div>
 	<div class="col-md-2 search-form">
 		<form class="form-inline" role="form">
@@ -26,17 +26,17 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="aliment in aliments" ng-class="(($index%2) == 1) ? 'active' : ''">
-				<td>{{aliment.id}}</td>
-				<td>{{aliment.nom}}</td>
-				<td>{{aliment.categorie}}</td>
-				<td>{{aliment.update}}</td>
-				<td><span class="glyphicon glyphicon-pencil btn" style="color:green" ng-click="update(aliment.id)"></span></td>
-				<td><span class="glyphicon glyphicon-trash btn" style="color:red" ng-click="delete(aliment.id)"></span></td>
+			<tr ng-repeat="menu in menus" ng-class="(($index%2) == 1) ? 'active' : ''">
+				<td>{{menu.id}}</td>
+				<td>{{menu.nom}}</td>
+				<td>{{menu.categorie}}</td>
+				<td>{{menu.update}}</td>
+				<td><span class="glyphicon glyphicon-pencil btn" style="color:green" ng-click="update(menu.id)"></span></td>
+				<td><span class="glyphicon glyphicon-trash btn" style="color:red" ng-click="delete(menu.id)"></span></td>
 			</tr>
 		</tbody>
 	</table>
-</article>
+</article class="row">
 <footer style="text-align:center">
-	<pagination total-items="nbAliments" ng-model="currentPage" max-size="5" class="pagination-sm" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="pageChanged()"></pagination>
+	<pagination total-items="nbMenus" ng-model="currentPage" max-size="5" class="pagination-sm" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="pageChanged()"></pagination>
 </footer>

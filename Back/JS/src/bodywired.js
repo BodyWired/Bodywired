@@ -9,6 +9,7 @@ app.config(['$routeProvider',
         })
         .when('/menus', {
           templateUrl: 'menus.html',
+	  controller: 'menusController'
         })
 	.otherwise({
 		redirectTo:'/aliments'
@@ -16,6 +17,16 @@ app.config(['$routeProvider',
     }
 ]);
 
-app.controller("globalController",['$scope',function($scope){
+app.controller("globalController",['$scope','$location',function($scope,$location){
 	$scope.menus=menu;
+}]);
+
+app.controller("menuItemController",['$scope','$location',function ($scope,$location) {
+		$scope.getClass = function(path){
+			if ("#"+$location.path() == path) {
+	    		return "active"
+	    	} else {
+	    		return ""
+	    	}
+		};		
 }]);
