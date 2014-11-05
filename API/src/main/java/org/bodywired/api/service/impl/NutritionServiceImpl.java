@@ -1,6 +1,10 @@
 package org.bodywired.api.service.impl;
 
+import java.util.List;
+
 import org.bodywired.api.dao.NutritionDao;
+import org.bodywired.api.model.Declinaison;
+import org.bodywired.api.model.nutriment.AbstractApportNutriment;
 import org.bodywired.api.service.AlimentService;
 import org.bodywired.api.service.NutritionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,5 +18,18 @@ public class NutritionServiceImpl implements NutritionService {
 
 	@Autowired
 	private AlimentService alimentService;
+
+	@Override
+	public Boolean sauvegarderApportNutritionnel(
+			AbstractApportNutriment apportNutritionnel, Declinaison declinaison) {
+		// /TODO
+		return null;
+	}
+
+	@Override
+	public List<AbstractApportNutriment> getNutriments() {
+		// TODO
+		return null;
+	}
 
 }
