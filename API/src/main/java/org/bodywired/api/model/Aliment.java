@@ -7,7 +7,12 @@ import java.util.Set;
 import org.bodywired.api.model.classement.CategorieAliment;
 
 public class Aliment extends AbstractBaseModel {
+
 	private String nom;
+
+	private CategorieAliment categorieAliment;
+
+	private Set<Declinaison> declinaisons;
 
 	public Aliment() {
 		declinaisons = new HashSet<Declinaison>();
@@ -18,16 +23,6 @@ public class Aliment extends AbstractBaseModel {
 		this.nom = nom;
 	}
 
-	/*Variete variete;
-	FamilleVariete familleVariete;*/
-	
-	private CategorieAliment categorieAliment;
-	Set<Declinaison> declinaisons;
-	
-	public void setCategorieAliment(CategorieAliment categorieAliment) {
-		this.categorieAliment = categorieAliment;
-	}
-
 	public String getNom() {
 		return nom;
 	}
@@ -35,13 +30,13 @@ public class Aliment extends AbstractBaseModel {
 	public Set<Declinaison> getDeclinaisons() {
 		return Collections.unmodifiableSet(declinaisons);
 	}
-	
+
 	public CategorieAliment getCategorieAliment() {
 		return categorieAliment;
 	}
-	
-	public void setNom(String nom) {
-		this.nom = nom;
+
+	public void setCategorieAliment(CategorieAliment categorieAliment) {
+		this.categorieAliment = categorieAliment;
 	}
 
 }

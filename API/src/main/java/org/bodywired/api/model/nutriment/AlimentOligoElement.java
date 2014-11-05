@@ -1,23 +1,18 @@
 package org.bodywired.api.model.nutriment;
 
-import org.bodywired.api.model.ApportNutritionnel;
-
-
-public class Mineral extends AbstractNutriment {
-
+public class AlimentOligoElement extends AbstractApportNutriment {
 	private CODE type;
 
-	public Mineral(ApportNutritionnel apportNutritionnel, CODE type) {
-		super(apportNutritionnel);
+	public AlimentOligoElement(CODE type) {
+		super();
 		this.type = type;
 	}
 
 	public static enum CODE {
-		Ca("calcium"), Mg("magnesium"), P("phosphore"), K("potassium"), Na(
-				"sodium");
+		Fe("fer"), Zn("zinc"), Cu("cuivre"), Se("selenium");
 
 		private String nom;
-		
+
 		public static CODE getType(String text) {
 			for (CODE c : values()) {
 				if (c.getNom().equalsIgnoreCase(text)) {
@@ -34,7 +29,6 @@ public class Mineral extends AbstractNutriment {
 		public String getNom() {
 			return nom;
 		}
-		
-	}
 
+	}
 }

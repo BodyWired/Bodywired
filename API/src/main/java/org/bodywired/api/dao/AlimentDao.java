@@ -10,15 +10,15 @@ import org.bodywired.api.wrapper.RechercheWrapper;
 
 public interface AlimentDao {
 
-	public Integer sauvegarderAliment ( @Param ( "ali" ) Aliment aliment );
+	public Integer sauvegarderAliment(@Param("ali") Aliment aliment);
 
-	public Integer sauvegarderDeclinaison ( @Param ( "dec" ) Declinaison declinaison );
+	public Integer sauvegarderDeclinaison(@Param("dec") Declinaison declinaison);
 
 	// TODO
-	public List <CategorieAliment> getCategoriesAliments ();
+	public List<CategorieAliment> getCategoriesAliments();
 
-	public List <Aliment> getAliments ( RechercheWrapper wrapper );
+	public List<Aliment> getAliments(RechercheWrapper wrapper);
 
-	public int getTotal ();
+	public int getTotal();
 
 }

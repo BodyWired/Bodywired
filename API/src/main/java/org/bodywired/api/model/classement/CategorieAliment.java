@@ -1,33 +1,34 @@
 package org.bodywired.api.model.classement;
 
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import org.bodywired.api.model.AbstractBaseModel;
 import org.bodywired.api.model.Aliment;
 
+/**
+ * http://www.guide-des-aliments.com/dietetique/aliments_par_categorie.html
+ * 
+ */
 public class CategorieAliment extends AbstractBaseModel {
 
 	private String nom;
-	
-	public CategorieAliment() {
-	}
+
+	private List<Aliment> aliments;
 
 	public CategorieAliment(String nom) {
+		super();
 		this.nom = nom;
-		aliments = new HashSet<Aliment>();
 	}
 
-	String description;
-	Set<Aliment> aliments;
-
-	public Set<Aliment> getAliments() {
-		return Collections.unmodifiableSet(aliments);
+	public CategorieAliment() {
 	}
 
 	public String getNom() {
 		return nom;
 	}
 
+	public List<Aliment> getAliments() {
+		return Collections.unmodifiableList(aliments);
+	}
 }

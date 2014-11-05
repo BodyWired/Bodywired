@@ -1,45 +1,30 @@
 package org.bodywired.api.model;
 
+import java.util.Collections;
+import java.util.List;
+
+import org.bodywired.api.model.classement.Etat;
+import org.bodywired.api.model.nutriment.AbstractApportNutriment;
 
 public class Declinaison extends AbstractBaseModel {
 
-	private String nom;
+	private Aliment aliment;
+	private AbstractApportNutriment apportNutriment;
+	private List<Etat> etats;
 
-	public Declinaison(String nom, ApportNutritionnel apportNutritionnel) {
-		this.nom = nom;
-		this.apportNutritionnel = apportNutritionnel;
-//		sousDeclinaisons = new ArrayList<Declinaison>();
+	public Declinaison() {
 	}
 
-	Aliment aliment;
-//	List<Declinaison> sousDeclinaisons;
-	ApportNutritionnel apportNutritionnel;
-	
-
-	public String getNom() {
-		return nom;
-	}
-	
 	public void setAliment(Aliment aliment) {
 		this.aliment = aliment;
 	}
-	
+
 	public Aliment getAliment() {
 		return aliment;
 	}
 
-//	public Declinaison addSousDeclinaisons(Declinaison declinaison) {
-//		int index = sousDeclinaisons.indexOf(declinaison);
-//		if (index >= 0) {
-//			return sousDeclinaisons.get(index);
-//		} else {
-//			sousDeclinaisons.add(declinaison);
-//			return declinaison;
-//		}
-//	}
-	
-//	public List<Declinaison> getSousDeclinaisons() {
-//		return sousDeclinaisons;
-//	}
+	public List<Etat> getEtats() {
+		return Collections.unmodifiableList(etats);
+	}
 
 }

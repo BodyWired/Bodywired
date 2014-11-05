@@ -16,14 +16,15 @@ import org.springframework.stereotype.Service;
 public class AlimentServiceImpl implements AlimentService {
 
 	@Autowired
-	private AlimentDao				alimentDao;
+	private AlimentDao alimentDao;
 
 	@Autowired
-	private ClassementAlimentDao	classementAlimentDao;
+	private ClassementAlimentDao classementAlimentDao;
 
 	@Override
-	public boolean ajouterAlimentDansCategorie ( CategorieAliment categorieAliment, Aliment aliment ) {
-		if ( categorieAliment.getId() == null ) {
+	public boolean ajouterAlimentDansCategorie(
+			CategorieAliment categorieAliment, Aliment aliment) {
+		if (categorieAliment.getId() == null) {
 			classementAlimentDao.sauvegarderCategorieAliment(categorieAliment);
 		}
 		aliment.setCategorieAliment(categorieAliment);
@@ -31,8 +32,9 @@ public class AlimentServiceImpl implements AlimentService {
 	}
 
 	@Override
-	public boolean ajouterDeclinaisonAliment ( Aliment aliment, Declinaison declinaison ) {
-		if ( aliment.getId() == null ) {
+	public boolean ajouterDeclinaisonAliment(Aliment aliment,
+			Declinaison declinaison) {
+		if (aliment.getId() == null) {
 			ajouterAlimentDansCategorie(aliment.getCategorieAliment(), aliment);
 		}
 		declinaison.setAliment(aliment);
@@ -40,22 +42,22 @@ public class AlimentServiceImpl implements AlimentService {
 	}
 
 	@Override
-	public void sauvegarderAliment ( Aliment aliment ) {
+	public void sauvegarderAliment(Aliment aliment) {
 		alimentDao.sauvegarderAliment(aliment);
 	}
 
 	@Override
-	public List <CategorieAliment> getCategoriesAliments () {
+	public List<CategorieAliment> getCategoriesAliments() {
 		return alimentDao.getCategoriesAliments();
 	}
 
 	@Override
-	public int getTotal () {
+	public int getTotal() {
 		return alimentDao.getTotal();
 	}
 
 	@Override
-	public List <Aliment> getAliments ( RechercheWrapper wrapper ) {
+	public List<Aliment> getAliments(RechercheWrapper wrapper) {
 		return alimentDao.getAliments(wrapper);
 	}
 

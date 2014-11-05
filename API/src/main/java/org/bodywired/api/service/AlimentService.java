@@ -9,16 +9,18 @@ import org.bodywired.api.wrapper.RechercheWrapper;
 
 public interface AlimentService {
 
-	public boolean ajouterAlimentDansCategorie ( CategorieAliment categorieAliment, Aliment aliment );
+	public boolean ajouterAlimentDansCategorie(
+			CategorieAliment categorieAliment, Aliment aliment);
 
-	public boolean ajouterDeclinaisonAliment ( Aliment aliment, Declinaison declinaison );
+	public boolean ajouterDeclinaisonAliment(Aliment aliment,
+			Declinaison declinaison);
 
-	public void sauvegarderAliment ( Aliment aliment );
+	public void sauvegarderAliment(Aliment aliment);
 
-	public List <CategorieAliment> getCategoriesAliments ();
+	public List<CategorieAliment> getCategoriesAliments();
 
-	public List <Aliment> getAliments ( RechercheWrapper wrapper );
+	public List<Aliment> getAliments(RechercheWrapper wrapper);
 
-	public int getTotal ();
+	public int getTotal();
 
 }
