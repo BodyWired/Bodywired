@@ -3,8 +3,8 @@ package org.bodywired.api.controller;
 import java.util.List;
 
 import org.bodywired.api.model.Aliment;
-import org.bodywired.api.model.classement.CategorieAliment;
 import org.bodywired.api.service.AlimentService;
+import org.bodywired.api.utils.BodywiredURL;
 import org.bodywired.api.wrapper.RechercheWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,22 +25,11 @@ public class AlimentController {
 	 * @param aliment
 	 * @return
 	 */
-	@RequestMapping ( value = BodywiredURL.ajouterALIMENT, method = RequestMethod.GET )
+	@RequestMapping ( value = BodywiredURL.AJOUTER_ALIMENT, method = RequestMethod.POST )
 	public @ResponseBody
 	String ajouterAliment ( @RequestParam Aliment aliment ) {
 		alimentService.sauvegarderAliment(aliment);
 		return "OK";
-	}
-
-	/**
-	 * Récupérer la liste de toutes les catégories d'aliments
-	 * 
-	 * @return toutes les catégories d'aliments
-	 */
-	@RequestMapping ( value = BodywiredURL.categoriesALIMENT, method = RequestMethod.GET )
-	public @ResponseBody
-	List <CategorieAliment> recupererCategoriesAliments () {
-		return alimentService.getCategoriesAliments();
 	}
 
 	/**
@@ -52,7 +41,7 @@ public class AlimentController {
 	 * @return la liste des aliments correspondant à la recherche de
 	 *         l'utilisateur
 	 */
-	@RequestMapping ( value = BodywiredURL.listerALIMENTS, method = RequestMethod.GET )
+	@RequestMapping ( value = BodywiredURL.LISTER_ALIMENTS, method = RequestMethod.GET )
 	public @ResponseBody
 	List <Aliment> listerAliments ( @RequestParam RechercheWrapper wrapper ) {
 		return alimentService.getAliments(wrapper);
@@ -63,7 +52,7 @@ public class AlimentController {
 	 * 
 	 * @return le nombre total d'aliments contenu en BDD
 	 */
-	@RequestMapping ( value = BodywiredURL.totalALIMENTS, method = RequestMethod.GET )
+	@RequestMapping ( value = BodywiredURL.TOTAL_ALIMENTS, method = RequestMethod.GET )
 	public @ResponseBody
 	int totalAliments () {
 		return alimentService.getTotal();
