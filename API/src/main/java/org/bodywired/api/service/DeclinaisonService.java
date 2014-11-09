@@ -7,11 +7,9 @@ import org.bodywired.api.model.classement.Etat;
 
 public interface DeclinaisonService {
 
-	void sauvegarderDeclinaison(Declinaison declinaison);
+	Boolean sauvegarderDeclinaison(Declinaison declinaison);
 
-	List<Declinaison> getDeclinaison();
-
-	void sauvegarderEtat(Etat etat);
+	Boolean sauvegarderEtat(Etat etat);
 
 	List<Etat> getEtats();
 

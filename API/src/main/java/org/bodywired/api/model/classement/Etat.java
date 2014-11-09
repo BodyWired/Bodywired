@@ -13,8 +13,7 @@ public class Etat extends AbstractBaseModel {
 		return nom;
 	}
 
-	public Etat(String nom) {
-		super();
+	public void setNom(String nom) {
 		this.nom = nom;
 	}
 

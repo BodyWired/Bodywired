@@ -1,26 +1,20 @@
 package org.bodywired.api.model;
 
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.bodywired.api.model.classement.CategorieAliment;
+import org.bodywired.api.model.classement.Categorie;
 
 public class Aliment extends AbstractBaseModel {
 
 	private String nom;
 
-	private CategorieAliment categorieAliment;
+	private Set<Categorie> categories;
 
 	private Set<Declinaison> declinaisons;
 
 	public Aliment() {
-		declinaisons = new HashSet<Declinaison>();
-	}
-
-	public Aliment(String nom) {
-		this();
-		this.nom = nom;
+		categories = new LinkedHashSet<Categorie>();
 	}
 
 	public String getNom() {
@@ -28,15 +22,29 @@ public class Aliment extends AbstractBaseModel {
 	}
 
 	public Set<Declinaison> getDeclinaisons() {
-		return Collections.unmodifiableSet(declinaisons);
+		return declinaisons;
 	}
 
-	public CategorieAliment getCategorieAliment() {
-		return categorieAliment;
+	public void setNom(String nom) {
+		this.nom = nom;
 	}
 
-	public void setCategorieAliment(CategorieAliment categorieAliment) {
-		this.categorieAliment = categorieAliment;
+	public void setDeclinaisons(Set<Declinaison> declinaisons) {
+		this.declinaisons = declinaisons;
 	}
 
+	public void addCategorieAliment(Categorie categorieAliment) {
+	}
+
+	public Set<Categorie> getCategories() {
+		return categories;
+	}
+
+	public void setCategories(Set<Categorie> categories) {
+		this.categories = categories;
+	}
+
+	public void addCategorie(Categorie categorieAliment) {
+		categories.add(categorieAliment);
+	}
 }

@@ -2,12 +2,15 @@ package org.bodywired.api.service;
 
 import java.util.List;
 
-import org.bodywired.api.model.classement.CategorieAliment;
+import org.bodywired.api.model.Aliment;
+import org.bodywired.api.model.classement.Categorie;
 
 public interface CategorieService {
 
-	void sauvegarderCategorie(CategorieAliment categorie);
+	Boolean sauvegarderCategorieAliment(Categorie categorie);
 
-	List<CategorieAliment> getCategories();
+	List<Categorie> getCategories();
+
+	Boolean ajouterAlimentDansCategorie(Aliment aliment, Categorie categorie);
 
 }

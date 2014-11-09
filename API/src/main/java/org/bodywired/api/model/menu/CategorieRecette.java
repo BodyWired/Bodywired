@@ -1,6 +1,5 @@
 package org.bodywired.api.model.menu;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.bodywired.api.model.AbstractBaseModel;
@@ -19,6 +18,6 @@ public class CategorieRecette extends AbstractBaseModel {
 	}
 
 	public List<Recette> getRecettes() {
-		return Collections.unmodifiableList(recettes);
+		return recettes;
 	}
 }

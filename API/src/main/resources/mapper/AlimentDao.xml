@@ -2,18 +2,64 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.bodywired.api.dao.AlimentDao">
-<!-- 	<resultMap type="com.hmkcode.spring.mybatis.vo.Person" id="Person"> -->
-<!-- 		<id column="ID" property="id" /> -->
-<!-- 		<result property="NAME" column="name" /> -->
-<!-- 	</resultMap> -->
 
-	<insert id="sauvegarderAliment">
-		SELECT true
-	</insert>
+	<resultMap type="org.bodywired.api.model.Aliment" id="Aliment_ResultMap">
+		<id column="ali_id" property="id" />
+		<result column="ali_nom" property="nom" />
+		<collection property="categories" select="select_categories" column="ali_id"/>
+		<collection property="declinaisons" select="select_declinaisons" column="ali_id" />
+	</resultMap>
+
+	<select id="select_categories" resultMap="org.bodywired.api.dao.ClassementAlimentDao.Categorie_ResultMap">
+		SELECT cat_id, cat_nom
+		FROM aliment.categorie
+		LEFT JOIN
+		aliment.categorie_aliment
+		ON caa_id_cat = cat_id
+		WHERE caa_id_ali =
+		#{ali_id}
+	</select>
 	
-	<insert id="sauvegarderDeclinaison">
-		SELECT true
+	<select id="select_declinaisons" resultMap="org.bodywired.api.dao.DeclinaisonDao.Declinaison_ResultMap">
+		SELECT dec_id, dec_id_ali
+		FROM aliment.declinaison
+		WHERE dec_id_ali = #{ali_id}
+	</select>
+
+	<insert id="sauvegarderAliment" useGeneratedKeys="true"
+		keyColumn="ali_id" keyProperty="ali.id">
+		INSERT INTO aliment.aliment(ali_nom)
+		VALUES (#{ali.nom});
+
 	</insert>
-	
+
+	<select id="getAliment" resultMap="Aliment_ResultMap">
+		SELECT ali_id, ali_nom FROM
+		aliment.aliment
+		WHERE
+		ali_nom = #{nom}
+	</select>
+
+	<select id="rechercherAliments" resultMap="Aliment_ResultMap">
+		SELECT ali_id, ali_nom FROM
+		aliment.aliment
+		WHERE 1=1
+		<if test="filtre != null">
+			AND ali_nom LIKE '%'||#{filtre}||'%'
+		</if>
+		order by ali_nom
+		<if test="offset != null">
+			OFFSET #{offset}
+		</if>
+		<if test="limit != null">
+			LIMIT #{limit}
+		</if>
+	</select>
+
+	<select id="getTotalAliments" resultType="Integer">
+		SELECT count(*) FROM
+		aliment.aliment
+	</select>
+
 </mapper>
 

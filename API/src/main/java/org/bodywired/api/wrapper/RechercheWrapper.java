@@ -1,26 +1,13 @@
 package org.bodywired.api.wrapper;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class RechercheWrapper {
 
 	private String filtre;
-	private int offset;
-	private int limit;
-
-	public int getLimit() {
-		return limit;
-	}
-
-	public void setLimit(int limit) {
-		this.limit = limit;
-	}
-
-	public int getOffset() {
-		return offset;
-	}
-
-	public void setOffset(int offset) {
-		this.offset = offset;
-	}
+	private Integer offset;
+	private Integer limit;
 
 	public String getFiltre() {
 		return filtre;
@@ -28,5 +15,21 @@ public class RechercheWrapper {
 
 	public void setFiltre(String filtre) {
 		this.filtre = filtre;
+	}
+
+	public Integer getOffset() {
+		return offset;
+	}
+
+	public void setOffset(Integer offset) {
+		this.offset = offset;
+	}
+
+	public Integer getLimit() {
+		return limit;
+	}
+
+	public void setLimit(Integer limit) {
+		this.limit = limit;
 	}
 }

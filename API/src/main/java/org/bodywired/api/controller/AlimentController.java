@@ -8,9 +8,10 @@ import org.bodywired.api.utils.BodywiredURL;
 import org.bodywired.api.wrapper.RechercheWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -26,9 +27,9 @@ public class AlimentController {
 	 * @return
 	 */
 	@RequestMapping(value = BodywiredURL.AJOUTER_ALIMENT, method = RequestMethod.POST)
-	public @ResponseBody String ajouterAliment(@RequestParam Aliment aliment) {
+	public @ResponseBody Aliment ajouterAliment(@RequestBody Aliment aliment) {
 		alimentService.sauvegarderAliment(aliment);
-		return "OK";
+		return aliment;
 	}
 
 	/**
@@ -42,8 +43,8 @@ public class AlimentController {
 	 */
 	@RequestMapping(value = BodywiredURL.LISTER_ALIMENTS, method = RequestMethod.GET)
 	public @ResponseBody List<Aliment> listerAliments(
-			@RequestParam RechercheWrapper wrapper) {
-		return alimentService.getAliments(wrapper);
+			@ModelAttribute RechercheWrapper wrapper) {
+		return alimentService.rechercherAliments(wrapper);
 	}
 
 	/**
@@ -52,8 +53,8 @@ public class AlimentController {
 	 * @return le nombre total d'aliments contenu en BDD
 	 */
 	@RequestMapping(value = BodywiredURL.TOTAL_ALIMENTS, method = RequestMethod.GET)
-	public @ResponseBody int totalAliments() {
-		return alimentService.getTotal();
+	public @ResponseBody Integer totalAliments() {
+		return alimentService.getTotalAliments();
 	}
 
 }

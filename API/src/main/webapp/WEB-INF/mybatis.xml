@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-	http://www.springframework.org/schema/jdbc
-	http://www.springframework.org/schema/jdbc/spring-jdbc-3.1.xsd">
+">
 
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
@@ -36,13 +36,17 @@
 		<property name="mapperInterface" value="org.bodywired.api.dao.AlimentDao" />
 		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>
-		<bean id="classementAlimentDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<bean id="classementAlimentDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
 		<property name="mapperInterface" value="org.bodywired.api.dao.ClassementAlimentDao" />
 		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>
-		<bean id="nutritionDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<bean id="nutritionDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
 		<property name="mapperInterface" value="org.bodywired.api.dao.NutritionDao" />
 		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>
 
+	<bean id="declinaisonDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="org.bodywired.api.dao.DeclinaisonDao" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
 </beans>

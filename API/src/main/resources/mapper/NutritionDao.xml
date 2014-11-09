@@ -1,13 +1,105 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="org.bodywired.api.dao.TestDao">
-<!-- 	<resultMap type="com.hmkcode.spring.mybatis.vo.Person" id="Person"> -->
-<!-- 		<id column="ID" property="id" /> -->
-<!-- 		<result property="NAME" column="name" /> -->
-<!-- 	</resultMap> -->
-	<select id="test" resultType="Boolean">
-		SELECT true
+<mapper namespace="org.bodywired.api.dao.NutritionDao">
+
+	<resultMap id="Nutriment_ResultMap"
+		type="org.bodywired.api.model.nutriment.AbstractNutriment">
+		<result property="id" column="nut_id" />
+		<result property="apport" column="nut_apport" />
+		<result property="details" column="nut_details" />
+
+		<discriminator javaType="int" column="nut_id_typ">
+			<case value="1" resultType="org.bodywired.api.model.nutriment.Calorie">
+			</case>
+			<case value="2" resultType="org.bodywired.api.model.nutriment.Cholesterol">
+			</case>
+			<case value="3" resultType="org.bodywired.api.model.nutriment.Eau">
+			</case>
+			<case value="4" resultType="org.bodywired.api.model.nutriment.Proteine">
+			</case>
+			<case value="5" resultType="org.bodywired.api.model.nutriment.Lipide">
+				<result property="grasSature" column="lip_gras_sature" />
+				<result property="grasMonoInsature" column="lip_gras_monoinsature" />
+				<result property="grasPolyInsature" column="lip_gras_polyinsature" />
+			</case>
+			<case value="6" resultType="org.bodywired.api.model.nutriment.Glucide">
+				<result property="fibreAlimentaire" column="glu_fibres_alimentaires" />
+			</case>
+			<case value="7" resultType="org.bodywired.api.model.nutriment.Vitamine">
+				<result property="typeVitamine" column="nut_id_tvi"
+					typeHandler="org.bodywired.api.dao.handler.VitamineTypeHandler" />
+			</case>
+			<case value="8" resultType="org.bodywired.api.model.nutriment.Mineral">
+				<result property="typeMineral" column="nut_id_tmi"
+					typeHandler="org.bodywired.api.dao.handler.MineralTypeHandler" />
+			</case>
+			<case value="9" resultType="org.bodywired.api.model.nutriment.OligoElement">
+				<result property="typeOligoElement" column="nut_id_toe"
+					typeHandler="org.bodywired.api.dao.handler.OligoElementTypeHandler" />
+			</case>
+		</discriminator>
+	</resultMap>
+
+	<insert id="ajouterNutriment" useGeneratedKeys="true" keyColumn="nut_id"
+		keyProperty="nut.id">
+		INSERT INTO nutrition.nutriment
+		(nut_id_typ, nut_id_dec,
+		nut_apport,
+		nut_details
+		<if test="nut.typeVitamine != null">
+			, nut_id_tvi
+		</if>
+		<if test="nut.typeOligoElement != null">
+			, nut_id_toe
+		</if>
+		<if test="nut.typeMineral != null">
+			, nut_id_tmi
+		</if>
+		)
+		VALUES (#{nut.codeBDD.ordinal}+1, #{dec.id},
+		#{nut.apport},
+		#{nut.details}
+		<if test="nut.typeVitamine != null">
+			, #{nut.typeVitamine.ordinal}+1
+		</if>
+		<if test="nut.typeOligoElement != null">
+			, #{nut.typeOligoElement.ordinal}+1
+		</if>
+		<if test="nut.typeMineral != null">
+			, #{nut.typeMineral.ordinal}+1
+		</if>
+		);
+
+	</insert>
+
+	<insert id="sauvegarderLipide">
+		INSERT INTO nutrition.lipide(lip_id_nut,
+		lip_gras_sature, lip_gras_monoinsature,
+		lip_gras_polyinsature)
+		VALUES
+		(#{lip.id}, #{lip.grasSature}, #{lip.grasMonoInsature},
+		#{lip.grasPolyInsature});
+
+	</insert>
+
+	<insert id="sauvegarderGlucide">
+		INSERT INTO
+		nutrition.glucide(glu_fibres_alimentaires, glu_id_nut)
+		VALUES
+		(#{glu.fibreAlimentaire}, #{glu.id});
+	</insert>
+
+	<select id="getNutriments" resultMap="Nutriment_ResultMap">
+		select * from
+		nutrition.nutriment
+		LEFT JOIN nutrition.type ON nut_id_typ = typ_id
+		LEFT JOIN nutrition.glucide ON glu_id_nut = nut_id AND typ_code =
+		'GLU'
+		LEFT JOIN nutrition.lipide ON lip_id_nut = nut_id AND typ_code =
+		'LIP'
+		WHERE nut_id_dec = #{dec_id}
 	</select>
+
 </mapper>
 

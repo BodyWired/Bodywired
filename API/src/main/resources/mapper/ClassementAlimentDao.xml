@@ -2,20 +2,47 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.bodywired.api.dao.ClassementAlimentDao">
-	<resultMap type="org.bodywired.api.model.classement.CategorieAliment" id="CategorieAliment_ResultMap">
+
+	<resultMap type="org.bodywired.api.model.classement.Categorie"
+		id="Categorie_ResultMap">
 		<id column="cat_id" property="id" />
 		<result column="cat_nom" property="nom" />
 	</resultMap>
 	
-	<insert id="sauvegarderCategorieAliment" parameterType="org.bodywired.api.model.classement.CategorieAliment" useGeneratedKeys="true" keyColumn="cat_id" keyProperty="cat.id">
-		INSERT INTO aliment.categorie_aliment(
-            cat_nom, cat_description)
-    	VALUES (#{cat.nom}, 'TEST');
-	</insert>
-	
-	<select id="getCategories" resultMap="CategorieAliment_ResultMap">
-	    select * from aliment.categorie_aliment;
+	<resultMap type="org.bodywired.api.model.classement.Categorie" id="Categorie_Et_Aliments_ResultMap">
+			<collection property="aliments" select="select_aliments"
+			column="cat_id" />
+	</resultMap>
+
+	<select id="select_aliments" resultMap="org.bodywired.api.dao.AlimentDao.Aliment_ResultMap">
+		SELECT ali_id, ali_nom
+		FROM aliment.aliment
+		LEFT JOIN aliment.categorie_aliment
+		ON caa_id_ali = ali_id
+		WHERE caa_id_cat = #{cat_id}
 	</select>
 	
+	<insert id="sauvegarderCategorie" useGeneratedKeys="true"
+		keyColumn="cat_id" keyProperty="cat.id">
+		INSERT INTO
+		aliment.categorie(cat_nom,
+		cat_description)
+		VALUES (#{cat.nom},
+		'NOT YET');
+
+	</insert>
+
+	<insert id="ajouterAlimentDansCategorie">
+		INSERT INTO aliment.categorie_aliment(
+		caa_id_cat,
+		caa_id_ali)
+		VALUES (#{cat.id}, #{ali.id});
+
+	</insert>
+
+	<select id="getCategories" resultMap="Categorie_ResultMap">
+		SELECT cat_id, cat_nom FROM
+		aliment.categorie order by cat_nom;
+	</select>
 </mapper>
 
