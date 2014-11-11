@@ -6,19 +6,48 @@
     </select>
 </div>
 <br />
-<div id="description" hidden="true">
-    description
+<div class="panel panel-success" id="description" hidden="true" ng-init="coefficient = 100">
+    <div class="panel-heading">
+        <a onClick="showDeclinaison()"><span class="glyphicon glyphicon-chevron-left"/></a>
+        Description
+    </div>
+    <div class="panel-body">
+        <p class=text-center><b>{{aliment.name}}</b></p>
+        <div class="text-center">
+            Valeur pour <input type="number" ng-model="coefficient"/> grammes.    
+        </div>
+        <table class="table table-striped">
+            <tr></tr><th>Nom</th><th>Valeur</th></tr>
+            <tr ng-repeat="nutriment in aliment.nutriments">
+                <td>{{nutriment.name}}</td><td>{{nutriment.value * coefficient}}</td>
+            </tr>
+        </table>
+    </div>
 </div>
-<div id="declinaison" hidden="true">
-    declinaison <a onClick="showDescription()"><span class="glyphicon glyphicon-eye-open"/></a>
+<div class="panel panel-info" id="declinaison" hidden="true">
+    <div class="panel-heading">
+        <a onClick="showList()"><span class="glyphicon glyphicon-chevron-left"/></a>
+        Déclinaison
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped">
+            <tr></tr><th>Nom</th><th>Voir</th></tr>
+            <tr ng-repeat="declinaison in declinaisons">
+                <td>{{declinaison.name}}</td><td><a ng-click="getAliment(declinaison)" onClick="showDescription()"><span class="glyphicon glyphicon-eye-open"/></a></td>
+            </tr>
+        </table>
+    </div>
 </div>
-<div id="table" hidden="true">
-    <table class="table table-striped">
-        <tr></tr><th>Nom</th><th>Voir</th></tr>
-        <tr ng-repeat="aliment in aliments">
-            <td>{{aliment.name}}</td><td><a onClick="showDeclinaison()"><span class="glyphicon glyphicon-eye-open"/></a></td>
-        </tr>
-    </table>
+<div class="panel panel-warning" id="table" hidden="true">
+    <div class="panel-heading">Liste des aliments</div>
+    <div class="panel-body">
+        <table class="table table-striped">
+            <tr></tr><th>Nom</th><th>Voir</th></tr>
+            <tr ng-repeat="aliment in aliments">
+                <td>{{aliment.name}}</td><td><a ng-click="getDeclinaison(aliment)" onClick="showDeclinaison()"><span class="glyphicon glyphicon-eye-open"/></a></td>
+            </tr>
+        </table>
+    </div>
 </div>
 <script>
     function showList() {

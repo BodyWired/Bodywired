@@ -6,8 +6,8 @@ BodyWiredApp.factory('Aliment', function(){
 });
 
 BodyWiredApp.service('AlimentService', function($http, Toast){
-    var urlAliments = "aliment/lister/";
-    var urlAliments = "aliment/";
+    var urlAliment = "aliment/lister/";
+    var urlDeclinaison = "aliment/declinaisons";
     var urlCategories = "categorie/lister";
     var urlAlimentCategorie = "aliment/categorie/";
     this.getCategories = function() {
@@ -36,6 +36,15 @@ BodyWiredApp.service('AlimentService', function($http, Toast){
             return [{"name":"cheval"},{"name":"boeuf"},{"name":"steack"}];
         }
     }
+    this.getDeclinaison = function(aliment) {
+        $http.get(urlDeclinaison, {id: aliment.id})
+        .success(function(data) {
+            return data;
+		}).error(function(error) {
+            Toast.error("Une erreur est survenue lors de la récuperation des déclinaisons");
+        });
+        return [{"name":"frite"},{"name":"vapeur"},{"name":"eau"}];
+    }
     this.getAliment = function(aliment) {
         $http.get(urlAliment, {id: aliment.id})
         .success(function(data) {
@@ -43,6 +52,11 @@ BodyWiredApp.service('AlimentService', function($http, Toast){
 		}).error(function(error) {
             Toast.error("Une erreur est survenue lors de la récuperation de l'aliment");
         });
+        return {"name":"frite", "nutriments":[
+            {"name":"nutriment1", "value":"10"},
+            {"name":"nutriment2", "value":"12"},
+            {"name":"nutriment3", "value":"13"}]
+        };
     }
 });
 
@@ -55,7 +69,11 @@ BodyWiredApp.controller('AlimentController', function($scope, AlimentService){
         console.log(categorie.name);
         $scope.aliments = AlimentService.getAlimentsByCategorie(categorie.name);
     }
+    $scope.getDeclinaison = function(aliment) {
+        $scope.declinaisons = AlimentService.getDeclinaison(aliment);
+    }
     $scope.getAliment = function(aliment) {
         $scope.aliment = AlimentService.getAliment(aliment);
+        console.log($scope.aliment.nutriments[0].name);
     }
 });
