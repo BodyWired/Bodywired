@@ -15,6 +15,9 @@
      * Retounre le nombre total d'aliment en base : http://iagl-server.cloudapp.net/api/aliment/total
 - "aliment/lister" [GET];
      * Liste les aliments disponibles avec leurs declinaisons : http://iagl-server.cloudapp.net/api/aliment/lister
+     * * Il est donc aussi possible de rechercher les aliments en mettant en paramètre le filtre (la recherche), offset (décalage dans l'affichage des résultats) et limite (le nombre max de résultat) :  
+     * * * http://iagl-server.cloudapp.net/api/aliment/lister?filtre=yo
+     * * * http://iagl-server.cloudapp.net/api/aliment/lister?filtre=gni&limite=2
 - "aliment/ajouter" [POST]
      * Sauvegarde le nom de l'aliment dans la/les categorie/s associée/s, si une catégorie n'existe pas elle sera sauvegardée
      * Retounr l'aliment sauvegarder (avec son id) et ses catégories (et leurs ids)
