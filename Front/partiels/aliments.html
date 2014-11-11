@@ -1,0 +1,39 @@
+<h3>Aliments</h3>
+<div class="row">
+    <p class="text-center">Selectionnez une catégorie</p>
+    <select class="center-block" ng-model="categorieSelected" ng-options="categorie.name for categorie in categories"
+        onChange="showList()">
+    </select>
+</div>
+<br />
+<div id="description" hidden="true">
+    description
+</div>
+<div id="declinaison" hidden="true">
+    declinaison <a onClick="showDescription()"><span class="glyphicon glyphicon-eye-open"/></a>
+</div>
+<div id="table" hidden="true">
+    <table class="table table-striped">
+        <tr></tr><th>Nom</th><th>Voir</th></tr>
+        <tr ng-repeat="aliment in aliments">
+            <td>{{aliment.name}}</td><td><a onClick="showDeclinaison()"><span class="glyphicon glyphicon-eye-open"/></a></td>
+        </tr>
+    </table>
+</div>
+<script>
+    function showList() {
+        $('#table').fadeIn();
+        $('#description').fadeOut();
+        $('#declinaison').fadeOut();
+    }
+    function showDeclinaison() {
+        $('#declinaison').fadeIn();
+        $('#description').fadeOut();
+        $('#table').fadeOut();
+    }
+    function showDescription() {
+        $('#description').fadeIn();
+        $('#declinaison').fadeOut();
+        $('#table').fadeOut();
+    }
+</script>

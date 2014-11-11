@@ -1,27 +1,26 @@
 BodyWiredApp.factory('User', function(){
     var user = function(data) {
-	angular.extend(this, {
-        id: "",
-        login: "",
-        email: "",
-        name: "",
-        lastname: "", 
-        isConnected: function() {
-            if (this.login != "") {
-                return true;
+        angular.extend(this, {
+            login: "",
+            isConnected: function() {
+                if (this.login.length > 0) {
+                    return true;
+                }
+                return false;
+            },
+            fullname: function() {
+                return this.name + " " + this.lastname;
             }
-        return false;
-        }
-	}, data);
+        }, data);
     }
     return user;
 });
 
 BodyWiredApp.service('UserService', function($location, $http, Toast, User) {
     this.user = new User({});
-	var urlConnexion = "http://bodywired.com/user/connexion";
-	var urlEdit = "http://bodywired.com/user/edit";
-	var urlRegister = "http://bodywired.com/user/enregistrement";
+	var urlConnexion = "/user/connexion";
+	var urlEdit = "/user/edit";
+	var urlRegister = "/user/enregistrement";
 	this.signin = function(user) {
         $http.post(urlConnexion, {email:user.email, password:user.password})
 		.success(function(data) {
@@ -30,9 +29,7 @@ BodyWiredApp.service('UserService', function($location, $http, Toast, User) {
             Toast.error("Mauvais email et/ou mot de passe");
 		});
         if (user.email == 'twx@twx.fr' && user.password == "123") {
-            console.log("fakeconnect");
             this.user = new User({id:'0', login:'TwX', email:'twx@twx.fr', name:'Alexandre', lastname:'FRANCOIS'});
-            console.log(this.user.login);
             $location.path('/');
         }
 	}
@@ -50,6 +47,7 @@ BodyWiredApp.service('UserService', function($location, $http, Toast, User) {
             });
     }
     this.update = function(user) {
+        this.user = user;
         $http.post(urlRegister, user).success(function(data) {
             this.user = user;
             Toast.info("Votre profil a été modifié");
@@ -65,7 +63,6 @@ BodyWiredApp.controller('UserController', function($rootScope, $scope, UserServi
     $scope.signin = function(user) {
         UserService.signin(user);
         $rootScope.user = UserService.user;
-        console.log($rootScope.user.isConnected());
     }
     $scope.logout = function() {
         $scope.user = UserService.logout();
@@ -76,10 +73,14 @@ BodyWiredApp.controller('UserController', function($rootScope, $scope, UserServi
             UserService.register(user);
         } else {
             Toast.error("Votre mot de passe n'est pas identique");
-	}
+        }
     }
     $scope.update = function(user) {
         UserService.update(user);
         $rootScope.user = UserService.user;
+    }
+    $scope.copyUser = function(user) {
+        $scope.userTmp = angular.copy(user);
+        
     }
 });
