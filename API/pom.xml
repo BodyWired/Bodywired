@@ -54,6 +54,23 @@
 			<artifactId>spring-jdbc</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		
+		<!-- SpringMVC Router -->
+		<dependency>
+			<groupId>org.resthub</groupId>
+			<artifactId>springmvc-router</artifactId>
+			<version>1.2.0</version>
+		</dependency>
 
 		<!-- MyBatis-Spring -->
 		<dependency>
