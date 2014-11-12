@@ -14,8 +14,14 @@ app.controller("alimentsController",['$scope','$http','$modal',function($scope,$
 	$scope.aliments=[];
 
 	var loadAliments=function(){
-		var url='/aliment/lister/'+($scope.currentPage*10)+'/'+10;
-		$http.get(url).success(function(data,status){
+		var url=path+'/aliment/lister?offset='+(($scope.currentPage-1)*10)+'&limit=10';
+		$http.get(url/*,{
+                    headers: {
+                        'Authorization': 'Basic dGVzdDp0ZXN0',
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    withCredentials: true
+                }*/).success(function(data,status){
 			$scope.aliments=angular.fromJson(data);
 		});
 	};
@@ -35,7 +41,7 @@ app.controller('formulaireAlimentsCtrl',['$scope','$alimentService','$http','$mo
 	$scope.categories=[];
 
 	loadCategorie=function(){
-		$http.get('/aliment/categories').success(function(data,status){
+		$http.get(path+'/categories/lister').success(function(data,status){
 			$scope.categories=angular.fromJson(data);
 		});
 	};	
