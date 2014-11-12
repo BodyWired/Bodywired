@@ -1,0 +1,68 @@
+<h3>Aliments</h3>
+<div class="row">
+    <p class="text-center">Selectionnez une catégorie</p>
+    <select class="center-block" ng-model="categorieSelected" ng-options="categorie.name for categorie in categories"
+        onChange="showList()">
+    </select>
+</div>
+<br />
+<div class="panel panel-success" id="description" hidden="true" ng-init="coefficient = 100">
+    <div class="panel-heading">
+        <a onClick="showDeclinaison()"><span class="glyphicon glyphicon-chevron-left"/></a>
+        Description
+    </div>
+    <div class="panel-body">
+        <p class=text-center><b>{{aliment.name}}</b></p>
+        <div class="text-center">
+            Valeur pour <input type="number" ng-model="coefficient"/> grammes.    
+        </div>
+        <table class="table table-striped">
+            <tr></tr><th>Nom</th><th>Valeur</th></tr>
+            <tr ng-repeat="nutriment in aliment.nutriments">
+                <td>{{nutriment.name}}</td><td>{{nutriment.value * coefficient}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="panel panel-info" id="declinaison" hidden="true">
+    <div class="panel-heading">
+        <a onClick="showList()"><span class="glyphicon glyphicon-chevron-left"/></a>
+        Déclinaison
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped">
+            <tr></tr><th>Nom</th><th>Voir</th></tr>
+            <tr ng-repeat="declinaison in declinaisons">
+                <td>{{declinaison.name}}</td><td><a ng-click="getAliment(declinaison)" onClick="showDescription()"><span class="glyphicon glyphicon-eye-open"/></a></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="panel panel-warning" id="table" hidden="true">
+    <div class="panel-heading">Liste des aliments</div>
+    <div class="panel-body">
+        <table class="table table-striped">
+            <tr></tr><th>Nom</th><th>Voir</th></tr>
+            <tr ng-repeat="aliment in aliments">
+                <td>{{aliment.name}}</td><td><a ng-click="getDeclinaison(aliment)" onClick="showDeclinaison()"><span class="glyphicon glyphicon-eye-open"/></a></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<script>
+    function showList() {
+        $('#table').fadeIn();
+        $('#description').fadeOut();
+        $('#declinaison').fadeOut();
+    }
+    function showDeclinaison() {
+        $('#declinaison').fadeIn();
+        $('#description').fadeOut();
+        $('#table').fadeOut();
+    }
+    function showDescription() {
+        $('#description').fadeIn();
+        $('#declinaison').fadeOut();
+        $('#table').fadeOut();
+    }
+</script>
