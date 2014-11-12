@@ -1,4 +1,4 @@
-﻿DROP SCHEMA IF EXISTS aliment cascade;
+DROP SCHEMA IF EXISTS aliment cascade;
 DROP SCHEMA IF EXISTS nutrition cascade;
 
 CREATE SCHEMA aliment;
@@ -18,7 +18,7 @@ CREATE TABLE aliment.FamilleVariete (
 CREATE TABLE aliment.Categorie (
 	cat_id serial PRIMARY KEY,
 	cat_nom varchar(255) NOT NULL,
-	cat_description varchar(255)
+	cat_description varchar(20000)
 );
 
 CREATE TABLE aliment.Aliment (

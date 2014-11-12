@@ -7,7 +7,7 @@ public class RechercheWrapper {
 
 	private String filtre;
 	private Integer offset;
-	private Integer limit;
+	private Integer limite;
 
 	public String getFiltre() {
 		return filtre;
@@ -25,11 +25,12 @@ public class RechercheWrapper {
 		this.offset = offset;
 	}
 
-	public Integer getLimit() {
-		return limit;
+	public Integer getLimite() {
+		return limite;
 	}
 
-	public void setLimit(Integer limit) {
-		this.limit = limit;
+	public void setLimite(Integer limite) {
+		this.limite = limite;
 	}
+
 }

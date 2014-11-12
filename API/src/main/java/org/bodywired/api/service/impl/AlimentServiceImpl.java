@@ -22,7 +22,13 @@ public class AlimentServiceImpl implements AlimentService {
 
 	@Override
 	public Boolean sauvegarderAliment(Aliment aliment) {
-		alimentDao.sauvegarderAliment(aliment);
+		Aliment alimentBDD = getAliment(aliment.getNom());
+		if (alimentBDD != null) {
+			aliment.setId(aliment.getId());
+			aliment.getCategories().removeAll(alimentBDD.getCategories());
+		} else {
+			alimentDao.sauvegarderAliment(aliment);
+		}
 		for (Categorie categorie : aliment.getCategories()) {
 			if (categorie.getId() == null) {
 				categorieService.sauvegarderCategorieAliment(categorie);

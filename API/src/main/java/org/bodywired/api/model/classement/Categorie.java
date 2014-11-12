@@ -12,6 +12,7 @@ import org.bodywired.api.model.Aliment;
 public class Categorie extends AbstractBaseModel {
 
 	private String nom;
+	private String description;
 
 	public void setNom(String nom) {
 		this.nom = nom;
@@ -30,4 +31,13 @@ public class Categorie extends AbstractBaseModel {
 	public List<Aliment> getAliments() {
 		return aliments;
 	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 }
