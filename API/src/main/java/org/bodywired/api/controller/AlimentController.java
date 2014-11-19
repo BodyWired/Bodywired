@@ -14,7 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiImplicitParam;
+import com.wordnik.swagger.annotations.ApiOperation;
+import com.wordnik.swagger.annotations.ApiParam;
+
 @Controller
+@Api(value = BodywiredURL.ROOT_ALIMENTS, description = "Gestion des aliments")
+@RequestMapping(BodywiredURL.ROOT_ALIMENTS)
 public class AlimentController {
 
 	@Autowired
@@ -26,6 +33,7 @@ public class AlimentController {
 	 * @param aliment
 	 * @return
 	 */
+	@ApiOperation(value = BodywiredURL.AJOUTER_ALIMENT, notes = "ajoute un aliment sans leur déclinaison")
 	@RequestMapping(value = BodywiredURL.AJOUTER_ALIMENT, method = RequestMethod.POST)
 	public @ResponseBody Aliment ajouterAliment(@RequestBody Aliment aliment) {
 		alimentService.sauvegarderAliment(aliment);
@@ -35,15 +43,17 @@ public class AlimentController {
 	/**
 	 * Récupère la liste des aliments en fonction du filtre. filtre vide ->
 	 * récupérer tous les aliments Sinon rechercher les aliments dont le nom
-	 * commence par la regex du filtre
+	 * contient la regex du filtre
 	 * 
 	 * @param filtre
 	 * @return la liste des aliments correspondant à la recherche de
 	 *         l'utilisateur
 	 */
+	@ApiOperation(value = BodywiredURL.LISTER_ALIMENTS, notes = "Récupère la liste des aliments avec leur déclinaison en fonction de la recherche")
 	@RequestMapping(value = BodywiredURL.LISTER_ALIMENTS, method = RequestMethod.GET)
+	@ApiImplicitParam
 	public @ResponseBody List<Aliment> listerAliments(
-			@ModelAttribute RechercheWrapper wrapper) {
+			@ApiParam(required = true, value = "wrapper de la recherche") @ModelAttribute RechercheWrapper wrapper) {
 		return alimentService.rechercherAliments(wrapper);
 	}
 

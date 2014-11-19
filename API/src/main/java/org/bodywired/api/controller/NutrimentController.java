@@ -17,7 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+
 @Controller
+@Api(value = BodywiredURL.ROOT_NUTRIMENTS, description = "Gestion des nutriments")
+@RequestMapping(BodywiredURL.ROOT_NUTRIMENTS)
 public class NutrimentController {
 
 	@Autowired
@@ -29,6 +34,7 @@ public class NutrimentController {
 	 * @return toutes les nutriments
 	 */
 	@RequestMapping(value = BodywiredURL.LISTER_NUTRIMENTS_DECLINAISON, method = RequestMethod.GET)
+	@ApiOperation(value = "Retourne la liste des nutriments d'une declinaison")
 	public @ResponseBody List<AbstractNutriment> recupererNutriments(
 			@PathVariable Integer id) {
 		List<Enum<?>> res = new LinkedList<Enum<?>>();

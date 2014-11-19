@@ -12,7 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.wordnik.swagger.annotations.Api;
+
 @Controller
+@Api(value = "categorie", description = "Gestion des categories d'aliment")
+@RequestMapping(BodywiredURL.ROOT_CATEGORIES)
 public class CategorieController {
 
 	@Autowired

@@ -5,6 +5,8 @@ import java.util.List;
 import org.bodywired.api.model.AbstractBaseModel;
 import org.bodywired.api.model.Aliment;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * http://www.guide-des-aliments.com/dietetique/aliments_par_categorie.html
  * 
@@ -22,6 +24,7 @@ public class Categorie extends AbstractBaseModel {
 		this.aliments = aliments;
 	}
 
+	@JsonIgnore
 	private List<Aliment> aliments;
 
 	public String getNom() {

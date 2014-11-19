@@ -6,6 +6,8 @@ import java.util.List;
 import org.bodywired.api.model.classement.Etat;
 import org.bodywired.api.model.nutriment.AbstractNutriment;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Declinaison extends AbstractBaseModel {
 
 	private Aliment aliment;
@@ -14,7 +16,9 @@ public class Declinaison extends AbstractBaseModel {
 		this.etats = etats;
 	}
 
+	@JsonIgnore
 	private List<AbstractNutriment> apportsNutriment;
+
 	private List<Etat> etats;
 
 	public Declinaison() {

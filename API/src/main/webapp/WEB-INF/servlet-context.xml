@@ -25,4 +25,10 @@
 		</mvc:message-converters>
 	</mvc:annotation-driven>
 
+	<!-- Direct static mappings -->
+	<mvc:resources mapping="*.html" location="/" />
+
+	<!-- Serve static content -->
+	<mvc:default-servlet-handler />
+
 </beans>

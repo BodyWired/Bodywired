@@ -13,7 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.wordnik.swagger.annotations.Api;
+
 @Controller
+@Api(value = BodywiredURL.ROOT_DECLINAISONS, description = "Gestion des déclinaisons des aliments")
+@RequestMapping(BodywiredURL.ROOT_DECLINAISONS)
 public class DeclinaisonController {
 
 	@Autowired

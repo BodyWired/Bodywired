@@ -1,6 +1,6 @@
 package org.bodywired.api.model;
 
-public class AbstractBaseModel {
+public abstract class AbstractBaseModel {
 
 	private Integer id;
 
