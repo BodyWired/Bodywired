@@ -202,7 +202,6 @@
 			<version>0.2</version>
 			<scope>compile</scope>
 		</dependency>
-
 	</dependencies>
 
 	<!-- <repositories> -->
