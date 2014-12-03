@@ -6,74 +6,55 @@ BodyWiredApp.factory('Aliment', function(){
 });
 
 BodyWiredApp.service('AlimentService', function($http, Toast){
-    var urlAliment = "aliment/lister/";
+    var urlNutriments = "http://iagl-server.cloudapp.net/api/nutriments/dec/";
     var urlDeclinaison = "aliment/declinaisons";
-    var urlCategories = "categorie/lister";
-    var urlAlimentCategorie = "aliment/categorie/";
+    var urlCategories = " http://iagl-server.cloudapp.net/api/categories/lister";
+    var urlAlimentCategorie = "http://iagl-server.cloudapp.net/api/aliment/lister?categorieId=";
     this.getCategories = function() {
-        $http.get(urlCategories)
+        return $http.get(urlCategories)
         .success(function(data) {
             return data;
 		}).error(function(error) {
             Toast.error("Une erreur est survenue lors de la récuperation des catégories d'aliments");
         });
-        return [{"name":"fruits"},{"name":"legumes"},{"name":"viandes"}];
     }
     this.getAlimentsByCategorie = function(categorie) {
-        $http.get(urlAlimentCategorie, {categorie: categorie})
+        return $http.get(urlAlimentCategorie+categorie.id)
         .success(function(data) {
             return data;
 		}).error(function(error) {
             Toast.error("Une erreur est survenue lors de la récuperation des aliments");
         });
-        if(categorie == "legumes") {
-            return [{"name":"salade"},{"name":"tomate"},{"name":"navet"}];
-        }
-        if(categorie == "fruits") {
-            return [{"name":"pomme"},{"name":"kiwi"},{"name":"fraise"}];
-        }
-        if(categorie == "viandes") {
-            return [{"name":"cheval"},{"name":"boeuf"},{"name":"steack"}];
-        }
     }
-    this.getDeclinaison = function(aliment) {
-        $http.get(urlDeclinaison, {id: aliment.id})
-        .success(function(data) {
-            return data;
-		}).error(function(error) {
-            Toast.error("Une erreur est survenue lors de la récuperation des déclinaisons");
-        });
-        return [{"name":"frite"},{"name":"vapeur"},{"name":"eau"}];
-    }
-    this.getAliment = function(aliment) {
-        $http.get(urlAliment, {id: aliment.id})
+    this.getNumtriments = function(declinaison) {
+        return $http.get(urlNutriments+declinaison)
         .success(function(data) {
             return data;
 		}).error(function(error) {
             Toast.error("Une erreur est survenue lors de la récuperation de l'aliment");
         });
-        return {"name":"frite", "nutriments":[
-            {"name":"nutriment1", "value":"10"},
-            {"name":"nutriment2", "value":"12"},
-            {"name":"nutriment3", "value":"13"}]
-        };
     }
 });
 
 BodyWiredApp.controller('AlimentController', function($scope, AlimentService){
-    $scope.categories= AlimentService.getCategories();
     $scope.$watch('categorieSelected', function(){
         $scope.getAlimentsByCategorie($scope.categorieSelected);
     });
     $scope.getAlimentsByCategorie = function(categorie) {
-        console.log(categorie.name);
-        $scope.aliments = AlimentService.getAlimentsByCategorie(categorie.name);
+        AlimentService.getAlimentsByCategorie(categorie).then(function(data) {
+            $scope.aliments = data.data;
+        });
     }
     $scope.getDeclinaison = function(aliment) {
-        $scope.declinaisons = AlimentService.getDeclinaison(aliment);
+        $scope.declinaisons = aliment.declinaisons;
     }
-    $scope.getAliment = function(aliment) {
-        $scope.aliment = AlimentService.getAliment(aliment);
-        console.log($scope.aliment.nutriments[0].name);
+    $scope.getNutriments = function(declinaison) {
+        AlimentService.getNumtriments(declinaison).then(function(data) {
+            $scope.nutriments = data;
+            console.log($scope.nutriments)
+        });
     }
+    AlimentService.getCategories().then(function(data) {
+        $scope.categories = data.data;
+    });
 });

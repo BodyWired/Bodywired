@@ -7,7 +7,8 @@ BodyWiredApp.config(function($stateProvider, $urlRouterProvider) {
                   .state('logout', {url: '/logout', templateUrl: 'partiels/logout.html', controller: 'UserController'})
                   .state('profil', {url: '/profil', templateUrl: 'partiels/profil.html', controller: 'UserController'})
                   .state('editerProfil', {url: '/profilEdit', templateUrl: 'partiels/profilEdit.html', controller: 'UserController'})
-                  .state('aliments', {url: '/aliments', templateUrl: 'partiels/aliments.html', controller:'AlimentController'});
+                  .state('aliments', {url: '/aliments', templateUrl: 'partiels/aliments.html', controller:'AlimentController'})
+                  .state('menus', {url: '/menus', templateUrl: 'partiels/menus.html', controller:'MenuController'});
 });
 BodyWiredApp.config(["$locationProvider", function($locationProvider) {
   $locationProvider.html5Mode(true);
