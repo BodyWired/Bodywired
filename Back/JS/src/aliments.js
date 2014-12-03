@@ -1,9 +1,14 @@
 app.service("$alimentService",['$modal',function($modal){
-	this.getDeclinaison=function(idAliment){
+	this.getDeclinaison=function(aliment){
 		var modalInstance = $modal.open({
 			templateUrl: 'aliments/declinaisons.html',
 			controller: 'declinaisonCtrl',
-			size: 'lg'
+			size: 'lg',
+			resolve:{
+				aliment:function(){
+					return aliment;
+				}
+			}
     		});
 	};
 }]);
@@ -14,15 +19,12 @@ app.controller("alimentsController",['$scope','$http','$modal',function($scope,$
 	$scope.aliments=[];
 
 	var loadAliments=function(){
-		var url=path+'/aliment/lister?offset='+(($scope.currentPage-1)*10)+'&limit=10';
-		$http.get(url/*,{
-                    headers: {
-                        'Authorization': 'Basic dGVzdDp0ZXN0',
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    withCredentials: true
-                }*/).success(function(data,status){
-			$scope.aliments=angular.fromJson(data);
+		var url=path+'/aliment/lister?offset='+(($scope.currentPage-1)*10)+'&limite=10';
+		$http.get(url).success(function(data,status){
+			$http.get(path+'/aliment/total').success(function(data2,status){
+				$scope.aliments=angular.fromJson(data);
+				$scope.nbAliments=data2;
+			});
 		});
 	};
 
@@ -34,11 +36,16 @@ app.controller("alimentsController",['$scope','$http','$modal',function($scope,$
     		});
 	};
 
+	$scope.pageChanged=function(){
+		loadAliments();
+	};
+
 	loadAliments();
 }]);
 
 app.controller('formulaireAlimentsCtrl',['$scope','$alimentService','$http','$modalInstance', function ($scope,$alimentService,$http, $modalInstance) {
 	$scope.categories=[];
+	$scope.categorieSelect=[];
 
 	loadCategorie=function(){
 		$http.get(path+'/categories/lister').success(function(data,status){
@@ -47,24 +54,31 @@ app.controller('formulaireAlimentsCtrl',['$scope','$alimentService','$http','$mo
 	};	
 
 	$scope.save = function (){
-		var data={nom:$scope.nom,categorieAliment:{id:$scope.categorie}};
-		$http.post('/aliment/ajouter',{data:angular.toJson(data)}).success(function(data,status){
+		var tab=[];
+		for(var i in $scope.categorieSelect){
+			tab.push({id:$scope.categorieSelect[i]});
+		}
+		var data={nom:$scope.nom,categories:tab};
+		$http({url:path+'/aliment/ajouter',method:'POST',data:{data:angular.toJson(data)}}).success(function(data,status){
+			console.log(data);
+			//$alimentService.getDeclinaison(angular.fromJson(data));
 		});
-		$alimentService.getDeclinaison(1);
 	};
 
 	$scope.cancel = function () {
 		$modalInstance.dismiss('cancel');
 	};
+
+	loadCategorie();
 }]);
 
-app.controller('declinaisonCtrl',['$scope','$http','$modal','$modalInstance', function ($scope,$http, $modal,$modalInstance) {
+app.controller('declinaisonCtrl',['$scope','$http','$modal','$modalInstance','aliment', function ($scope,$http, $modal,$modalInstance,aliment) {
 	$scope.nbDeclinaisons=0;
 	$scope.currentPage=1;
 	$scope.declinaisons=[];
 
 	var loadDeclinaisons=function(){
-		$http.get('/declinaison/lister').success(function(data,status){
+		$http.get(path+'/declinaison/etat/lister').success(function(data,status){
 			$scope.declinaisons=angular.fromJson(data);
 		});
 	};
@@ -82,13 +96,13 @@ app.controller('declinaisonCtrl',['$scope','$http','$modal','$modalInstance', fu
 }]);
 
 app.controller('formulaireDeclinaisonsCtrl',['$scope','$http','$modalInstance', function ($scope,$http, $modalInstance) {
-	/*$scope.categories=[];
+	$scope.categories=[];
 
 	loadCategorie=function(){
 		$http.get('/aliment/categories').success(function(data,status){
 			$scope.categories=angular.fromJson(data);
 		});
-	};*/
+	};
 
 	$scope.nutrimentsUnused=angular.copy(nutriments);
 	$scope.nutrimentsUsed=[];

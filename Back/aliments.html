@@ -20,7 +20,6 @@
 				<th>Id</th>
 				<th>Nom</th>
 				<th>Catégorie</th>
-				<th>Date de modification</th>
 				<th><span class="glyphicon glyphicon-pencil" style="color:green"></span></th>
 				<th><span class="glyphicon glyphicon-trash" style="color:red"></span></th>
 			</tr>
@@ -29,8 +28,7 @@
 			<tr ng-repeat="aliment in aliments" ng-class="(($index%2) == 1) ? 'active' : ''">
 				<td>{{aliment.id}}</td>
 				<td>{{aliment.nom}}</td>
-				<td>{{aliment.categorie}}</td>
-				<td>{{aliment.update}}</td>
+				<td><span ng-repeat="cat in aliment.categories">{{cat.nom}}</span></td>
 				<td><span class="glyphicon glyphicon-pencil btn" style="color:green" ng-click="update(aliment.id)"></span></td>
 				<td><span class="glyphicon glyphicon-trash btn" style="color:red" ng-click="delete(aliment.id)"></span></td>
 			</tr>
