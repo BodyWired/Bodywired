@@ -1,0 +1,43 @@
+<html ng-app="BodyWiredApp" lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>BodyWired</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="src/lib/ngtoast/dist/ngToast.min.css">
+  </head>
+  <body ng-init="user = {}">
+    <ng-toast></ng-toast>
+    <div ng-controller="PartielsController">
+      <div ng-include="header.url"></div>
+    </div>
+
+    <div class="container">
+      <div ui-view autoscroll="false"></div>
+
+      <div ng-controller="PartielsController">
+          <div ng-include="footer.url"></div>
+      </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
+    <!-- NG-UI-->
+    <script src="http://cdn.jsdelivr.net/angular.ui-router/0.2.8/angular-ui-router.js"></script>
+    <!-- NG-TOAST-->
+    <script src="src/lib/angular-animate/angular-animate.min.js"></script>
+    <script src="src/lib/angular-sanitize/angular-sanitize.min.js"></script>
+    <script src="src/lib/ngtoast/dist/ngToast.min.js"></script>
+
+    <script src="src/main/config.js"></script>
+    <script src='src/main//partielsController.js'></script>
+    <script src='src/main/homeController.js'></script>
+    <script src="src/main/userController.js"></script>
+    <script src="src/main/alimentController.js"></script>
+    <script src="src/main/menuController.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+</body>
+</html>

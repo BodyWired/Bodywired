@@ -8,6 +8,8 @@
 
   <modules>
     <module>API</module>
+<--!    <module>Back</module> -->
+<--!    <module>Front</module> -->
   </modules>
 
   <properties>

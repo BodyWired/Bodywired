@@ -1,0 +1,22 @@
+<div ng-controller="PartielsController">
+	<div id="connexion" ng-include="connexionForm.url"></div>
+	<input type="button" id="button1" onClick="showHideRegister()" value="S'enregistrer">
+	<input type="button" id="button2" onClick="showHideRegister()" value="Se connecter" hidden="true">
+	<div id="register" ng-include="registerForm.url" hidden="true"></div>
+</div>
+<script>
+    function showHideRegister() {
+        if ($("#connexion").is(":visible")) {
+            $("#button1").fadeOut();
+            $("#button2").fadeIn();
+            $("#connexion").fadeOut();
+            $("#register").fadeIn();
+        } else {
+            $("#button2").fadeOut();
+            $("#button1").fadeIn();
+            $("#connexion").fadeIn();
+            $("#register").fadeOut();
+        }
+        
+    }
+</script>
