@@ -4,6 +4,7 @@
 	<groupId>org.bodywired.back</groupId>
 	<artifactId>Front</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
 	
 	<parent>
 	    <groupId>org.bodywired</groupId>
