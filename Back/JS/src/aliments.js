@@ -1,18 +1,3 @@
-app.service("$alimentService",['$modal',function($modal){
-	this.getDeclinaison=function(aliment){
-		var modalInstance = $modal.open({
-			templateUrl: 'aliments/declinaisons.html',
-			controller: 'declinaisonCtrl',
-			size: 'lg',
-			resolve:{
-				aliment:function(){
-					return aliment;
-				}
-			}
-    		});
-	};
-}]);
-
 app.controller("alimentsController",['$scope','$http','$modal',function($scope,$http,$modal){
 	$scope.nbAliments=0;
 	$scope.currentPage=1;
@@ -28,10 +13,26 @@ app.controller("alimentsController",['$scope','$http','$modal',function($scope,$
 		});
 	};
 
+	$scope.parseEtat=function(etats){
+		var etats_tab=[];
+		for(var i=0;i<etats.length;i++){
+			etats_tab.push(etats[i].nom);
+		}
+		return etats_tab.join(', ');
+	};
+
 	$scope.add=function(){
 		var modalInstance = $modal.open({
 			templateUrl: 'aliments/formulaireAliments.html',
 			controller: 'formulaireAlimentsCtrl',
+			size: 'lg'
+    		});
+	};
+
+	$scope.addDeclinaison=function(){
+		var modalInstance = $modal.open({
+			templateUrl: 'aliments/formulaireDeclinaison.html',
+			controller: 'formulaireDeclinaisonsCtrl',
 			size: 'lg'
     		});
 	};
@@ -43,7 +44,7 @@ app.controller("alimentsController",['$scope','$http','$modal',function($scope,$
 	loadAliments();
 }]);
 
-app.controller('formulaireAlimentsCtrl',['$scope','$alimentService','$http','$modalInstance', function ($scope,$alimentService,$http, $modalInstance) {
+app.controller('formulaireAlimentsCtrl',['$scope','$alimentService','$http','$modalInstance', function ($scope,$http, $modalInstance) {
 	$scope.categories=[];
 	$scope.categorieSelect=[];
 
@@ -51,7 +52,7 @@ app.controller('formulaireAlimentsCtrl',['$scope','$alimentService','$http','$mo
 		$http.get(path+'/categories/lister').success(function(data,status){
 			$scope.categories=angular.fromJson(data);
 		});
-	};	
+	};
 
 	$scope.save = function (){
 		var tab=[];
@@ -60,8 +61,7 @@ app.controller('formulaireAlimentsCtrl',['$scope','$alimentService','$http','$mo
 		}
 		var data={nom:$scope.nom,categories:tab};
 		$http({url:path+'/aliment/ajouter',method:'POST',data:{data:angular.toJson(data)}}).success(function(data,status){
-			console.log(data);
-			//$alimentService.getDeclinaison(angular.fromJson(data));
+			$modalInstance.close();
 		});
 	};
 
@@ -72,42 +72,28 @@ app.controller('formulaireAlimentsCtrl',['$scope','$alimentService','$http','$mo
 	loadCategorie();
 }]);
 
-app.controller('declinaisonCtrl',['$scope','$http','$modal','$modalInstance','aliment', function ($scope,$http, $modal,$modalInstance,aliment) {
-	$scope.nbDeclinaisons=0;
-	$scope.currentPage=1;
-	$scope.declinaisons=[];
-
-	var loadDeclinaisons=function(){
-		$http.get(path+'/declinaison/etat/lister').success(function(data,status){
-			$scope.declinaisons=angular.fromJson(data);
-		});
-	};
-
-	$scope.add=function(){
-		var modalInstance = $modal.open({
-			templateUrl: 'aliments/formulaireDeclinaisons.html',
-			controller: 'formulaireDeclinaisonCtrl',
-			size: 'lg'
-    		});
-	};
-
-	loadDeclinaisons();
-
-}]);
-
 app.controller('formulaireDeclinaisonsCtrl',['$scope','$http','$modalInstance', function ($scope,$http, $modalInstance) {
-	$scope.categories=[];
-
-	loadCategorie=function(){
-		$http.get('/aliment/categories').success(function(data,status){
-			$scope.categories=angular.fromJson(data);
-		});
-	};
-
-	$scope.nutrimentsUnused=angular.copy(nutriments);
+	$scope.nutrimentsUnused=[];
 	$scope.nutrimentsUsed=[];
 	$scope.nutrimentsUnusedSelected=[];
 	$scope.nutrimentsUsedSelected=[];
+
+	$scope.etats=[];
+
+	var loadNutriments=function(){
+		$http.get(path+"/nutriments/types").success(function(data,status){
+			$scope.nutrimentsUnused=[];
+			for(var i=0;i<data.length;i++){
+				$scope.nutrimentsUnused.push({name:data[i]});
+			}
+		});
+	};
+
+	var loadEtat=function(){
+		$http.get(path+"/declinaison/etat/lister").success(function(data,status){
+			$scope.etats=data;
+		});
+	};
 
 	$scope.toUsed=function(){
 		var decalage=0;
@@ -148,10 +134,12 @@ app.controller('formulaireDeclinaisonsCtrl',['$scope','$http','$modalInstance', 
 		var data={nom:$scope.nom,categorie:$scope.categorie};
 		$http.post('/declinaison/ajouter',{data:angular.toJson(data)}).success(function(data,status){
 		});
-		$alimentService.getDeclinaison(1);
 	};
 
 	$scope.cancel = function () {
 		$modalInstance.dismiss('cancel');
 	};
+
+	loadNutriments();
+	loadEtat();
 }]);
