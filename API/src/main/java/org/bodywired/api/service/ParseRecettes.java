@@ -49,20 +49,23 @@ public class ParseRecettes {
 		Elements categorieElements = listeDesCategoriesDoc.select("td[class=capsule-vert2]")
 				.select("a[href]");
 
-		/*
-		 * Créer un nouvel objet catégorie avec le nom associé CategorieRecette
-		 */
-		CategorieRecette categorie = new CategorieRecette();
-		categorie.setNom(categorieElements.html());
-
 		for ( int i = 0; i < categorieElements.size(); i++ ) {
+			/*
+			 * Créer un nouvel objet catégorie avec le nom associé
+			 * CategorieRecette
+			 */
+			CategorieRecette categorie = new CategorieRecette();
+			categorie.setNom(categorieElements.get(i).html());
+			System.out.println("New CategorieRecette : " + categorie.getNom());
+
 			// Récupère la longueur de l'url pointée par une catégorie
-			int urlLength = categorieElements.get(0).attr("href").length();
+			int urlLength = categorieElements.get(i).attr("href").length();
 
 			// Décompose l'url pointée par une catégorie afin de pouvoir
 			// naviguer
 			// sur toutes les pages de cette catégorie
-			String startUrl = (String) categorieElements.get(0).attr("href")
+			System.out.println(categorieElements.get(i).attr("href"));
+			String startUrl = (String) categorieElements.get(i).attr("href")
 					.subSequence(0, urlLength - 6);
 			String endUrl = ".html";
 			int page = 1;
@@ -74,112 +77,159 @@ public class ParseRecettes {
 				// traiter les recettes de la page
 				Elements recettesElements = listeDesRecettesDoc.select("a[href*=recette_]");
 
-				Document recetteDoc = getDoc("http://www.guide-des-aliments.com/dietetique/"
-						+ recettesElements.get(0).attr("href"));
+				if ( recettesElements.size() > 0 ) {
+					Document recetteDoc = getDoc("http://www.guide-des-aliments.com/dietetique/"
+							+ recettesElements.get(0).attr("href"));
 
-				Recette recette = new Recette();
+					// Nouvelle recette
+					Recette recette = new Recette();
 
-				// Catégories
-				// System.out.println("######################\nCATÉGORIES\n#####################");
-				Elements categories = recetteDoc.select(".capsule-vert2 + .cellule-vert4").get(4)
-						.select("a");
-				for ( Element c : categories ) {
-					// System.out.println(c.text());
-					CategorieRecette cat = new CategorieRecette();
-					cat.setNom(c.text());
-					// recette.addCategories(cat);
-				}
-				// System.out.println(recette.getCategories().toString());
+					// On récupère le nom de la recette
+					recette.setNom(recetteDoc.select(".titre-entete div").get(0).html()
+							.substring(10));
 
-				// aliments composants la recette
-				// System.out.println("######################\nLIENS ALIMENTS\n#####################");
-				// Elements alimentsUrl = recetteDoc.select("a[href*=fiche_]");
-				// Elements recettesUrl =
-				// recetteDoc.select("a[href*=recette_]");
-				// for ( Element a : alimentsUrl ) {
-				// System.out.println("http://www.guide-des-aliments.com/dietetique/"
-				// + a.attr("href"));
-				// }
-				// for ( Element r : recettesUrl ) {
-				// System.out.println("http://www.guide-des-aliments.com/dietetique/"
-				// + r.attr("href"));
-				// }
+					// On récupère les temps de préparation et de cuisson de la
+					// recette
+					String tmpPrepa = recetteDoc.select(".capsule-vert2 + .cellule-vert4").get(5)
+							.text();
+					String tmpCuisson = recetteDoc.select(".capsule-vert2 + .cellule-vert4").get(6)
+							.text();
+					int temps = 0;
 
-				// aliments
-				// System.out.println("######################\nALIMENTS\n#####################");
-				Elements aliments = recetteDoc.select(".cellule-vert4 + .cellule-vert1");
-				Elements quantite = recetteDoc.select(".cellule-vert4:nth-last-child(3)");
-				for ( int a = 0; a < aliments.size(); a++ ) {
-					if ( aliments.get(a).select("a[href*=recette_]").size() > 0 ) {
-						Recette ingredient = new Recette();
-						ingredient.setNom(aliments.get(a).text());
-						int qte = Integer.parseInt(quantite.get(a).text()
-								.substring(0, quantite.get(a).text().length() - 2));
-						// recette.addIngredient(ingredient, qte);
+					temps += Integer.parseInt(tmpPrepa.substring(0, tmpPrepa.length() - 4));
+
+					if ( !tmpCuisson.equals("Recette") && !tmpCuisson.equals("Préparation") ) {
+						temps += Integer.parseInt(tmpCuisson.substring(0, tmpCuisson.length() - 4));
 					}
-					else {
-						Aliment ingredient = new Aliment();
-						ingredient.setNom(aliments.get(a).text());
-						int qte = Integer.parseInt(quantite.get(a).text()
-								.substring(0, quantite.get(a).text().length() - 2));
-						// recette.addIngredient(ingredient, qte);
+
+					recette.setTemps(temps);
+
+					// Catégories
+					// System.out.println("######################\nCATÉGORIES\n#####################");
+					Elements categories = recetteDoc.select(".capsule-vert2 + .cellule-vert4")
+							.get(4).select("a");
+					for ( Element c : categories ) {
+						CategorieRecette cat = new CategorieRecette();
+						cat.setNom(c.text());
+						recette.addCategories(cat);
 					}
-				}
-				// System.out.println(recette.getIngredients().toString());
-				// for ( Element a : aliments ) {
-				// if ( a.select("a[href*=recette_]").size() > 0 ) {
-				// System.out.println("recette");
-				// // if ( categorie.getRecettes().contains(arg0) )
-				// // recette.addIngredient(ingredient, quantite);
-				// }
-				// else {
-				// System.out.println(a.text());
-				// }
-				// }
+					// System.out.println(recette.getCategories().toString());
 
-				// quantité - la dernière valeur
-				// System.out.println("######################\nQUANTITÉ\n#####################");
-				// Elements quantite =
-				// recetteDoc.select(".cellule-vert4:nth-last-child(3)");
-				// for ( int z = 0; z < aliments.size(); z++ ) {
-				// System.out.println(quantite.get(z).text());
-				// }
+					// aliments composants la recette
+					// System.out.println("######################\nLIENS ALIMENTS\n#####################");
+					// Elements alimentsUrl =
+					// recetteDoc.select("a[href*=fiche_]");
+					// Elements recettesUrl =
+					// recetteDoc.select("a[href*=recette_]");
+					// for ( Element a : alimentsUrl ) {
+					// System.out.println("http://www.guide-des-aliments.com/dietetique/"
+					// + a.attr("href"));
+					// }
+					// for ( Element r : recettesUrl ) {
+					// System.out.println("http://www.guide-des-aliments.com/dietetique/"
+					// + r.attr("href"));
+					// }
 
-				// poids pour 1 portion => dernier de la liste
-				// System.out.println("######################\nPOIDS\n#####################");
-				Elements test = recetteDoc.select(".capsule-vert2 + .cellule-vert4");
-				Element poids = test.get(test.size() - 1);
-				// System.out.println(poids.text());
+					// aliments
+					// System.out.println("######################\nALIMENTS\n#####################");
+					Elements aliments = recetteDoc.select(".cellule-vert4 + .cellule-vert1");
+					Elements quantite = recetteDoc.select(".cellule-vert4:nth-last-child(3)");
+					for ( int a = 0; a < aliments.size(); a++ ) {
+						if ( aliments.get(a).select("a[href*=recette_]").size() > 0 ) {
+							Recette ingredient = new Recette();
+							ingredient.setNom(aliments.get(a).text());
+							int qte = Integer.parseInt(quantite.get(a).text()
+									.substring(0, quantite.get(a).text().length() - 2));
+							recette.addIngredient(ingredient, qte);
+						}
+						else {
+							Aliment ingredient = new Aliment();
+							ingredient.setNom(aliments.get(a).text());
+							int qte = Integer.parseInt(quantite.get(a).text()
+									.substring(0, quantite.get(a).text().length() - 2));
+							recette.addIngredient(ingredient, qte);
+						}
+					}
+					// System.out.println(recette.getIngredients().toString());
+					// for ( Element a : aliments ) {
+					// if ( a.select("a[href*=recette_]").size() > 0 ) {
+					// System.out.println("recette");
+					// // if ( categorie.getRecettes().contains(arg0) )
+					// // recette.addIngredient(ingredient, quantite);
+					// }
+					// else {
+					// System.out.println(a.text());
+					// }
+					// }
 
-				// préparation
-				// System.out.println("######################\nPRÉPARATION\n#####################");
-				Element preparation = recetteDoc.select(".cellule-vert2 p").get(0);
-				recette.setPreparation(preparation.text());
-				// System.out.println(preparation.text());
+					// quantité - la dernière valeur
+					// System.out.println("######################\nQUANTITÉ\n#####################");
+					// Elements quantite =
+					// recetteDoc.select(".cellule-vert4:nth-last-child(3)");
+					// for ( int z = 0; z < aliments.size(); z++ ) {
+					// System.out.println(quantite.get(z).text());
+					// }
 
-				// calories pour la recette (pour 500g)
-				// lipides/glucides/protéines -> 1 (bleu) à 17 (rouge) vert de 8
-				// à 11
+					// poids pour 1 portion => dernier de la liste
+					// System.out.println("######################\nPOIDS\n#####################");
+					Elements test = recetteDoc.select(".capsule-vert2 + .cellule-vert4");
+					Element poids = test.get(test.size() - 1);
+					// System.out.println(poids.text());
 
-				// PB AVEC Chou-fleur aux croutons
+					// préparation
+					// System.out.println("######################\nPRÉPARATION\n#####################");
 
-				// System.out.println("######################\nCALORIES\n#####################");
-				Elements caloriesImg = recetteDoc.select("img[src*=pic/compteur/Kcal]");
-				String calories = "";
-				for ( Element c : caloriesImg ) {
-					calories += c.attr("src").substring(17, 18);
-				}
-				Elements caloriesDetail = recetteDoc.select("img[src*=pic/LGP/Jauge]");
-				// System.out.println(calories);
-				if ( caloriesDetail.size() > 3 ) {
-					Element lipide = caloriesDetail.get(0);
-					Element glucides = caloriesDetail.get(1);
-					Element proteines = caloriesDetail.get(2);
-					// System.out.println(lipide.attr("src").substring(13, 15));
-					// System.out.println(glucides.attr("src").substring(13,
-					// 15));
-					// System.out.println(proteines.attr("src").substring(13,
-					// 15));
+					if ( recetteDoc.select(".cellule-vert2 p").size() > 0 ) {
+						Element preparation = recetteDoc.select(".cellule-vert2 p").get(0);
+						recette.setPreparation(preparation.text());
+					}
+					// System.out.println(preparation.text());
+
+					// calories pour la recette (pour 500g)
+					// lipides/glucides/protéines -> 1 (bleu) à 17 (rouge) vert
+					// de 8 à 11
+
+					// PB AVEC Chou-fleur aux croutons
+
+					// System.out.println("######################\nCALORIES\n#####################");
+
+					// On récupère les calories liées à la recette
+					Elements caloriesImg = recetteDoc.select("img[src*=pic/compteur/Kcal]");
+					String calories = "";
+					for ( Element c : caloriesImg ) {
+						if ( !( calories.length() <= 0 && c.attr("src").substring(17, 18)
+								.equals("0") ) ) {
+							calories += c.attr("src").substring(17, 18);
+						}
+					}
+
+					if ( !calories.equals("") )
+						recette.setCalories(Integer.parseInt(calories));
+
+					Elements caloriesDetail = recetteDoc.select("img[src*=pic/LGP/Jauge]");
+
+					// System.out.println(calories);
+					if ( caloriesDetail.size() > 3 ) {
+						Element lipide = caloriesDetail.get(0);
+						Element glucides = caloriesDetail.get(1);
+						Element proteines = caloriesDetail.get(2);
+						// System.out.println(lipide.attr("src").substring(13,
+						// 15));
+						// System.out.println(glucides.attr("src").substring(13,
+						// 15));
+						// System.out.println(proteines.attr("src").substring(13,
+						// 15));
+					}
+
+					System.out.println("New Recette : ");
+					System.out.println("nom :" + recette.getNom());
+					System.out.println("preparation : " + recette.getPreparation());
+					System.out.println("categories : " + recette.getCategories().size());
+					System.out.println("type : " + recette.getType());
+					System.out.println("calories : " + recette.getCalories());
+					System.out.println("temps : " + recette.getTemps());
+					System.out.println("ingredients : " + recette.getIngredients().size());
+					System.out.println("--");
 				}
 				// Passer page suivante si elle existe
 				if ( listeDesRecettesDoc.select("img[src*=page-suivante]").size() > 0 ) {
@@ -190,9 +240,10 @@ public class ParseRecettes {
 				else {
 					continueParse = false;
 				}
-			}
 
+			}
 		}
+
 	}
 
 	public static void main ( String[] args ) throws Exception {
