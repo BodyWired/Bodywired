@@ -1,0 +1,94 @@
+<h3>Recettes</h3>
+<div class="panel panel-success" id="description" hidden="true" ng-init="coefficient = 100">
+    <div class="panel-heading">
+        <a onClick="showRecette()"><span class="glyphicon glyphicon-chevron-left"/></a>
+        Description
+    </div>
+    <div class="panel-body">
+        <p class=text-center><b>{{aliment.name}}</b></p>
+        <div class="text-center">
+            Valeur pour <input type="number" ng-model="coefficient"/> grammes.    
+        </div>
+        <table class="table table-striped">
+            <tr><td colspan="2"><strong>Calories</strong></td></tr>
+            <tr><td>Calorie</td><td>{{nutriments.calories * coefficient}}</td></tr>
+            <tr><td colspan="2"><strong>Lipides</strong></td></tr>
+            <tr ng-repeat="lipide in nutriments.lipides">
+                <td>{{lipide.nom}}</td><td>{{lipide.value * coefficient}}</td>
+            </tr>
+            <tr><td colspan="2"><strong>Glucides</strong></td></tr>
+            <tr ng-repeat="glucide in nutriments.glucides">
+                <td>{{glucide.nom}}</td><td>{{glucide.value * coefficient}}</td>
+            </tr>
+            <tr><td colspan="2"><strong>Protéines</strong></td></tr>
+            <tr><td>Protéines</td><td>{{nutriments.proteines * coefficient}}</td></tr>
+            <tr><td colspan="2"><strong>Eau</strong></td></tr>
+            <tr><td>Eau</td><td>{{nutriments.eau * coefficient}}</td></tr>
+            <tr><td colspan="2"><strong>Vitamines</strong></td></tr>
+            <tr ng-repeat="vitamine in nutriments.vitamines">
+                <td>{{vitamine.nom}}</td><td>{{vitamine.value * coefficient}}</td>
+            </tr>
+            <tr><td colspan="2"><strong>Mineraux</strong></td></tr>
+            <tr ng-repeat="minerau in nutriments.mineraux">
+                <td>{{minerau.nom}}</td><td>{{minerau.value * coefficient}}</td>
+            </tr>
+            <tr><td colspan="2"><strong>Oligo-élements</strong></td></tr>
+            <tr ng-repeat="oligo in nutriments.oligos">
+                <td>{{oligo.nom}}</td><td>{{oligo.value * coefficient}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div id="recette" class="panel panel-success" hidden="true">
+    <div class="panel-heading">
+        <a onClick="showList()"><span class="glyphicon glyphicon-chevron-left"/></a>
+        {{selectedRecette.nom}}
+    </div>
+    <div class="panel-body">
+        <div class="progress">
+            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{selectedRecette.note}}" aria-valuemin="0" aria-valuemax="100" style="width: {{selectedRecette.note}}%"/>
+        </div>
+        Nombre de personne: {{selectedRecette.nbPers}} <span ng-repeat="n in getNumber(selectedRecette.nbPers) track by $index" class="glyphicon glyphicon-user"/><br/>
+        Temps: {{selectedRecette.temps}}min<br/>
+        Vegetarien: <span ng-if="selectedRecette.vegetarien" class="label label-success">Oui</span><span ng-if="!(selectedRecette.vegetarien)" class="label label-danger">Non</span><br/><br/>
+        <table class="table table-striped">
+            <tr><th>Aliment</th><th>Quantité</th></tr>
+            <tr ng-repeat="aliment in selectedRecette.alimentsQuantites">
+                <td><a onClick="showDescription()" ng-click="getNutriments(aliment.aliment.id)">{{aliment.aliment.nom}}</a></td>
+                <td>{{aliment.quantite}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div id="listRecette" class="panel panel-info">
+    <div class="panel-heading">
+        Menus
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped">
+            <tr><th>Recette</th><th>Voir</th></tr>
+            <tr ng-repeat="recette in recettes">
+                <td>{{recette.nom}}</td>
+                <td><a ng-click="selectRecette(recette)" onClick="showRecette()"><span class="glyphicon glyphicon-eye-open"/></a></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<script>
+    function showRecette() {
+        $('#listRecette').fadeOut();
+        $('#description').fadeOut();
+        $('#recette').fadeIn();
+    }
+    function showList() {
+        $('#listRecette').fadeIn();
+        $('#description').fadeOut();
+        $('#recette').fadeOut();
+    }
+    function showDescription() {
+        $('#description').fadeIn();
+        $('#listRecette').fadeOut();
+        $('#recette').fadeOut();
+    }
+</script>

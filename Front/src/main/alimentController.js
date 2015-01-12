@@ -9,7 +9,7 @@ BodyWiredApp.service('AlimentService', function($http, Toast){
     var urlNutriments = "http://iagl-server.cloudapp.net/api/nutriments/dec/";
     var urlDeclinaison = "aliment/declinaisons";
     var urlCategories = " http://iagl-server.cloudapp.net/api/categories/lister";
-    var urlAlimentCategorie = "http://iagl-server.cloudapp.net/api/aliment/lister?categorieId=";
+    var urlAlimentCategorie = "http://iagl-server.cloudapp.net/api/aliment/lister?idCategorie=";
     this.getCategories = function() {
         return $http.get(urlCategories)
         .success(function(data) {
@@ -50,11 +50,12 @@ BodyWiredApp.controller('AlimentController', function($scope, AlimentService){
     }
     $scope.getNutriments = function(declinaison) {
         AlimentService.getNumtriments(declinaison).then(function(data) {
-            $scope.nutriments = data;
-            console.log($scope.nutriments)
+            $scope.nutriments = data.data;
+            console.log($scope.nutriments);
         });
     }
     AlimentService.getCategories().then(function(data) {
+        console.log(data.data);
         $scope.categories = data.data;
     });
 });
