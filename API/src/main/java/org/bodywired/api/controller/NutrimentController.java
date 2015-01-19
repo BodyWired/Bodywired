@@ -34,7 +34,7 @@ public class NutrimentController {
 	 * @return toutes les nutriments
 	 */
 	@RequestMapping(value = BodywiredURL.LISTER_NUTRIMENTS_DECLINAISON, method = RequestMethod.GET)
-	@ApiOperation(value = "Retourne la liste des nutriments d'une declinaison")
+	@ApiOperation(value = BodywiredURL.LISTER_NUTRIMENTS_DECLINAISON, notes = "Retourne la liste des nutriments d'une declinaison")
 	public @ResponseBody List<AbstractNutriment> recupererNutriments(
 			@PathVariable Integer id) {
 		List<Enum<?>> res = new LinkedList<Enum<?>>();
@@ -42,6 +42,7 @@ public class NutrimentController {
 		return nutrimentService.getNutriments(id);
 	}
 
+	@ApiOperation(value = BodywiredURL.TYPES_NUTRIMENTS, notes = "Retourne la liste des types de nutriments")
 	@RequestMapping(value = BodywiredURL.TYPES_NUTRIMENTS, method = RequestMethod.GET)
 	public @ResponseBody List<Enum<?>> listerTypeNutriments() {
 

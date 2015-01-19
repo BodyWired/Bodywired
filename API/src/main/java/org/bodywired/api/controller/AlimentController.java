@@ -62,6 +62,7 @@ public class AlimentController {
 	 * 
 	 * @return le nombre total d'aliments contenu en BDD
 	 */
+	@ApiOperation(value = BodywiredURL.TOTAL_ALIMENTS, notes = "Retourne le nombre d'aliments présents en BDD")
 	@RequestMapping(value = BodywiredURL.TOTAL_ALIMENTS, method = RequestMethod.GET)
 	public @ResponseBody Integer totalAliments() {
 		return alimentService.getTotalAliments();

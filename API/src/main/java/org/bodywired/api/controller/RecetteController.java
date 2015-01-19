@@ -74,6 +74,7 @@ public class RecetteController {
 	 * 
 	 * @return le nombre total de recettes contenu en BDD
 	 */
+	@ApiOperation(value = BodywiredURL.TOTAL_RECETTES, notes = "Renvoie le nombre total de recettes en BDD")
 	@RequestMapping(value = BodywiredURL.TOTAL_RECETTES, method = RequestMethod.GET)
 	public @ResponseBody Integer totalRecettes() {
 		return recetteService.getTotalRecettes();
