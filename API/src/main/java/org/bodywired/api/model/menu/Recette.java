@@ -15,12 +15,15 @@ public class Recette extends AbstractBaseModel implements Ingredient {
 	// Pour 500g
 	private Map <Ingredient, Integer>		ingredients;
 
-	private int								temps;
+	private Integer							tmpPreparation;
+	private Integer							tmpCuisson;
+	private Integer							tmpRefrigeration;
+	private Integer							tmpMaceration;
 
 	private String							preparation;
 
 	// Pour 500g
-	private int								calories;
+	private Integer							calories;
 
 	public Recette () {
 		this.categories = new ArrayList <CategorieRecette>();
@@ -85,21 +88,6 @@ public class Recette extends AbstractBaseModel implements Ingredient {
 	}
 
 	/**
-	 * @return the temps
-	 */
-	public int getTemps () {
-		return temps;
-	}
-
-	/**
-	 * @param temps
-	 *            the temps to set
-	 */
-	public void setTemps ( int temps ) {
-		this.temps = temps;
-	}
-
-	/**
 	 * @return the preparation
 	 */
 	public String getPreparation () {
@@ -117,7 +105,7 @@ public class Recette extends AbstractBaseModel implements Ingredient {
 	/**
 	 * @return the calories
 	 */
-	public int getCalories () {
+	public Integer getCalories () {
 		return calories;
 	}
 
@@ -125,13 +113,45 @@ public class Recette extends AbstractBaseModel implements Ingredient {
 	 * @param calories
 	 *            the calories to set
 	 */
-	public void setCalories ( int calories ) {
+	public void setCalories ( Integer calories ) {
 		this.calories = calories;
 	}
 
 	@Override
 	public String getType () {
 		return "Recette";
+	}
+
+	public Integer getTmpPreparation () {
+		return tmpPreparation;
+	}
+
+	public void setTmpPreparation ( Integer tmpPreparation ) {
+		this.tmpPreparation = tmpPreparation;
+	}
+
+	public Integer getTmpCuisson () {
+		return tmpCuisson;
+	}
+
+	public void setTmpCuisson ( Integer tmpCuisson ) {
+		this.tmpCuisson = tmpCuisson;
+	}
+
+	public Integer getTmpRefrigeration () {
+		return tmpRefrigeration;
+	}
+
+	public void setTmpRefrigeration ( Integer tmpRefrigeration ) {
+		this.tmpRefrigeration = tmpRefrigeration;
+	}
+
+	public Integer getTmpMaceration () {
+		return tmpMaceration;
+	}
+
+	public void setTmpMaceration ( Integer tmpMaceration ) {
+		this.tmpMaceration = tmpMaceration;
 	}
 
 }

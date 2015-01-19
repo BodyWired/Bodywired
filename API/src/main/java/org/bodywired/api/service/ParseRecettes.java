@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 import org.bodywired.api.model.Aliment;
 import org.bodywired.api.model.menu.CategorieRecette;
@@ -39,8 +37,6 @@ public class ParseRecettes {
 	}
 
 	public void run () throws Exception {
-		long start = System.currentTimeMillis();
-		Set <Thread> threads = new LinkedHashSet <Thread>();
 
 		// Récupère la page avec les différentes catégories de recettes
 		Document listeDesCategoriesDoc = getDoc("http://www.guide-des-aliments.com/dietetique/recettes_par_categorie.html");
@@ -90,19 +86,53 @@ public class ParseRecettes {
 
 					// On récupère les temps de préparation et de cuisson de la
 					// recette
-					String tmpPrepa = recetteDoc.select(".capsule-vert2 + .cellule-vert4").get(5)
-							.text();
-					String tmpCuisson = recetteDoc.select(".capsule-vert2 + .cellule-vert4").get(6)
-							.text();
-					int temps = 0;
+					Elements capsVert2 = recetteDoc.select(".capsule-vert2");
+					Elements cellVert4 = recetteDoc.select(".capsule-vert2 + .cellule-vert4");
 
-					temps += Integer.parseInt(tmpPrepa.substring(0, tmpPrepa.length() - 4));
+					String tmpPrepa = "";
+					String tmpCuisson = "";
+					String tmpRefrigeration = "";
+					String tmpMaceration = "";
 
-					if ( !tmpCuisson.equals("Recette") && !tmpCuisson.equals("Préparation") ) {
-						temps += Integer.parseInt(tmpCuisson.substring(0, tmpCuisson.length() - 4));
+					for ( int q = 0; q < capsVert2.size(); q++ ) {
+						if ( capsVert2.get(q).text().equals("Cuisson :") )
+							tmpCuisson = cellVert4.get(q).text()
+									.substring(0, cellVert4.get(q).text().length() - 4);
+						if ( capsVert2.get(q).text().equals("Préparation :") )
+							tmpPrepa = cellVert4.get(q).text()
+									.substring(0, cellVert4.get(q).text().length() - 4);
+						if ( capsVert2.get(q).text().equals("Réfrigération :") )
+							tmpRefrigeration = cellVert4.get(q).text()
+									.substring(0, cellVert4.get(q).text().length() - 4);
+						if ( capsVert2.get(q).text().equals("Macération :") )
+							tmpMaceration = cellVert4.get(q).text()
+									.substring(0, cellVert4.get(q).text().length() - 4);
 					}
 
-					recette.setTemps(temps);
+					if ( tmpCuisson.equals("") ) {
+						recette.setTmpCuisson(0);
+					}
+					else {
+						recette.setTmpCuisson(Integer.parseInt(tmpCuisson));
+					}
+					if ( tmpPrepa.equals("") ) {
+						recette.setTmpPreparation(0);
+					}
+					else {
+						recette.setTmpPreparation(Integer.parseInt(tmpPrepa));
+					}
+					if ( tmpRefrigeration.equals("") ) {
+						recette.setTmpRefrigeration(0);
+					}
+					else {
+						recette.setTmpRefrigeration(Integer.parseInt(tmpRefrigeration));
+					}
+					if ( tmpMaceration.equals("") ) {
+						recette.setTmpMaceration(0);
+					}
+					else {
+						recette.setTmpMaceration(Integer.parseInt(tmpMaceration));
+					}
 
 					// Catégories
 					// System.out.println("######################\nCATÉGORIES\n#####################");
@@ -227,7 +257,10 @@ public class ParseRecettes {
 					System.out.println("categories : " + recette.getCategories().size());
 					System.out.println("type : " + recette.getType());
 					System.out.println("calories : " + recette.getCalories());
-					System.out.println("temps : " + recette.getTemps());
+					System.out.println("temps Preparation : " + recette.getTmpPreparation());
+					System.out.println("temps Cuisson : " + recette.getTmpCuisson());
+					System.out.println("temps Refrigreration : " + recette.getTmpRefrigeration());
+					System.out.println("temps Maceration : " + recette.getTmpMaceration());
 					System.out.println("ingredients : " + recette.getIngredients().size());
 					System.out.println("--");
 				}
