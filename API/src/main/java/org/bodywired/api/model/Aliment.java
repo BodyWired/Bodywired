@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.bodywired.api.model.classement.Categorie;
 import org.bodywired.api.model.menu.Ingredient;
+import org.bodywired.api.utils.TypeIngredient;
 
 public class Aliment extends AbstractBaseModel implements Ingredient {
 
@@ -49,7 +50,7 @@ public class Aliment extends AbstractBaseModel implements Ingredient {
 	}
 
 	@Override
-	public String getType () {
-		return "Aliment";
+	public TypeIngredient getType () {
+		return TypeIngredient.ALIMENT;
 	}
 }

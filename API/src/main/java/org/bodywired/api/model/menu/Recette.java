@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bodywired.api.model.AbstractBaseModel;
+import org.bodywired.api.utils.TypeIngredient;
 
 public class Recette extends AbstractBaseModel implements Ingredient {
 
@@ -118,8 +119,8 @@ public class Recette extends AbstractBaseModel implements Ingredient {
 	}
 
 	@Override
-	public String getType () {
-		return "Recette";
+	public TypeIngredient getType () {
+		return TypeIngredient.RECETTE;
 	}
 
 	public Integer getTmpPreparation () {
