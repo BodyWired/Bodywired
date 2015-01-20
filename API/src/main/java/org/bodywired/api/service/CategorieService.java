@@ -16,6 +16,6 @@ public interface CategorieService {
 
 	Boolean addCategorieRecette ( CategorieRecette categorie );
 
-	CategorieRecette getCategorieRecette ( String text );
+	CategorieRecette rechercheCategorieRecette ( String text );
 
 }

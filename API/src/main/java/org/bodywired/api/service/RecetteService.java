@@ -10,11 +10,11 @@ public interface RecetteService {
 
 	public Boolean addRecette ( Recette recette );
 
-	public Recette getRecetteFromName ( String substring );
+	public Recette rechercheRecetteParNom ( String substring );
 
-	public Recette getRecetteIngredient ( String text );
+	public Recette rechercheRecetteIngredient ( String text );
 
-	public Aliment getAlimentIngredient ( String text );
+	public Aliment rechercheAlimentIngredient ( String text );
 
 	public void updateRecette ( Recette recette );
 

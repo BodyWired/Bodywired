@@ -8,6 +8,7 @@ import java.net.URL;
 import org.bodywired.api.model.Aliment;
 import org.bodywired.api.model.menu.CategorieRecette;
 import org.bodywired.api.model.menu.Recette;
+import org.bodywired.api.service.impl.AlimentServiceImpl;
 import org.bodywired.api.service.impl.CategorieServiceImpl;
 import org.bodywired.api.service.impl.RecetteServiceImpl;
 import org.jsoup.Jsoup;
@@ -49,6 +50,7 @@ public class ParseRecettes {
 
 		RecetteService recetteService = new RecetteServiceImpl();
 		CategorieService categorieService = new CategorieServiceImpl();
+		AlimentService alimentService = new AlimentServiceImpl();
 
 		for ( int i = 0; i < categorieElements.size(); i++ ) {
 			/*
@@ -146,7 +148,7 @@ public class ParseRecettes {
 					for ( Element c : categories ) {
 						// CategorieRecette cat = new CategorieRecette();
 						// cat.setNom(c.text());
-						CategorieRecette cat = categorieService.getCategorieRecette(c.text());
+						CategorieRecette cat = categorieService.rechercheCategorieRecette(c.text());
 						recette.addCategories(cat);
 					}
 					// System.out.println(recette.getCategories().toString());
@@ -174,7 +176,7 @@ public class ParseRecettes {
 						if ( aliments.get(a).select("a[href*=recette_]").size() > 0 ) {
 							// Recette ingredient = new Recette();
 							// ingredient.setNom(aliments.get(a).text());
-							Recette ingredient = recetteService.getRecetteIngredient(aliments
+							Recette ingredient = recetteService.rechercheRecetteIngredient(aliments
 									.get(a).text());
 
 							int qte = Integer.parseInt(quantite.get(a).text()
@@ -186,7 +188,7 @@ public class ParseRecettes {
 							 * Aliment ingredient = new Aliment();
 							 * ingredient.setNom(aliments.get(a).text());
 							 */
-							Aliment ingredient = recetteService.getAlimentIngredient(aliments
+							Aliment ingredient = recetteService.rechercheAlimentIngredient(aliments
 									.get(a).text());
 							int qte = Integer.parseInt(quantite.get(a).text()
 									.substring(0, quantite.get(a).text().length() - 2));
@@ -324,7 +326,7 @@ public class ParseRecettes {
 
 					// On recupere la recette
 					// service getRecette(nom);
-					Recette recette = recetteService.getRecetteFromName(recetteDoc
+					Recette recette = recetteService.rechercheRecetteParNom(recetteDoc
 							.select(".titre-entete div").get(0).html().substring(10));
 
 					// On récupère le nom de la recette
@@ -336,8 +338,8 @@ public class ParseRecettes {
 							.get(4).select("a");
 					for ( Element c : categories ) {
 						// Recuperer categorie
-						CategorieRecette catRecette = categorieService
-								.getCategorieRecette(c.text());
+						CategorieRecette catRecette = categorieService.rechercheCategorieRecette(c
+								.text());
 						/*
 						 * CategorieRecette cat = new CategorieRecette();
 						 * cat.setNom(c.text());
@@ -362,7 +364,7 @@ public class ParseRecettes {
 									.substring(0, quantite.get(a).text().length() - 2));
 							// ajouter ingredient
 							// recette.addIngredient(ingredient, qte);
-							Recette ingredient = recetteService.getRecetteIngredient(aliments
+							Recette ingredient = recetteService.rechercheRecetteParNom(aliments
 									.get(a).text());
 							// recette.addIngredient(ingredient, qte);
 							recetteService.addRecetteIngredientForRecette(ingredient, qte, recette);
@@ -379,8 +381,8 @@ public class ParseRecettes {
 
 							// ajouter ingredient
 							// recette.addIngredient(ingredient, qte);
-							Aliment ingredient = recetteService.getAlimentIngredient(aliments
-									.get(a).text());
+
+							Aliment ingredient = alimentService.getAliment(aliments.get(a).text());
 							// recette.addIngredient(ingredient, qte);
 							recetteService.addAlimentIngredientForRecette(ingredient, qte, recette);
 						}

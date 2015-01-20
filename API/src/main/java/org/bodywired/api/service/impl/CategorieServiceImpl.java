@@ -38,7 +38,7 @@ public class CategorieServiceImpl implements CategorieService {
 	}
 
 	@Override
-	public CategorieRecette getCategorieRecette ( String text ) {
+	public CategorieRecette rechercheCategorieRecette ( String text ) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -21,19 +21,19 @@ public class RecetteServiceImpl implements RecetteService {
 	}
 
 	@Override
-	public Recette getRecetteFromName ( String substring ) {
+	public Recette rechercheRecetteParNom ( String substring ) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Recette getRecetteIngredient ( String text ) {
+	public Recette rechercheRecetteIngredient ( String text ) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Aliment getAlimentIngredient ( String text ) {
+	public Aliment rechercheAlimentIngredient ( String text ) {
 		// TODO Auto-generated method stub
 		return null;
 	}
