@@ -18,6 +18,16 @@ public class RechercheWrapper {
 	// @ApiModelProperty("limite de résultat")
 	private Integer limite;
 
+	private Integer idCategorie;
+
+	public Integer getIdCategorie() {
+		return idCategorie;
+	}
+
+	public void setIdCategorie(Integer idCategorie) {
+		this.idCategorie = idCategorie;
+	}
+
 	public String getFiltre() {
 		return filtre;
 	}

@@ -14,22 +14,16 @@ import com.wordnik.swagger.model.ApiInfo;
 @EnableSwagger
 @ComponentScan("org.bodywired.api.controller")
 public class SwaggerConfig {
-	private SpringSwaggerConfig springSwaggerConfig;
-
 	@Autowired
-	public void setSpringSwaggerConfig(SpringSwaggerConfig springSwaggerConfig) {
-		this.springSwaggerConfig = springSwaggerConfig;
-	}
+	private SpringSwaggerConfig springSwaggerConfig;
 
 	@Bean
 	public SwaggerSpringMvcPlugin customImplementation() {
-		return new SwaggerSpringMvcPlugin(this.springSwaggerConfig).apiInfo(
-				apiInfo()).includePatterns("/.*");
+		return new SwaggerSpringMvcPlugin(this.springSwaggerConfig).apiInfo(apiInfo()).includePatterns("/.*");
 	}
 
 	private ApiInfo apiInfo() {
-		ApiInfo apiInfo = new ApiInfo("BodyWired API",
-				"API for bodywired project", null, "", null, null);
+		ApiInfo apiInfo = new ApiInfo("BodyWired API", "API for bodywired project", null, "", null, null);
 		return apiInfo;
 	}
 }

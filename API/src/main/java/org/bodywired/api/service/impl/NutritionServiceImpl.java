@@ -20,8 +20,7 @@ public class NutritionServiceImpl implements NutritionService {
 	private AlimentService alimentService;
 
 	@Override
-	public Boolean sauvegarderApportNutritionnel(
-			AbstractNutriment apportNutritionnel, Declinaison declinaison) {
+	public Boolean sauvegarderApportNutritionnel(AbstractNutriment apportNutritionnel, Declinaison declinaison) {
 		// /TODO
 		return null;
 	}

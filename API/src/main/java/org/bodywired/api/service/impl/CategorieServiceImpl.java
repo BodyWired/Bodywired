@@ -26,10 +26,8 @@ public class CategorieServiceImpl implements CategorieService {
 	}
 
 	@Override
-	public Boolean ajouterAlimentDansCategorie(Aliment aliment,
-			Categorie categorie) {
-		return (classementAlimentDao.ajouterAlimentDansCategorie(aliment,
-				categorie) == 1);
+	public Boolean ajouterAlimentDansCategorie(Aliment aliment, Categorie categorie) {
+		return (classementAlimentDao.ajouterAlimentDansCategorie(aliment, categorie) == 1);
 	}
 
 }

@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.LinkedHashSet;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,8 +46,8 @@ public class ParseData {
 	public Document getDoc(String httpurl) {
 		try {
 			URL url = new URL(httpurl);
-			// Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(
-			// "cache.univ-lille1.fr", 3128));
+			// Proxy proxy = new Proxy(Proxy.Type.HTTP, new
+			// InetSocketAddress("cache.univ-lille1.fr", 3128));
 			// HttpURLConnection uc = (HttpURLConnection)
 			// url.openConnection(proxy);
 			HttpURLConnection uc = (HttpURLConnection) url.openConnection();
@@ -58,8 +56,7 @@ public class ParseData {
 
 			String line = null;
 			StringBuffer tmp = new StringBuffer();
-			BufferedReader in = new BufferedReader(new InputStreamReader(
-					uc.getInputStream()));
+			BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
 			while ((line = in.readLine()) != null) {
 				tmp.append(line);
 			}
@@ -81,213 +78,183 @@ public class ParseData {
 		// Document doc = Jsoup.connect("http://www.google.com").get();
 
 		long start = System.currentTimeMillis();
-		Set<Thread> threads = new LinkedHashSet<Thread>();
 
 		Document listeDesCategoriesDoc = getDoc("http://www.guide-des-aliments.com/dietetique/aliments_par_categorie.html");
 
-		Elements categorieElements = listeDesCategoriesDoc.select(
-				"td[class=capsule-vert2]").select("a[href]");
+		Elements categorieElements = listeDesCategoriesDoc.select("td[class=capsule-vert2]").select("a[href]");
 
 		/* CATEGORIE */
 		for (final Element categorieElement : categorieElements) {
 
-			Thread thread = new Thread(new Runnable() {
+			Categorie categorie = new Categorie();
+			categorie.setNom(categorieElement.html());
 
-				@Override
-				public void run() {
-					Categorie categorie = new Categorie();
-					categorie.setNom(categorieElement.html());
+			// ALIMENT
+			Document listeDesAlimentsDoc = getDoc("http://www.guide-des-aliments.com/dietetique/" + categorieElement.attr("href"));
+			Elements alimentElements = listeDesAlimentsDoc.select("a[href*=fiche_]");
 
-					// ALIMENT
-					Document listeDesAlimentsDoc = getDoc("http://www.guide-des-aliments.com/dietetique/"
-							+ categorieElement.attr("href"));
-					Elements alimentElements = listeDesAlimentsDoc
-							.select("a[href*=fiche_]");
+			String desc = listeDesAlimentsDoc.select("td.texte-article div[align=left]").html();
+			categorie.setDescription(desc);
 
-					String desc = listeDesAlimentsDoc.select(
-							"td.texte-article div[align=left]").html();
-					categorie.setDescription(desc);
+			if (alimentElements.isEmpty()) {
+				return;
+			}
 
-					if (alimentElements.isEmpty()) {
-						return;
-					}
+			categorieService.sauvegarderCategorieAliment(categorie);
+			for (Element alimentElement : alimentElements) {
+				Aliment aliment = null;
+				String nom = alimentElement.html();
 
-					categorieService.sauvegarderCategorieAliment(categorie);
-					for (Element alimentElement : alimentElements) {
-						Aliment aliment;
-						String nom = alimentElement.html();
-
-						aliment = new Aliment();
-						aliment.setNom(nom);
-
-						aliment.addCategorie(categorie);
-
-						Document ficheAlimentDoc = getDoc("http://www.guide-des-aliments.com/dietetique/"
-								+ alimentElement.attr("href"));
-						Elements linkNutrition = ficheAlimentDoc
-								.select("a[href*=fiche_nutrition_]");
-
-						// DECLINAISON
-						Document declinaisonsAlimentDoc = getDoc("http://www.guide-des-aliments.com/dietetique/"
-								+ linkNutrition.first().attr("href"));
-						Elements declinaisonsElements = declinaisonsAlimentDoc
-								.select("a[href^=detail_nutrition_");
-
-						if (declinaisonsElements.isEmpty()) {
-							continue;
-						}
-
-						synchronized (alimentService) {
-							alimentService.sauvegarderAliment(aliment);
-						}
-
-						for (Element declinaisonElement : declinaisonsElements) {
-							String declinaisonName = declinaisonElement.html();
-							String[] etats = declinaisonName.split("\\s*,\\s*");
-
-							Declinaison declinaison = new Declinaison();
-							declinaison.setAliment(aliment);
-
-							for (int i = 1; i < etats.length; i++) {
-								Etat etat = new Etat();
-								etat.setNom(etats[i]);
-								declinaison.addEtat(etat);
-							}
-
-							// NUTRIMENT
-							Document nutritionDeclinaisonDoc = null;
-							try {
-								nutritionDeclinaisonDoc = getDoc("http://www.guide-des-aliments.com/dietetique/"
-										+ declinaisonElement.attr("href"));
-							} catch (Exception e) { // Quelque fois Problème
-													// d'encodage URL (%.())
-
-							} finally {
-								if (nutritionDeclinaisonDoc == null)
-									continue;
-							}
-
-							Elements dataElements = nutritionDeclinaisonDoc
-									.select("td:nth-child(3)").select(
-											".cellule-vert4");
-
-							// = new ( getValue(dataElements, 0));
-							// if (.getCalories() == 0) {
-							// urlCalAZero.add(getCurrentURL()); }
-
-							Calorie calorie = new Calorie();
-							initNurtriment(calorie, dataElements, 0);
-							// calorie.setApport(getApportValue(dataElements,
-							// 0));
-							declinaison.addApportNutriment(calorie);
-
-							Lipide lipide = new Lipide();
-							// lipide.setApport(getApportValue(dataElements,
-							// 1));
-							initNurtriment(lipide, dataElements, 1);
-							lipide.setGrasSature(getApportValue(dataElements, 2));
-							lipide.setGrasMonoInsature(getApportValue(
-									dataElements, 3));
-							lipide.setGrasPolyInsature(getApportValue(
-									dataElements, 4));
-							declinaison.addApportNutriment(lipide);
-
-							Glucide glucide = new Glucide();
-							// glucide.setApport(getApportValue(dataElements,
-							// 5));
-							initNurtriment(glucide, dataElements, 5);
-							glucide.setFibreAlimentaire(getApportValue(
-									dataElements, 6));
-							declinaison.addApportNutriment(glucide);
-
-							Proteine proteine = new Proteine();
-							initNurtriment(proteine, dataElements, 7);
-							// proteine.setApport(getApportValue(dataElements,
-							// 7));
-							declinaison.addApportNutriment(proteine);
-
-							Eau eau = new Eau();
-							initNurtriment(eau, dataElements, 8);
-							// eau.setApport(getApportValue(dataElements, 8));
-							declinaison.addApportNutriment(eau);
-
-							Cholesterol cholesterol = new Cholesterol();
-							initNurtriment(cholesterol, dataElements, 9);
-							// cholesterol.setApport(getApportValue(dataElements,
-							// 9));
-							declinaison.addApportNutriment(cholesterol);
-
-							VIT_TYPE vType = getVitamineType(dataElements, 10);
-
-							int n = 10;
-							while (vType != null) {
-								AbstractNutriment vitamine = new Vitamine();
-								vitamine.setTypeVitamine(vType);
-								// vitamine.setApport(getApportValue(dataElements,
-								// n));
-								initNurtriment(vitamine, dataElements, n);
-								vType = getVitamineType(dataElements, n++);
-								declinaison.addApportNutriment(vitamine);
-							}
-							n--;
-
-							MIN_TYPE mType = getMineralType(dataElements, n);
-							OEL_TYPE oeType = getOEType(dataElements, n);
-
-							while (oeType != null || mType != null) {
-								if (mType != null) {
-									Mineral mineral = new Mineral();
-									mineral.setTypeMineral(mType);
-									// mineral.setApport(getApportValue(
-									// dataElements, n));
-									initNurtriment(mineral, dataElements, n);
-									declinaison.addApportNutriment(mineral);
-								} else if (oeType != null) {
-									OligoElement oligoElement = new OligoElement();
-									oligoElement.setTypeOligoElement(oeType);
-									// oligoElement.setApport(getApportValue(
-									// dataElements, n));
-									initNurtriment(oligoElement, dataElements,
-											n);
-									declinaison
-											.addApportNutriment(oligoElement);
-								}
-								n++;
-								mType = getMineralType(dataElements, n);
-								oeType = getOEType(dataElements, n);
-							}
-
-							synchronized (declinaisonService) {
-								declinaisonService
-										.sauvegarderDeclinaison(declinaison);
-							}
-						}
-					}
-
-					System.out.println(categorie.getNom());
-
+				aliment = alimentService.getAliment(nom);
+				if (aliment != null) {
+					categorieService.ajouterAlimentDansCategorie(aliment, categorie);
+					continue;
+				} else {
+					aliment = new Aliment();
+					aliment.setNom(nom);
 				}
-			});
 
-			threads.add(thread);
-			thread.start();
+				Document ficheAlimentDoc = getDoc("http://www.guide-des-aliments.com/dietetique/" + alimentElement.attr("href"));
+				Elements linkNutrition = ficheAlimentDoc.select("a[href*=fiche_nutrition_]");
+
+				// DECLINAISON
+				Document declinaisonsAlimentDoc = getDoc("http://www.guide-des-aliments.com/dietetique/" + linkNutrition.first().attr("href"));
+				Elements declinaisonsElements = declinaisonsAlimentDoc.select("a[href^=detail_nutrition_");
+
+				if (declinaisonsElements.isEmpty()) {
+					continue;
+				}
+
+				alimentService.sauvegarderAliment(aliment);
+				categorieService.ajouterAlimentDansCategorie(aliment, categorie);
+
+				for (Element declinaisonElement : declinaisonsElements) {
+					String declinaisonName = declinaisonElement.html();
+					String[] etats = declinaisonName.split("\\s*,\\s*");
+
+					Declinaison declinaison = new Declinaison();
+					declinaison.setAliment(aliment);
+
+					for (int i = 1; i < etats.length; i++) {
+						Etat etat = new Etat();
+						etat.setNom(etats[i]);
+						declinaison.addEtat(etat);
+					}
+
+					// NUTRIMENT
+					Document nutritionDeclinaisonDoc = null;
+					try {
+						nutritionDeclinaisonDoc = getDoc("http://www.guide-des-aliments.com/dietetique/" + declinaisonElement.attr("href"));
+					} catch (Exception e) { // Quelque fois Problème
+											// d'encodage URL (%.())
+
+					} finally {
+						if (nutritionDeclinaisonDoc == null)
+							continue;
+					}
+
+					Elements dataElements = nutritionDeclinaisonDoc.select("td:nth-child(3)").select(".cellule-vert4");
+
+					// = new ( getValue(dataElements, 0));
+					// if (.getCalories() == 0) {
+					// urlCalAZero.add(getCurrentURL()); }
+
+					Calorie calorie = new Calorie();
+					initNurtriment(calorie, dataElements, 0);
+					// calorie.setApport(getApportValue(dataElements,
+					// 0));
+					declinaison.addApportNutriment(calorie);
+
+					Lipide lipide = new Lipide();
+					// lipide.setApport(getApportValue(dataElements,
+					// 1));
+					initNurtriment(lipide, dataElements, 1);
+					lipide.setGrasSature(getApportValue(dataElements, 2));
+					lipide.setGrasMonoInsature(getApportValue(dataElements, 3));
+					lipide.setGrasPolyInsature(getApportValue(dataElements, 4));
+					declinaison.addApportNutriment(lipide);
+
+					Glucide glucide = new Glucide();
+					// glucide.setApport(getApportValue(dataElements,
+					// 5));
+					initNurtriment(glucide, dataElements, 5);
+					glucide.setFibreAlimentaire(getApportValue(dataElements, 6));
+					declinaison.addApportNutriment(glucide);
+
+					Proteine proteine = new Proteine();
+					initNurtriment(proteine, dataElements, 7);
+					// proteine.setApport(getApportValue(dataElements,
+					// 7));
+					declinaison.addApportNutriment(proteine);
+
+					Eau eau = new Eau();
+					initNurtriment(eau, dataElements, 8);
+					// eau.setApport(getApportValue(dataElements, 8));
+					declinaison.addApportNutriment(eau);
+
+					Cholesterol cholesterol = new Cholesterol();
+					initNurtriment(cholesterol, dataElements, 9);
+					// cholesterol.setApport(getApportValue(dataElements,
+					// 9));
+					declinaison.addApportNutriment(cholesterol);
+
+					VIT_TYPE vType = getVitamineType(dataElements, 10);
+
+					int n = 10;
+					while (vType != null) {
+						AbstractNutriment vitamine = new Vitamine();
+						vitamine.setTypeVitamine(vType);
+						// vitamine.setApport(getApportValue(dataElements,
+						// n));
+						initNurtriment(vitamine, dataElements, n);
+						vType = getVitamineType(dataElements, n++);
+						declinaison.addApportNutriment(vitamine);
+					}
+					n--;
+
+					MIN_TYPE mType = getMineralType(dataElements, n);
+					OEL_TYPE oeType = getOEType(dataElements, n);
+
+					while (oeType != null || mType != null) {
+						if (mType != null) {
+							Mineral mineral = new Mineral();
+							mineral.setTypeMineral(mType);
+							// mineral.setApport(getApportValue(
+							// dataElements, n));
+							initNurtriment(mineral, dataElements, n);
+							declinaison.addApportNutriment(mineral);
+						} else if (oeType != null) {
+							OligoElement oligoElement = new OligoElement();
+							oligoElement.setTypeOligoElement(oeType);
+							// oligoElement.setApport(getApportValue(
+							// dataElements, n));
+							initNurtriment(oligoElement, dataElements, n);
+							declinaison.addApportNutriment(oligoElement);
+						}
+						n++;
+						mType = getMineralType(dataElements, n);
+						oeType = getOEType(dataElements, n);
+					}
+
+					declinaisonService.sauvegarderDeclinaison(declinaison);
+				}
+			}
+
+			System.out.println(categorie.getNom());
+
 		}
 
-		for (Thread thread : threads) {
-			thread.join();
-		}
 		System.out.println("FINISH : " + (System.currentTimeMillis() - start));
 
 	}
 
-	public AbstractNutriment initNurtriment(AbstractNutriment nutriment,
-			Elements dataElements, int pos) {
+	public AbstractNutriment initNurtriment(AbstractNutriment nutriment, Elements dataElements, int pos) {
 		nutriment.setDetails(getDetailsValue(dataElements, pos));
 		nutriment.setApport(getApportValue(dataElements, pos));
 		return nutriment;
 	}
 
-	public synchronized String getDetailsValue(Elements dataElements, int pos) {
+	public String getDetailsValue(Elements dataElements, int pos) {
 		if (pos >= dataElements.size()) {
 			return "";
 		}
@@ -298,27 +265,24 @@ public class ParseData {
 		}
 	}
 
-	public synchronized double getApportValue(Elements dataElements, int pos) {
+	public double getApportValue(Elements dataElements, int pos) {
 		if (pos >= dataElements.size()) {
 			return 0;
 		}
 		try {
-			return Double.parseDouble(dataElements.get(pos).parent().child(3)
-					.select("div").html().split(" ")[0]);
+			return Double.parseDouble(dataElements.get(pos).parent().child(3).select("div").html().split(" ")[0]);
 		} catch (Exception e) {
 			return 0;
 		}
 	}
 
-	public synchronized VIT_TYPE getVitamineType(Elements dataElements, int pos) {
+	public VIT_TYPE getVitamineType(Elements dataElements, int pos) {
 		if (pos >= dataElements.size()) {
 			return null;
 		}
-		String txt = dataElements.get(pos).parent().child(1).select("div")
-				.html().replaceAll("\\s*:", "");
+		String txt = dataElements.get(pos).parent().child(1).select("div").html().replaceAll("\\s*:", "");
 		try {
-			Matcher matcher = Pattern.compile("Vitamine ([A-Z0-9]+)").matcher(
-					txt);
+			Matcher matcher = Pattern.compile("Vitamine ([A-Z0-9]+)").matcher(txt);
 			if (matcher.matches()) {
 				return VIT_TYPE.valueOf(matcher.group(1));
 			} else {
@@ -330,12 +294,11 @@ public class ParseData {
 		}
 	}
 
-	public synchronized OEL_TYPE getOEType(Elements dataElements, int pos) {
+	public OEL_TYPE getOEType(Elements dataElements, int pos) {
 		if (pos >= dataElements.size()) {
 			return null;
 		}
-		String txt = dataElements.get(pos).parent().child(1).select("div")
-				.html().replaceAll("\\s*:", "");
+		String txt = dataElements.get(pos).parent().child(1).select("div").html().replaceAll("\\s*:", "");
 		try {
 			return OEL_TYPE.getType(txt.toLowerCase());
 		} catch (Exception e) {
@@ -344,12 +307,11 @@ public class ParseData {
 		}
 	}
 
-	public synchronized MIN_TYPE getMineralType(Elements dataElements, int pos) {
+	public MIN_TYPE getMineralType(Elements dataElements, int pos) {
 		if (pos >= dataElements.size()) {
 			return null;
 		}
-		String txt = dataElements.get(pos).parent().child(1).select("div")
-				.html().replaceAll("\\s*:", "");
+		String txt = dataElements.get(pos).parent().child(1).select("div").html().replaceAll("\\s*:", "");
 		try {
 			return Mineral.MIN_TYPE.getType(txt.toLowerCase());
 		} catch (Exception e) {

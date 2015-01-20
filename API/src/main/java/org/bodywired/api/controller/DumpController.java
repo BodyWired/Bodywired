@@ -21,14 +21,14 @@ public class DumpController {
 	}
 
 	@RequestMapping(value = "/data/dump", method = RequestMethod.GET)
-	public Integer main() {
+	public String main() {
 		try {
 			parser.run();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return 0;
+		return "redirect:index.html";
 	}
 
 }

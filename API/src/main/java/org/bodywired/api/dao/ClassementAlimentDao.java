@@ -10,8 +10,7 @@ public interface ClassementAlimentDao {
 
 	public Integer sauvegarderCategorie(@Param("cat") Categorie categorieAliment);
 
-	public Integer ajouterAlimentDansCategorie(@Param("ali") Aliment aliment,
-			@Param("cat") Categorie categorie);
+	public Integer ajouterAlimentDansCategorie(@Param("ali") Aliment aliment, @Param("cat") Categorie categorie);
 
 	public List<Categorie> getCategories();
 

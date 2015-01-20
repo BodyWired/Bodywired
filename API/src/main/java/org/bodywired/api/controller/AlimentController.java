@@ -1,11 +1,10 @@
 package org.bodywired.api.controller;
 
-import java.util.List;
-
 import org.bodywired.api.model.Aliment;
 import org.bodywired.api.service.AlimentService;
 import org.bodywired.api.utils.BodywiredURL;
 import org.bodywired.api.wrapper.RechercheWrapper;
+import org.bodywired.api.wrapper.ResultatRechercheWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -46,25 +45,15 @@ public class AlimentController {
 	 * contient la regex du filtre
 	 * 
 	 * @param filtre
-	 * @return la liste des aliments correspondant à la recherche de
-	 *         l'utilisateur
+	 * @return aliments : la liste des aliments correspondant à la recherche de
+	 *         l'utilisateur total : le nombre total d'aliment sans limit ni
+	 *         offset
 	 */
 	@ApiOperation(value = BodywiredURL.LISTER_ALIMENTS, notes = "Récupère la liste des aliments avec leur déclinaison en fonction de la recherche")
 	@RequestMapping(value = BodywiredURL.LISTER_ALIMENTS, method = RequestMethod.GET)
 	@ApiImplicitParam
-	public @ResponseBody List<Aliment> listerAliments(
-			@ApiParam(required = true, value = "wrapper de la recherche") @ModelAttribute RechercheWrapper wrapper) {
+	public @ResponseBody ResultatRechercheWrapper listerAliments(@ApiParam(required = true, value = "wrapper de la recherche") @ModelAttribute RechercheWrapper wrapper) {
 		return alimentService.rechercherAliments(wrapper);
-	}
-
-	/**
-	 * Retourne le nombre total d'aliments contenu en BDD
-	 * 
-	 * @return le nombre total d'aliments contenu en BDD
-	 */
-	@RequestMapping(value = BodywiredURL.TOTAL_ALIMENTS, method = RequestMethod.GET)
-	public @ResponseBody Integer totalAliments() {
-		return alimentService.getTotalAliments();
 	}
 
 }

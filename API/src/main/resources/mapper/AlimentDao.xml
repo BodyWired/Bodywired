@@ -6,11 +6,19 @@
 	<resultMap type="org.bodywired.api.model.Aliment" id="Aliment_ResultMap">
 		<id column="ali_id" property="id" />
 		<result column="ali_nom" property="nom" />
-		<collection property="categories" select="select_categories" column="ali_id"/>
-		<collection property="declinaisons" select="select_declinaisons" column="ali_id" />
+		<collection property="categories" select="select_categories"
+			column="ali_id" />
+		<collection property="declinaisons" select="select_declinaisons"
+			column="ali_id" />
+	</resultMap>
+	<resultMap type="org.bodywired.api.wrapper.ResultatRechercheWrapper"
+		id="ResultatRecherche_ResultMap">
+		<result column="total" property="total" />
+		<collection property="aliments" resultMap="Aliment_ResultMap" />
 	</resultMap>
 
-	<select id="select_categories" resultMap="org.bodywired.api.dao.ClassementAlimentDao.Categorie_ResultMap">
+	<select id="select_categories"
+		resultMap="org.bodywired.api.dao.ClassementAlimentDao.Categorie_ResultMap">
 		SELECT cat_id, cat_nom
 		FROM aliment.categorie
 		LEFT JOIN
@@ -19,11 +27,13 @@
 		WHERE caa_id_ali =
 		#{ali_id}
 	</select>
-	
-	<select id="select_declinaisons" resultMap="org.bodywired.api.dao.DeclinaisonDao.Declinaison_ResultMap">
+
+	<select id="select_declinaisons"
+		resultMap="org.bodywired.api.dao.DeclinaisonDao.Declinaison_ResultMap">
 		SELECT dec_id, dec_id_ali
 		FROM aliment.declinaison
-		WHERE dec_id_ali = #{ali_id}
+		WHERE
+		dec_id_ali = #{ali_id}
 	</select>
 
 	<insert id="sauvegarderAliment" useGeneratedKeys="true"
@@ -37,13 +47,20 @@
 		SELECT ali_id, ali_nom FROM
 		aliment.aliment
 		WHERE
-		lower(ali_nom) = lower(#{nom})
+		ltrim(lower(aliment.ali_nom)) LIKE
+		ltrim(lower(#{nom}))
 	</select>
 
-	<select id="rechercherAliments" resultMap="Aliment_ResultMap">
-		SELECT ali_id, ali_nom FROM
+	<select id="rechercherAliments" resultMap="ResultatRecherche_ResultMap">
+		SELECT DISTINCT ali_id, ali_nom, count(ali_id) OVER() AS total FROM
 		aliment.aliment
+		RIGHT JOIN aliment.categorie_aliment
+		ON ali_id =
+		caa_id_ali
 		WHERE 1=1
+		<if test="idCategorie != null">
+			AND #{idCategorie} = caa_id_cat
+		</if>
 		<if test="filtre != null">
 			AND lower(ali_nom) LIKE lower('%'||#{filtre}||'%')
 		</if>

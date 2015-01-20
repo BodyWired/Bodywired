@@ -91,7 +91,7 @@
 	</insert>
 
 	<select id="getNutriments" resultMap="Nutriment_ResultMap">
-		select * from
+		SELECT * FROM
 		nutrition.nutriment
 		LEFT JOIN nutrition.type ON nut_id_typ = typ_id
 		LEFT JOIN nutrition.glucide ON glu_id_nut = nut_id AND typ_code =

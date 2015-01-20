@@ -1,16 +1,15 @@
 package org.bodywired.api.dao;
 
-import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
 import org.bodywired.api.model.Aliment;
 import org.bodywired.api.wrapper.RechercheWrapper;
+import org.bodywired.api.wrapper.ResultatRechercheWrapper;
 
 public interface AlimentDao {
 
 	public Integer sauvegarderAliment(@Param("ali") Aliment aliment);
 
-	public List<Aliment> rechercherAliments(RechercheWrapper wrapper);
+	public ResultatRechercheWrapper rechercherAliments(RechercheWrapper wrapper);
 
 	public Integer getTotalAliments();
 
