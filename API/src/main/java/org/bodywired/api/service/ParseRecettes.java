@@ -8,6 +8,8 @@ import java.net.URL;
 import org.bodywired.api.model.Aliment;
 import org.bodywired.api.model.menu.CategorieRecette;
 import org.bodywired.api.model.menu.Recette;
+import org.bodywired.api.service.impl.CategorieServiceImpl;
+import org.bodywired.api.service.impl.RecetteServiceImpl;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -44,6 +46,9 @@ public class ParseRecettes {
 		// Récupère les liens vers les différentes catégories
 		Elements categorieElements = listeDesCategoriesDoc.select("td[class=capsule-vert2]")
 				.select("a[href]");
+
+		RecetteService recetteService = new RecetteServiceImpl();
+		CategorieService categorieService = new CategorieServiceImpl();
 
 		for ( int i = 0; i < categorieElements.size(); i++ ) {
 			/*
@@ -139,8 +144,9 @@ public class ParseRecettes {
 					Elements categories = recetteDoc.select(".capsule-vert2 + .cellule-vert4")
 							.get(4).select("a");
 					for ( Element c : categories ) {
-						CategorieRecette cat = new CategorieRecette();
-						cat.setNom(c.text());
+						// CategorieRecette cat = new CategorieRecette();
+						// cat.setNom(c.text());
+						CategorieRecette cat = categorieService.getCategorieRecette(c.text());
 						recette.addCategories(cat);
 					}
 					// System.out.println(recette.getCategories().toString());
@@ -166,15 +172,22 @@ public class ParseRecettes {
 					Elements quantite = recetteDoc.select(".cellule-vert4:nth-last-child(3)");
 					for ( int a = 0; a < aliments.size(); a++ ) {
 						if ( aliments.get(a).select("a[href*=recette_]").size() > 0 ) {
-							Recette ingredient = new Recette();
-							ingredient.setNom(aliments.get(a).text());
+							// Recette ingredient = new Recette();
+							// ingredient.setNom(aliments.get(a).text());
+							Recette ingredient = recetteService.getRecetteIngredient(aliments
+									.get(a).text());
+
 							int qte = Integer.parseInt(quantite.get(a).text()
 									.substring(0, quantite.get(a).text().length() - 2));
 							recette.addIngredient(ingredient, qte);
 						}
 						else {
-							Aliment ingredient = new Aliment();
-							ingredient.setNom(aliments.get(a).text());
+							/*
+							 * Aliment ingredient = new Aliment();
+							 * ingredient.setNom(aliments.get(a).text());
+							 */
+							Aliment ingredient = recetteService.getAlimentIngredient(aliments
+									.get(a).text());
 							int qte = Integer.parseInt(quantite.get(a).text()
 									.substring(0, quantite.get(a).text().length() - 2));
 							recette.addIngredient(ingredient, qte);
@@ -202,8 +215,9 @@ public class ParseRecettes {
 
 					// poids pour 1 portion => dernier de la liste
 					// System.out.println("######################\nPOIDS\n#####################");
-					Elements test = recetteDoc.select(".capsule-vert2 + .cellule-vert4");
-					Element poids = test.get(test.size() - 1);
+					// Elements test =
+					// recetteDoc.select(".capsule-vert2 + .cellule-vert4");
+					// Element poids = test.get(test.size() - 1);
 					// System.out.println(poids.text());
 
 					// préparation
@@ -263,6 +277,114 @@ public class ParseRecettes {
 					System.out.println("temps Maceration : " + recette.getTmpMaceration());
 					System.out.println("ingredients : " + recette.getIngredients().size());
 					System.out.println("--");
+
+					// service ajouterRecette(recette);
+					categorie.addRecette(recette);
+					recetteService.addRecette(recette);
+				}
+				// Passer page suivante si elle existe
+				if ( listeDesRecettesDoc.select("img[src*=page-suivante]").size() > 0 ) {
+					page++;
+					listeDesRecettesDoc = getDoc("http://www.guide-des-aliments.com/dietetique/"
+							+ startUrl + page + endUrl);
+				}
+				else {
+					continueParse = false;
+				}
+
+			}
+
+			categorieService.addCategorieRecette(categorie);
+		}
+
+		// FIN PREMIERE BOUCLE
+
+		for ( int i = 0; i < categorieElements.size(); i++ ) {
+			// Récupère la longueur de l'url pointée par une catégorie
+			int urlLength = categorieElements.get(i).attr("href").length();
+
+			// Décompose l'url pointée par une catégorie afin de pouvoir
+			// naviguer
+			// sur toutes les pages de cette catégorie
+			String startUrl = (String) categorieElements.get(i).attr("href")
+					.subSequence(0, urlLength - 6);
+			String endUrl = ".html";
+			int page = 1;
+			boolean continueParse = true;
+			Document listeDesRecettesDoc = getDoc("http://www.guide-des-aliments.com/dietetique/"
+					+ startUrl + page + endUrl);
+
+			while ( continueParse == true ) {
+				// traiter les recettes de la page
+				Elements recettesElements = listeDesRecettesDoc.select("a[href*=recette_]");
+
+				if ( recettesElements.size() > 0 ) {
+					Document recetteDoc = getDoc("http://www.guide-des-aliments.com/dietetique/"
+							+ recettesElements.get(0).attr("href"));
+
+					// On recupere la recette
+					// service getRecette(nom);
+					Recette recette = recetteService.getRecetteFromName(recetteDoc
+							.select(".titre-entete div").get(0).html().substring(10));
+
+					// On récupère le nom de la recette
+					// nom :
+					// setNom(recetteDoc.select(".titre-entete div").get(0).html().substring(10));
+
+					// Catégories
+					Elements categories = recetteDoc.select(".capsule-vert2 + .cellule-vert4")
+							.get(4).select("a");
+					for ( Element c : categories ) {
+						// Recuperer categorie
+						CategorieRecette catRecette = categorieService
+								.getCategorieRecette(c.text());
+						/*
+						 * CategorieRecette cat = new CategorieRecette();
+						 * cat.setNom(c.text());
+						 */
+						// ajouter categorie
+						// recette.addCategories(cat);
+						recetteService.addCategorieForRecette(catRecette, recette);
+						// recette.addCategories(catRecette);
+
+					}
+
+					Elements aliments = recetteDoc.select(".cellule-vert4 + .cellule-vert1");
+					Elements quantite = recetteDoc.select(".cellule-vert4:nth-last-child(3)");
+					for ( int a = 0; a < aliments.size(); a++ ) {
+						if ( aliments.get(a).select("a[href*=recette_]").size() > 0 ) {
+							// recuperer ingredient
+							/*
+							 * Recette ingredient = new Recette();
+							 * ingredient.setNom(aliments.get(a).text());
+							 */
+							int qte = Integer.parseInt(quantite.get(a).text()
+									.substring(0, quantite.get(a).text().length() - 2));
+							// ajouter ingredient
+							// recette.addIngredient(ingredient, qte);
+							Recette ingredient = recetteService.getRecetteIngredient(aliments
+									.get(a).text());
+							// recette.addIngredient(ingredient, qte);
+							recetteService.addRecetteIngredientForRecette(ingredient, qte, recette);
+
+						}
+						else {
+							// recuperer ingredient
+							/*
+							 * Aliment ingredient = new Aliment();
+							 * ingredient.setNom(aliments.get(a).text());
+							 */
+							int qte = Integer.parseInt(quantite.get(a).text()
+									.substring(0, quantite.get(a).text().length() - 2));
+
+							// ajouter ingredient
+							// recette.addIngredient(ingredient, qte);
+							Aliment ingredient = recetteService.getAlimentIngredient(aliments
+									.get(a).text());
+							// recette.addIngredient(ingredient, qte);
+							recetteService.addAlimentIngredientForRecette(ingredient, qte, recette);
+						}
+					}
 				}
 				// Passer page suivante si elle existe
 				if ( listeDesRecettesDoc.select("img[src*=page-suivante]").size() > 0 ) {
@@ -276,6 +398,8 @@ public class ParseRecettes {
 
 			}
 		}
+
+		// FIN DEUXIEME BOUCLE
 
 	}
 
