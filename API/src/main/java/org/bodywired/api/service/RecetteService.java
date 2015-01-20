@@ -16,11 +16,9 @@ public interface RecetteService {
 
 	public Aliment rechercheAlimentIngredient ( String text );
 
-	public void updateRecette ( Recette recette );
+	public Boolean addCategorieForRecette ( CategorieRecette catRecette, Recette recette );
 
-	public void addCategorieForRecette ( CategorieRecette catRecette, Recette recette );
+	public Boolean addRecetteIngredientForRecette ( Recette ingredient, int qte, Recette recette );
 
-	public void addRecetteIngredientForRecette ( Recette ingredient, int qte, Recette recette );
-
-	public void addAlimentIngredientForRecette ( Aliment ingredient, int qte, Recette recette );
+	public Boolean addAlimentIngredientForRecette ( Aliment ingredient, int qte, Recette recette );
 }
