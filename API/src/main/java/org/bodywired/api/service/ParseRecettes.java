@@ -382,7 +382,8 @@ public class ParseRecettes {
 							// ajouter ingredient
 							// recette.addIngredient(ingredient, qte);
 
-							Aliment ingredient = alimentService.getAliment(aliments.get(a).text());
+							Aliment ingredient = alimentService.getAliment(aliments
+									.get(a).text());
 							// recette.addIngredient(ingredient, qte);
 							recetteService.addAlimentIngredientForRecette(ingredient, qte, recette);
 						}
