@@ -4,26 +4,21 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.bodywired.api.model.classement.Etat;
-import org.bodywired.api.model.nutriment.AbstractNutriment;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class Declinaison extends AbstractBaseModel {
 
 	private Aliment aliment;
 
+	private WrapperListNutriment nutriments;
+
 	public void setEtats(List<Etat> etats) {
 		this.etats = etats;
 	}
-
-	@JsonIgnore
-	private List<AbstractNutriment> apportsNutriment;
 
 	private List<Etat> etats;
 
 	public Declinaison() {
 		etats = new LinkedList<Etat>();
-		apportsNutriment = new LinkedList<AbstractNutriment>();
 	}
 
 	public void setAliment(Aliment aliment) {
@@ -42,16 +37,12 @@ public class Declinaison extends AbstractBaseModel {
 		etats.add(etat);
 	}
 
-	public List<AbstractNutriment> getApportsNutriment() {
-		return apportsNutriment;
+	public WrapperListNutriment getNutriments() {
+		return nutriments;
 	}
 
-	public void setApportsNutriment(List<AbstractNutriment> apportsNutriment) {
-		this.apportsNutriment = apportsNutriment;
-	}
-
-	public void addApportNutriment(AbstractNutriment nutriment) {
-		apportsNutriment.add(nutriment);
+	public void setNutriments(WrapperListNutriment nutriments) {
+		this.nutriments = nutriments;
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.bodywired.api.dao.NutritionDao;
 import org.bodywired.api.model.Declinaison;
+import org.bodywired.api.model.WrapperListNutriment;
 import org.bodywired.api.model.nutriment.AbstractNutriment;
 import org.bodywired.api.service.AlimentService;
 import org.bodywired.api.service.NutritionService;
@@ -28,6 +29,11 @@ public class NutritionServiceImpl implements NutritionService {
 	@Override
 	public List<AbstractNutriment> getNutriments(Integer id) {
 		return nutritionDao.getNutriments(id);
+	}
+
+	@Override
+	public WrapperListNutriment listerNutriments() {
+		return nutritionDao.listerNutriments();
 	}
 
 }

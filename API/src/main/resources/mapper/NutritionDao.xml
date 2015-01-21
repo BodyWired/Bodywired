@@ -9,34 +9,34 @@
 		<result property="apport" column="nut_apport" />
 		<result property="details" column="nut_details" />
 
-		<discriminator javaType="int" column="nut_id_typ">
-			<case value="1" resultType="org.bodywired.api.model.nutriment.Calorie">
+		<discriminator javaType="int" column="typ_code">
+			<case value="CAL" resultType="org.bodywired.api.model.nutriment.Calorie">
 			</case>
-			<case value="2" resultType="org.bodywired.api.model.nutriment.Cholesterol">
+			<case value="CHO" resultType="org.bodywired.api.model.nutriment.Cholesterol">
 			</case>
-			<case value="3" resultType="org.bodywired.api.model.nutriment.Eau">
+			<case value="EAU" resultType="org.bodywired.api.model.nutriment.Eau">
 			</case>
-			<case value="4" resultType="org.bodywired.api.model.nutriment.Proteine">
+			<case value="PRO" resultType="org.bodywired.api.model.nutriment.Proteine">
 			</case>
-			<case value="5" resultType="org.bodywired.api.model.nutriment.Lipide">
+			<case value="LIP" resultType="org.bodywired.api.model.nutriment.Lipide">
 				<result property="grasSature" column="lip_gras_sature" />
 				<result property="grasMonoInsature" column="lip_gras_monoinsature" />
 				<result property="grasPolyInsature" column="lip_gras_polyinsature" />
 			</case>
-			<case value="6" resultType="org.bodywired.api.model.nutriment.Glucide">
+			<case value="GLU" resultType="org.bodywired.api.model.nutriment.Glucide">
 				<result property="fibreAlimentaire" column="glu_fibres_alimentaires" />
 			</case>
-			<case value="7" resultType="org.bodywired.api.model.nutriment.Vitamine">
-				<result property="typeVitamine" column="nut_id_tvi"
-					typeHandler="org.bodywired.api.dao.handler.VitamineTypeHandler" />
+			<case value="VIT" resultType="org.bodywired.api.model.nutriment.Vitamine">
+				<result column="tvi_id" property="id" />
+				<result column="tvi_code" property="code" />
 			</case>
-			<case value="8" resultType="org.bodywired.api.model.nutriment.Mineral">
-				<result property="typeMineral" column="nut_id_tmi"
-					typeHandler="org.bodywired.api.dao.handler.MineralTypeHandler" />
+			<case value="MIN" resultType="org.bodywired.api.model.nutriment.Mineral">
+				<result column="tmi_id" property="id" />
+				<result column="tmi_code" property="code" />
 			</case>
-			<case value="9" resultType="org.bodywired.api.model.nutriment.OligoElement">
-				<result property="typeOligoElement" column="nut_id_toe"
-					typeHandler="org.bodywired.api.dao.handler.OligoElementTypeHandler" />
+			<case value="OE" resultType="org.bodywired.api.model.nutriment.OligoElement">
+				<result column="toe_id" property="id" />
+				<result column="toe_code" property="code" />
 			</case>
 		</discriminator>
 	</resultMap>
@@ -47,27 +47,21 @@
 		(nut_id_typ, nut_id_dec,
 		nut_apport,
 		nut_details
-		<if test="nut.typeVitamine != null">
+		<if test="nut.ref.name().equals('VIT')">
 			, nut_id_tvi
 		</if>
-		<if test="nut.typeOligoElement != null">
+		<if test="nut.ref.name().equals('OEL')">
 			, nut_id_toe
 		</if>
-		<if test="nut.typeMineral != null">
+		<if test="nut.ref.name().equals('MIN')">
 			, nut_id_tmi
 		</if>
 		)
-		VALUES (#{nut.codeBDD.ordinal}+1, #{dec.id},
+		VALUES (#{nut.ref.ordinal}+1, #{dec.id},
 		#{nut.apport},
 		#{nut.details}
-		<if test="nut.typeVitamine != null">
-			, #{nut.typeVitamine.ordinal}+1
-		</if>
-		<if test="nut.typeOligoElement != null">
-			, #{nut.typeOligoElement.ordinal}+1
-		</if>
-		<if test="nut.typeMineral != null">
-			, #{nut.typeMineral.ordinal}+1
+		<if test="nut.ref.name().equals('VIT') || nut.ref.name().equals('OEL') || nut.ref.name().equals('MIN')">
+			, #{nut.id}
 		</if>
 		);
 
@@ -94,11 +88,44 @@
 		SELECT * FROM
 		nutrition.nutriment
 		LEFT JOIN nutrition.type ON nut_id_typ = typ_id
-		LEFT JOIN nutrition.glucide ON glu_id_nut = nut_id AND typ_code =
+
+		LEFT JOIN nutrition.type_vitamine ON nut_id_tvi = tvi_id
+		LEFT JOIN
+		nutrition.type_oligo_element ON nut_id_toe = toe_id
+		LEFT JOIN
+		nutrition.type_mineral ON nut_id_tmi = tmi_id
+
+		LEFT JOIN
+		nutrition.glucide ON glu_id_nut = nut_id AND typ_code =
 		'GLU'
-		LEFT JOIN nutrition.lipide ON lip_id_nut = nut_id AND typ_code =
+		LEFT JOIN
+		nutrition.lipide ON lip_id_nut = nut_id AND typ_code =
 		'LIP'
-		WHERE nut_id_dec = #{dec_id}
+		WHERE
+		nut_id_dec = #{dec_id}
+	</select>
+
+	<resultMap type="org.bodywired.api.model.WrapperListNutriment"
+		id="WrapperListNutriment_ResultMap">
+		<collection property="vitamines" ofType="org.bodywired.api.model.nutriment.Vitamine">
+			<result column="tvi_id" property="id" />
+			<result column="tvi_code" property="code" />
+		</collection>
+		<collection property="oligosElements" ofType="org.bodywired.api.model.nutriment.OligoElement">
+			<result column="toe_id" property="id" />
+			<result column="toe_code" property="code" />
+		</collection>
+		<collection property="mineraux" ofType="org.bodywired.api.model.nutriment.Mineral">
+			<result column="tmi_id" property="id" />
+			<result column="tmi_code" property="code" />
+		</collection>
+	</resultMap>
+
+	<select id="listerNutriments" resultMap="WrapperListNutriment_ResultMap" resultType="org.bodywired.api.model.WrapperListNutriment">
+		SELECT * FROM
+		nutrition.type_vitamine
+		FULL JOIN (SELECT * FROM nutrition.type_oligo_element) AS OEL ON FALSE
+		FULL JOIN (SELECT * FROM nutrition.type_mineral) AS MIN ON FALSE
 	</select>
 
 </mapper>

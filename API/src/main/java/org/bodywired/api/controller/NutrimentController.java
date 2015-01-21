@@ -1,12 +1,6 @@
 package org.bodywired.api.controller;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.bodywired.api.model.nutriment.AbstractNutriment.MIN_TYPE;
-import org.bodywired.api.model.nutriment.AbstractNutriment.OEL_TYPE;
-import org.bodywired.api.model.nutriment.AbstractNutriment.VIT_TYPE;
+import org.bodywired.api.model.WrapperListNutriment;
 import org.bodywired.api.service.NutritionService;
 import org.bodywired.api.utils.BodywiredURL;
 import org.bodywired.api.wrapper.NutrimentReponseWrapper;
@@ -40,13 +34,8 @@ public class NutrimentController {
 	}
 
 	@RequestMapping(value = BodywiredURL.TYPES_NUTRIMENTS, method = RequestMethod.GET)
-	public @ResponseBody List<Enum<?>> listerTypeNutriments() {
-
-		List<Enum<?>> res = new LinkedList<Enum<?>>();
-		res.addAll(Arrays.asList(VIT_TYPE.values()));
-		res.addAll(Arrays.asList(MIN_TYPE.values()));
-		res.addAll(Arrays.asList(OEL_TYPE.values()));
-		return res;
+	public @ResponseBody WrapperListNutriment listerTypeNutriments() {
+		return nutrimentService.listerNutriments();
 	}
 
 }

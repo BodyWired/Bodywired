@@ -13,8 +13,8 @@ public class Glucide extends AbstractNutriment {
 	}
 
 	@Override
-	public CodeBDD getCodeBDD() {
-		return CodeBDD.GLU;
+	public Ref getRef() {
+		return Ref.GLU;
 	}
 
 }

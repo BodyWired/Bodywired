@@ -19,7 +19,7 @@ public class NutrimentReponseWrapper {
 	public static NutrimentReponseWrapper from(List<AbstractNutriment> nutriments) {
 		NutrimentReponseWrapper response = new NutrimentReponseWrapper();
 		for (AbstractNutriment abstractNutriment : nutriments) {
-			switch (abstractNutriment.getCodeBDD()) {
+			switch (abstractNutriment.getRef()) {
 			case CAL:
 				response.setCalorie((Calorie) abstractNutriment);
 				break;

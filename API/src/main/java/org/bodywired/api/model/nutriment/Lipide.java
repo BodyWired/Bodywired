@@ -38,8 +38,8 @@ public class Lipide extends AbstractNutriment {
 	}
 
 	@Override
-	public CodeBDD getCodeBDD() {
-		return CodeBDD.LIP;
+	public Ref getRef() {
+		return Ref.LIP;
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.bodywired.api.model.Declinaison;
 import org.bodywired.api.model.classement.Etat;
+import org.bodywired.api.model.nutriment.AbstractNutriment.Ref;
 import org.bodywired.api.service.DeclinaisonService;
 import org.bodywired.api.utils.BodywiredURL;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +31,10 @@ public class DeclinaisonController {
 	 * @return
 	 */
 	@RequestMapping(value = BodywiredURL.AJOUTER_DECLINAISON, method = RequestMethod.POST)
-	public @ResponseBody Declinaison ajouterDeclinaison(
-			@RequestBody Declinaison declinaison) {
+	public @ResponseBody Declinaison ajouterDeclinaison(@RequestBody Declinaison declinaison) {
+		Ref t = declinaison.getNutriments().getVitamines().get(0).getRef();
 		declinaisonService.sauvegarderDeclinaison(declinaison);
+
 		return declinaison;
 	}
 

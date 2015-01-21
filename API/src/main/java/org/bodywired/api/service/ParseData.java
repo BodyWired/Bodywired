@@ -12,9 +12,6 @@ import org.bodywired.api.model.Declinaison;
 import org.bodywired.api.model.classement.Categorie;
 import org.bodywired.api.model.classement.Etat;
 import org.bodywired.api.model.nutriment.AbstractNutriment;
-import org.bodywired.api.model.nutriment.AbstractNutriment.MIN_TYPE;
-import org.bodywired.api.model.nutriment.AbstractNutriment.OEL_TYPE;
-import org.bodywired.api.model.nutriment.AbstractNutriment.VIT_TYPE;
 import org.bodywired.api.model.nutriment.Calorie;
 import org.bodywired.api.model.nutriment.Cholesterol;
 import org.bodywired.api.model.nutriment.Eau;
@@ -198,12 +195,12 @@ public class ParseData {
 					// 9));
 					declinaison.addApportNutriment(cholesterol);
 
-					VIT_TYPE vType = getVitamineType(dataElements, 10);
+					String vType = getVitamineType(dataElements, 10);
 
 					int n = 10;
 					while (vType != null) {
-						AbstractNutriment vitamine = new Vitamine();
-						vitamine.setTypeVitamine(vType);
+						Vitamine vitamine = new Vitamine();
+						vitamine.setCode(vType);
 						// vitamine.setApport(getApportValue(dataElements,
 						// n));
 						initNurtriment(vitamine, dataElements, n);
@@ -212,20 +209,20 @@ public class ParseData {
 					}
 					n--;
 
-					MIN_TYPE mType = getMineralType(dataElements, n);
-					OEL_TYPE oeType = getOEType(dataElements, n);
+					String mType = getMineralType(dataElements, n);
+					String oeType = getOEType(dataElements, n);
 
 					while (oeType != null || mType != null) {
 						if (mType != null) {
 							Mineral mineral = new Mineral();
-							mineral.setTypeMineral(mType);
+							mineral.setCode(mType);
 							// mineral.setApport(getApportValue(
 							// dataElements, n));
 							initNurtriment(mineral, dataElements, n);
 							declinaison.addApportNutriment(mineral);
 						} else if (oeType != null) {
 							OligoElement oligoElement = new OligoElement();
-							oligoElement.setTypeOligoElement(oeType);
+							oligoElement.setCode(oeType);
 							// oligoElement.setApport(getApportValue(
 							// dataElements, n));
 							initNurtriment(oligoElement, dataElements, n);
@@ -276,7 +273,7 @@ public class ParseData {
 		}
 	}
 
-	public VIT_TYPE getVitamineType(Elements dataElements, int pos) {
+	public String getVitamineType(Elements dataElements, int pos) {
 		if (pos >= dataElements.size()) {
 			return null;
 		}
@@ -284,7 +281,7 @@ public class ParseData {
 		try {
 			Matcher matcher = Pattern.compile("Vitamine ([A-Z0-9]+)").matcher(txt);
 			if (matcher.matches()) {
-				return VIT_TYPE.valueOf(matcher.group(1));
+				return matcher.group(1);
 			} else {
 				return null;
 			}
@@ -294,26 +291,26 @@ public class ParseData {
 		}
 	}
 
-	public OEL_TYPE getOEType(Elements dataElements, int pos) {
+	public String getOEType(Elements dataElements, int pos) {
 		if (pos >= dataElements.size()) {
 			return null;
 		}
 		String txt = dataElements.get(pos).parent().child(1).select("div").html().replaceAll("\\s*:", "");
 		try {
-			return OEL_TYPE.getType(txt.toLowerCase());
+			return txt.toLowerCase();
 		} catch (Exception e) {
 			System.err.println("OE inconnue #" + txt + "#");
 			return null;
 		}
 	}
 
-	public MIN_TYPE getMineralType(Elements dataElements, int pos) {
+	public String getMineralType(Elements dataElements, int pos) {
 		if (pos >= dataElements.size()) {
 			return null;
 		}
 		String txt = dataElements.get(pos).parent().child(1).select("div").html().replaceAll("\\s*:", "");
 		try {
-			return Mineral.MIN_TYPE.getType(txt.toLowerCase());
+			return txt.toLowerCase();
 		} catch (Exception e) {
 			System.err.println("Mineral inconnu : #" + txt + "#");
 			return null;

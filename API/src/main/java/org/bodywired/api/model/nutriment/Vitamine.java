@@ -6,7 +6,17 @@ public class Vitamine extends AbstractNutriment {
 	}
 
 	@Override
-	public CodeBDD getCodeBDD() {
-		return CodeBDD.VIT;
+	public Ref getRef() {
+		return Ref.VIT;
+	}
+
+	public String code;
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 }
