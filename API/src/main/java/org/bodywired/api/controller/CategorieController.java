@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
 
 @Controller
 @Api(value = "categorie", description = "Gestion des categories d'aliment")
@@ -28,6 +29,7 @@ public class CategorieController {
 	 * @param categorie
 	 * @return
 	 */
+	@ApiOperation(value = BodywiredURL.AJOUTER_CATEGORIE, notes = "Ajoute une catégorie en BDD")
 	@RequestMapping(value = BodywiredURL.AJOUTER_CATEGORIE, method = RequestMethod.POST)
 	public @ResponseBody Categorie ajouterCategorie(
 			@RequestBody Categorie categorie) {
@@ -40,6 +42,7 @@ public class CategorieController {
 	 * 
 	 * @return toutes les catégories d'aliments
 	 */
+	@ApiOperation(value = BodywiredURL.LISTER_CATEGORIES, notes = "Liste les catégories en BDD")
 	@RequestMapping(value = BodywiredURL.LISTER_CATEGORIES, method = RequestMethod.GET)
 	public @ResponseBody List<Categorie> recupererCategories() {
 		return categorieService.getCategories();

@@ -1,94 +1,158 @@
 package org.bodywired.api.model.menu;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.bodywired.api.model.AbstractBaseModel;
+import org.bodywired.api.utils.TypeIngredient;
 
-public class Recette extends AbstractBaseModel {
+public class Recette extends AbstractBaseModel implements Ingredient {
 
-	private String nom;
-	private Integer tempsDePreparation;
-	private Integer tempsDeCuisson;
-	private Integer tempsDeRefrigeration;
-	private Integer tempsDeMaceration;
-	private Integer portion;
-	private Integer calories;
-	private String instrutions;
+	private String							nom;
 
-	private List<CategorieRecette> categoriesRecette;
+	private ArrayList <CategorieRecette>	categories;
 
-	private List<AbstractIngredient> ingredients;
+	// Pour 500g
+	private Map <Ingredient, Integer>		ingredients;
 
-	public String getNom() {
+	private Integer							tmpPreparation;
+	private Integer							tmpCuisson;
+	private Integer							tmpRefrigeration;
+	private Integer							tmpMaceration;
+
+	private String							preparation;
+
+	// Pour 500g
+	private Integer							calories;
+
+	public Recette () {
+		this.categories = new ArrayList <CategorieRecette>();
+		this.ingredients = new HashMap <Ingredient, Integer>();
+	}
+
+	/**
+	 * @return the nom
+	 */
+	public String getNom () {
 		return nom;
 	}
 
-	public void setNom(String nom) {
+	/**
+	 * @param nom
+	 *            the nom to set
+	 */
+	public void setNom ( String nom ) {
 		this.nom = nom;
 	}
 
-	public Integer getTempsDePreparation() {
-		return tempsDePreparation;
+	/**
+	 * @return the categories
+	 */
+	public ArrayList <CategorieRecette> getCategories () {
+		return categories;
 	}
 
-	public void setTempsDePreparation(Integer tempsDePreparation) {
-		this.tempsDePreparation = tempsDePreparation;
+	/**
+	 * @param categories
+	 *            the categories to set
+	 */
+	public void setCategories ( ArrayList <CategorieRecette> categories ) {
+		this.categories = categories;
 	}
 
-	public Integer getTempsDeCuisson() {
-		return tempsDeCuisson;
+	/**
+	 * @param categorie
+	 *            the categorie to add
+	 */
+	public void addCategories ( CategorieRecette categorie ) {
+		this.categories.add(categorie);
 	}
 
-	public void setTempsDeCuisson(Integer tempsDeCuisson) {
-		this.tempsDeCuisson = tempsDeCuisson;
-	}
-
-	public Integer getTempsDeRefrigeration() {
-		return tempsDeRefrigeration;
-	}
-
-	public void setTempsDeRefrigeration(Integer tempsDeRefrigeration) {
-		this.tempsDeRefrigeration = tempsDeRefrigeration;
-	}
-
-	public Integer getTempsDeMaceration() {
-		return tempsDeMaceration;
-	}
-
-	public void setTempsDeMaceration(Integer tempsDeMaceration) {
-		this.tempsDeMaceration = tempsDeMaceration;
-	}
-
-	public Integer getPortion() {
-		return portion;
-	}
-
-	public void setPortion(Integer portion) {
-		this.portion = portion;
-	}
-
-	public Integer getCalories() {
-		return calories;
-	}
-
-	public void setCalories(Integer calories) {
-		this.calories = calories;
-	}
-
-	public String getInstrutions() {
-		return instrutions;
-	}
-
-	public void setInstrutions(String instrutions) {
-		this.instrutions = instrutions;
-	}
-
-	public List<AbstractIngredient> getIngredients() {
+	/**
+	 * @return the ingredients
+	 */
+	public Map <Ingredient, Integer> getIngredients () {
 		return ingredients;
 	}
 
-	public List<CategorieRecette> getCategoriesRecette() {
-		return categoriesRecette;
+	/**
+	 * @param ingredients
+	 *            the ingredients to set
+	 */
+	public void setIngredients ( Map <Ingredient, Integer> ingredients ) {
+		this.ingredients = ingredients;
+	}
+
+	public void addIngredient ( Ingredient ingredient, int quantite ) {
+		this.ingredients.put(ingredient, quantite);
+	}
+
+	/**
+	 * @return the preparation
+	 */
+	public String getPreparation () {
+		return preparation;
+	}
+
+	/**
+	 * @param preparation
+	 *            the preparation to set
+	 */
+	public void setPreparation ( String preparation ) {
+		this.preparation = preparation;
+	}
+
+	/**
+	 * @return the calories
+	 */
+	public Integer getCalories () {
+		return calories;
+	}
+
+	/**
+	 * @param calories
+	 *            the calories to set
+	 */
+	public void setCalories ( Integer calories ) {
+		this.calories = calories;
+	}
+
+	@Override
+	public TypeIngredient getType () {
+		return TypeIngredient.RECETTE;
+	}
+
+	public Integer getTmpPreparation () {
+		return tmpPreparation;
+	}
+
+	public void setTmpPreparation ( Integer tmpPreparation ) {
+		this.tmpPreparation = tmpPreparation;
+	}
+
+	public Integer getTmpCuisson () {
+		return tmpCuisson;
+	}
+
+	public void setTmpCuisson ( Integer tmpCuisson ) {
+		this.tmpCuisson = tmpCuisson;
+	}
+
+	public Integer getTmpRefrigeration () {
+		return tmpRefrigeration;
+	}
+
+	public void setTmpRefrigeration ( Integer tmpRefrigeration ) {
+		this.tmpRefrigeration = tmpRefrigeration;
+	}
+
+	public Integer getTmpMaceration () {
+		return tmpMaceration;
+	}
+
+	public void setTmpMaceration ( Integer tmpMaceration ) {
+		this.tmpMaceration = tmpMaceration;
 	}
 
 }

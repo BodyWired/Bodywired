@@ -1,8 +1,10 @@
 DROP SCHEMA IF EXISTS aliment cascade;
 DROP SCHEMA IF EXISTS nutrition cascade;
+DROP SCHEMA IF EXISTS recette cascade;
 
 CREATE SCHEMA aliment;
 CREATE SCHEMA nutrition;
+CREATE SCHEMA recette;
 
 /*
 CREATE TABLE aliment.Variete (
@@ -182,3 +184,32 @@ CREATE TABLE nutrition.OligoElement(
 	oel_type integer references nutrition.Type_Oligo_Element(toe_id),
 	oel_id_nut integer references nutrition.Nutriment(nut_id)
 );*/
+    
+/* RECETTES */
+CREATE TABLE recette.Categorie (
+	cat_id serial PRIMARY KEY,
+	cat_nom varchar(255) NOT NULL
+);
+
+CREATE TABLE recette.Recette (
+	rec_id serial PRIMARY KEY,
+	rec_nom varchar(255) NOT NULL,
+	rec_tmp_preparation integer,
+	rec_tmp_cuisson integer,
+	rec_tmp_refrigeration integer,
+	rec_tmp_maceration integer,
+	rec_preparation varchar(255),
+	rec_calories integer
+);
+
+CREATE TABLE recette.Categorie_Recette (
+	primary key(car_id_cat, car_id_rec),
+	car_id_cat integer references recette.Categorie(cat_id) NOT NULL,
+	car_id_rec integer references recette.Recette(rec_id) NOT NULL
+);
+
+CREATE TABLE recette.Ingredient_Recette (
+	primary key(ir_id_ing, ir_id_rec),
+	ir_id_ing integer references recette.Categorie(cat_id) NOT NULL,
+	ir_id_rec integer references recette.Recette(rec_id) NOT NULL
+);

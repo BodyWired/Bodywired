@@ -35,8 +35,18 @@ public class BodywiredURL {
 	/**
 	 * URL pour les menus
 	 */
-	public final static String AJOUTER_MENU = "menu/ajouter";
-	public final static String LISTER_MENU = "menu/lister";
-	public final static String TOTAL_MENU = "menu/total";
-	public final static String CATEGORIES_MENU = "menu/categories";
+	public final static String ROOT_MENUS = "menu";
+	public final static String AJOUTER_MENU = "ajouter";
+	public final static String LISTER_MENUS = "lister";
+	public final static String TOTAL_MENUS = "total";
+	public final static String CATEGORIES_MENUS = "categories";
+	
+	/**
+	 * URL pour les recettes
+	 */
+	public final static String ROOT_RECETTES = "recettes";
+	public final static String AJOUTER_RECETTE = "ajouter";
+	public final static String LISTER_RECETTES = "lister";
+	public final static String TOTAL_RECETTES = "total";
+	public final static String CATEGORIES_RECETTES = "categories";
 }

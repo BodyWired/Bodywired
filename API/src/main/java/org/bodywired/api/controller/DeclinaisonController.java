@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
 
 @Controller
 @Api(value = BodywiredURL.ROOT_DECLINAISONS, description = "Gestion des déclinaisons des aliments")
@@ -30,6 +31,7 @@ public class DeclinaisonController {
 	 * @param declinaison
 	 * @return
 	 */
+	@ApiOperation(value = BodywiredURL.AJOUTER_DECLINAISON, notes = "ajoute une déclinaison pour un aliment")
 	@RequestMapping(value = BodywiredURL.AJOUTER_DECLINAISON, method = RequestMethod.POST)
 	public @ResponseBody Declinaison ajouterDeclinaison(@RequestBody Declinaison declinaison) {
 		Ref t = declinaison.getNutriments().getVitamines().get(0).getRef();
@@ -55,6 +57,7 @@ public class DeclinaisonController {
 	 * @param etat
 	 * @return
 	 */
+	@ApiOperation(value = BodywiredURL.AJOUTER_ETAT_DECLINAISON, notes = "ajoute un état de déclinaison")
 	@RequestMapping(value = BodywiredURL.AJOUTER_ETAT_DECLINAISON, method = RequestMethod.POST)
 	public @ResponseBody Etat ajouterEtat(@RequestBody Etat etat) {
 		declinaisonService.sauvegarderEtat(etat);
@@ -62,10 +65,11 @@ public class DeclinaisonController {
 	}
 
 	/**
-	 * Récupérer la liste de toutes les états des déclinaisons d'aliments
+	 * Récupérer la liste de tous les états des déclinaisons d'aliments
 	 * 
 	 * @return toutes les états des déclinaisons d'aliments
 	 */
+	@ApiOperation(value = BodywiredURL.LISTER_ETAT_DECLINAISON, notes = "liste la liste de tous les états des déclinaisons d'aliments")
 	@RequestMapping(value = BodywiredURL.LISTER_ETAT_DECLINAISON, method = RequestMethod.GET)
 	public @ResponseBody List<Etat> recupererEtats() {
 		return declinaisonService.getEtats();
