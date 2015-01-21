@@ -73,10 +73,5 @@
 		</if>
 	</select>
 
-	<select id="getTotalAliments" resultType="Integer">
-		SELECT count(*) FROM
-		aliment.aliment
-	</select>
-
 </mapper>
 

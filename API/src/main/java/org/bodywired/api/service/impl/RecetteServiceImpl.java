@@ -5,53 +5,52 @@ import org.bodywired.api.model.Aliment;
 import org.bodywired.api.model.menu.CategorieRecette;
 import org.bodywired.api.model.menu.Recette;
 import org.bodywired.api.service.RecetteService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RecetteServiceImpl implements RecetteService {
 
-	@Autowired
-	private RecetteDao	recetteDao;
+	// @Autowired
+	private RecetteDao recetteDao;
 
 	@Override
-	public Integer getTotalRecettes () {
+	public Integer getTotalRecettes() {
 		return recetteDao.getTotalRecettes();
 	}
 
 	@Override
-	public Boolean addRecette ( Recette recette ) {
+	public Boolean sauvegarderRecette(Recette recette) {
 		return recetteDao.ajouterRecette(recette);
 	}
 
 	@Override
-	public Recette rechercheRecetteParNom ( String nom ) {
+	public Recette rechercherRecetteParNom(String nom) {
 		return recetteDao.rechercherRecetteParNom(nom);
 	}
 
 	@Override
-	public Recette rechercheRecetteIngredient ( String nom ) {
+	public Recette rechercherRecetteIngredient(String nom) {
 		return recetteDao.rechercherRecetteIngredient(nom);
 	}
 
 	@Override
-	public Aliment rechercheAlimentIngredient ( String nom ) {
+	public Aliment rechercherAlimentIngredient(String nom) {
 		return recetteDao.rechercherAlimentIngredient(nom);
 	}
 
 	@Override
-	public Boolean addCategorieForRecette ( CategorieRecette catRecette, Recette recette ) {
+	public Boolean ajouterCategorieRecette(CategorieRecette catRecette, Recette recette) {
 		return recetteDao.ajouterCategorie(catRecette, recette);
 
 	}
 
 	@Override
-	public Boolean addRecetteIngredientForRecette ( Recette ingredient, int qte, Recette recette ) {
+	public Boolean ajouterRecetteIngredient(Recette ingredient, int qte, Recette recette) {
 		return recetteDao.ajouterIngredientRecette(ingredient, qte, recette);
 	}
 
 	@Override
-	public Boolean addAlimentIngredientForRecette ( Aliment ingredient, int qte, Recette recette ) {
+	public Boolean ajouterAlimentIngredient(Aliment ingredient, int qte, Recette recette) {
 		return recetteDao.ajouterIngredientAliment(ingredient, qte, recette);
 
 	}

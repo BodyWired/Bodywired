@@ -14,8 +14,8 @@ public interface CategorieService {
 
 	Boolean ajouterAlimentDansCategorie ( Aliment aliment, Categorie categorie );
 
-	Boolean addCategorieRecette ( CategorieRecette categorie );
+	Boolean sauvegarderCategorieRecette ( CategorieRecette categorie );
 
-	CategorieRecette rechercheCategorieRecette ( String text );
+	CategorieRecette rechercherCategorieRecette ( String text );
 
 }

@@ -10,8 +10,6 @@ public interface AlimentService {
 
 	public ResultatRechercheWrapper rechercherAliments(RechercheWrapper wrapper);
 
-	public Integer getTotalAliments();
-
 	public Aliment getAliment(String nom);
 
 }

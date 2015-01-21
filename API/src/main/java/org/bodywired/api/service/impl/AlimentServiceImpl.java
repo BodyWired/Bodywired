@@ -29,11 +29,6 @@ public class AlimentServiceImpl implements AlimentService {
 	}
 
 	@Override
-	public Integer getTotalAliments() {
-		return alimentDao.getTotalAliments();
-	}
-
-	@Override
 	public ResultatRechercheWrapper rechercherAliments(RechercheWrapper wrapper) {
 		return alimentDao.rechercherAliments(wrapper);
 	}

@@ -11,8 +11,6 @@ public interface AlimentDao {
 
 	public ResultatRechercheWrapper rechercherAliments(RechercheWrapper wrapper);
 
-	public Integer getTotalAliments();
-
 	public Aliment getAliment(@Param("nom") String nom);
 
 }

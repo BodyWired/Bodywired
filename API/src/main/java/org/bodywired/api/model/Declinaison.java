@@ -19,6 +19,7 @@ public class Declinaison extends AbstractBaseModel {
 
 	public Declinaison() {
 		etats = new LinkedList<Etat>();
+		nutriments = new WrapperListNutriment();
 	}
 
 	public void setAliment(Aliment aliment) {

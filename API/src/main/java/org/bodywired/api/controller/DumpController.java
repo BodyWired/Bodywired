@@ -1,6 +1,6 @@
 package org.bodywired.api.controller;
 
-import org.bodywired.api.service.ParseData;
+import org.bodywired.api.service.ParseAliments;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +13,7 @@ import com.mangofactory.swagger.annotations.ApiIgnore;
 public class DumpController {
 
 	@Autowired
-	private ParseData parser;
+	private ParseAliments parser;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String redirect() {

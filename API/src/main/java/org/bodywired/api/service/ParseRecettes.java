@@ -148,7 +148,7 @@ public class ParseRecettes {
 					for ( Element c : categories ) {
 						// CategorieRecette cat = new CategorieRecette();
 						// cat.setNom(c.text());
-						CategorieRecette cat = categorieService.rechercheCategorieRecette(c.text());
+						CategorieRecette cat = categorieService.rechercherCategorieRecette(c.text());
 						recette.addCategories(cat);
 					}
 					// System.out.println(recette.getCategories().toString());
@@ -176,7 +176,7 @@ public class ParseRecettes {
 						if ( aliments.get(a).select("a[href*=recette_]").size() > 0 ) {
 							// Recette ingredient = new Recette();
 							// ingredient.setNom(aliments.get(a).text());
-							Recette ingredient = recetteService.rechercheRecetteIngredient(aliments
+							Recette ingredient = recetteService.rechercherRecetteIngredient(aliments
 									.get(a).text());
 
 							int qte = Integer.parseInt(quantite.get(a).text()
@@ -188,7 +188,7 @@ public class ParseRecettes {
 							 * Aliment ingredient = new Aliment();
 							 * ingredient.setNom(aliments.get(a).text());
 							 */
-							Aliment ingredient = recetteService.rechercheAlimentIngredient(aliments
+							Aliment ingredient = recetteService.rechercherAlimentIngredient(aliments
 									.get(a).text());
 							int qte = Integer.parseInt(quantite.get(a).text()
 									.substring(0, quantite.get(a).text().length() - 2));
@@ -282,7 +282,7 @@ public class ParseRecettes {
 
 					// service ajouterRecette(recette);
 					categorie.addRecette(recette);
-					recetteService.addRecette(recette);
+					recetteService.sauvegarderRecette(recette);
 				}
 				// Passer page suivante si elle existe
 				if ( listeDesRecettesDoc.select("img[src*=page-suivante]").size() > 0 ) {
@@ -296,7 +296,7 @@ public class ParseRecettes {
 
 			}
 
-			categorieService.addCategorieRecette(categorie);
+			categorieService.sauvegarderCategorieRecette(categorie);
 		}
 
 		// FIN PREMIERE BOUCLE
@@ -326,7 +326,7 @@ public class ParseRecettes {
 
 					// On recupere la recette
 					// service getRecette(nom);
-					Recette recette = recetteService.rechercheRecetteParNom(recetteDoc
+					Recette recette = recetteService.rechercherRecetteParNom(recetteDoc
 							.select(".titre-entete div").get(0).html().substring(10));
 
 					// On récupère le nom de la recette
@@ -338,7 +338,7 @@ public class ParseRecettes {
 							.get(4).select("a");
 					for ( Element c : categories ) {
 						// Recuperer categorie
-						CategorieRecette catRecette = categorieService.rechercheCategorieRecette(c
+						CategorieRecette catRecette = categorieService.rechercherCategorieRecette(c
 								.text());
 						/*
 						 * CategorieRecette cat = new CategorieRecette();
@@ -346,7 +346,7 @@ public class ParseRecettes {
 						 */
 						// ajouter categorie
 						// recette.addCategories(cat);
-						recetteService.addCategorieForRecette(catRecette, recette);
+						recetteService.ajouterCategorieRecette(catRecette, recette);
 						// recette.addCategories(catRecette);
 
 					}
@@ -364,10 +364,10 @@ public class ParseRecettes {
 									.substring(0, quantite.get(a).text().length() - 2));
 							// ajouter ingredient
 							// recette.addIngredient(ingredient, qte);
-							Recette ingredient = recetteService.rechercheRecetteParNom(aliments
+							Recette ingredient = recetteService.rechercherRecetteParNom(aliments
 									.get(a).text());
 							// recette.addIngredient(ingredient, qte);
-							recetteService.addRecetteIngredientForRecette(ingredient, qte, recette);
+							recetteService.ajouterRecetteIngredient(ingredient, qte, recette);
 
 						}
 						else {
@@ -385,7 +385,7 @@ public class ParseRecettes {
 							Aliment ingredient = alimentService.getAliment(aliments
 									.get(a).text());
 							// recette.addIngredient(ingredient, qte);
-							recetteService.addAlimentIngredientForRecette(ingredient, qte, recette);
+							recetteService.ajouterAlimentIngredient(ingredient, qte, recette);
 						}
 					}
 				}

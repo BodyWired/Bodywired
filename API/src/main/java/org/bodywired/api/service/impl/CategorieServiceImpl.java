@@ -15,33 +15,33 @@ import org.springframework.stereotype.Service;
 public class CategorieServiceImpl implements CategorieService {
 
 	@Autowired
-	private ClassementAlimentDao	classementAlimentDao;
+	private ClassementAlimentDao classementAlimentDao;
 
-	@Autowired
-	private ClassementRecetteDao	classementRecetteDao;
+	// @Autowired
+	private ClassementRecetteDao classementRecetteDao;
 
 	@Override
-	public Boolean sauvegarderCategorieAliment ( Categorie categorie ) {
-		return ( classementAlimentDao.sauvegarderCategorie(categorie) == 1 );
+	public Boolean sauvegarderCategorieAliment(Categorie categorie) {
+		return (classementAlimentDao.sauvegarderCategorie(categorie) == 1);
 	}
 
 	@Override
-	public List <Categorie> getCategories () {
+	public List<Categorie> getCategories() {
 		return classementAlimentDao.getCategories();
 	}
 
 	@Override
-	public Boolean ajouterAlimentDansCategorie ( Aliment aliment, Categorie categorie ) {
-		return ( classementAlimentDao.ajouterAlimentDansCategorie(aliment, categorie) == 1 );
+	public Boolean ajouterAlimentDansCategorie(Aliment aliment, Categorie categorie) {
+		return (classementAlimentDao.ajouterAlimentDansCategorie(aliment, categorie) == 1);
 	}
 
 	@Override
-	public Boolean addCategorieRecette ( CategorieRecette categorie ) {
+	public Boolean sauvegarderCategorieRecette(CategorieRecette categorie) {
 		return classementRecetteDao.sauvegarderCategorieRecette(categorie);
 	}
 
 	@Override
-	public CategorieRecette rechercheCategorieRecette ( String text ) {
+	public CategorieRecette rechercherCategorieRecette(String text) {
 		return classementRecetteDao.rechercherCategorieRecette(text);
 	}
 

@@ -29,7 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ParseData {
+public class ParseAliments {
 
 	@Autowired
 	private AlimentService alimentService;
@@ -160,7 +160,7 @@ public class ParseData {
 					initNurtriment(calorie, dataElements, 0);
 					// calorie.setApport(getApportValue(dataElements,
 					// 0));
-					declinaison.addApportNutriment(calorie);
+					declinaison.getNutriments().setCalorie(calorie);
 
 					Lipide lipide = new Lipide();
 					// lipide.setApport(getApportValue(dataElements,
@@ -169,31 +169,31 @@ public class ParseData {
 					lipide.setGrasSature(getApportValue(dataElements, 2));
 					lipide.setGrasMonoInsature(getApportValue(dataElements, 3));
 					lipide.setGrasPolyInsature(getApportValue(dataElements, 4));
-					declinaison.addApportNutriment(lipide);
+					declinaison.getNutriments().setLipide(lipide);
 
 					Glucide glucide = new Glucide();
 					// glucide.setApport(getApportValue(dataElements,
 					// 5));
 					initNurtriment(glucide, dataElements, 5);
 					glucide.setFibreAlimentaire(getApportValue(dataElements, 6));
-					declinaison.addApportNutriment(glucide);
+					declinaison.getNutriments().setGlucide(glucide);
 
 					Proteine proteine = new Proteine();
 					initNurtriment(proteine, dataElements, 7);
 					// proteine.setApport(getApportValue(dataElements,
 					// 7));
-					declinaison.addApportNutriment(proteine);
+					declinaison.getNutriments().setProteine(proteine);
 
 					Eau eau = new Eau();
 					initNurtriment(eau, dataElements, 8);
 					// eau.setApport(getApportValue(dataElements, 8));
-					declinaison.addApportNutriment(eau);
+					declinaison.getNutriments().setEau(eau);
 
 					Cholesterol cholesterol = new Cholesterol();
 					initNurtriment(cholesterol, dataElements, 9);
 					// cholesterol.setApport(getApportValue(dataElements,
 					// 9));
-					declinaison.addApportNutriment(cholesterol);
+					declinaison.getNutriments().setCholesterol(cholesterol);
 
 					String vType = getVitamineType(dataElements, 10);
 
@@ -205,7 +205,7 @@ public class ParseData {
 						// n));
 						initNurtriment(vitamine, dataElements, n);
 						vType = getVitamineType(dataElements, n++);
-						declinaison.addApportNutriment(vitamine);
+						declinaison.getNutriments().getVitamines().add(vitamine);
 					}
 					n--;
 
@@ -219,14 +219,14 @@ public class ParseData {
 							// mineral.setApport(getApportValue(
 							// dataElements, n));
 							initNurtriment(mineral, dataElements, n);
-							declinaison.addApportNutriment(mineral);
+							declinaison.getNutriments().getMineraux().add(mineral);
 						} else if (oeType != null) {
 							OligoElement oligoElement = new OligoElement();
 							oligoElement.setCode(oeType);
 							// oligoElement.setApport(getApportValue(
 							// dataElements, n));
 							initNurtriment(oligoElement, dataElements, n);
-							declinaison.addApportNutriment(oligoElement);
+							declinaison.getNutriments().getOligosElements().add(oligoElement);
 						}
 						n++;
 						mType = getMineralType(dataElements, n);

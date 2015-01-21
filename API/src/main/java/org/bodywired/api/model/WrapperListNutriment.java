@@ -1,5 +1,6 @@
 package org.bodywired.api.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bodywired.api.model.nutriment.Calorie;
@@ -26,6 +27,10 @@ public class WrapperListNutriment {
 	private Proteine proteine;
 
 	public WrapperListNutriment() {
+		vitamines = new ArrayList<Vitamine>();
+		oligosElements = new ArrayList<OligoElement>();
+		mineraux = new ArrayList<Mineral>();
+
 		calorie = new Calorie();
 		cholesterol = new Cholesterol();
 		eau = new Eau();
