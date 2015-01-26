@@ -11,7 +11,9 @@
         </div>
         <table class="table table-striped">
             <tr><td colspan="2"><strong>Calories</strong></td></tr>
-            <tr><td>Calorie</td><td>{{nutriments.calories * coefficient}}</td></tr>
+            <tr><td>Calorie</td><td>{{nutriments.calorie.apport * coefficient}}</td></tr>
+            <tr><td colspan="2"><strong>Cholesterol</strong></td></tr>
+            <tr><td>Cholesterol</td><td>{{nutriments.cholesterol.apport * coefficient}}</td></tr>
             <tr><td colspan="2"><strong>Lipides</strong></td></tr>
             <tr ng-repeat="lipide in nutriments.lipides">
                 <td>{{lipide.nom}}</td><td>{{lipide.value * coefficient}}</td>
@@ -21,20 +23,20 @@
                 <td>{{glucide.nom}}</td><td>{{glucide.value * coefficient}}</td>
             </tr>
             <tr><td colspan="2"><strong>Protéines</strong></td></tr>
-            <tr><td>Protéines</td><td>{{nutriments.proteines * coefficient}}</td></tr>
+            <tr><td>{{nutriments.proteine.details}}</td><td>{{nutriments.proteine.apport * coefficient}}</td></tr>
             <tr><td colspan="2"><strong>Eau</strong></td></tr>
-            <tr><td>Eau</td><td>{{nutriments.eau * coefficient}}</td></tr>
+            <tr><td>Eau</td><td>{{nutriments.eau.apport * coefficient}}</td></tr>
             <tr><td colspan="2"><strong>Vitamines</strong></td></tr>
             <tr ng-repeat="vitamine in nutriments.vitamines">
-                <td>{{vitamine.nom}}</td><td>{{vitamine.value * coefficient}}</td>
+                <td>{{vitamine.details}}</td><td>{{vitamine.apport * coefficient}}</td>
             </tr>
             <tr><td colspan="2"><strong>Mineraux</strong></td></tr>
             <tr ng-repeat="minerau in nutriments.mineraux">
-                <td>{{minerau.nom}}</td><td>{{minerau.value * coefficient}}</td>
+                <td>{{minerau.details}}</td><td>{{minerau.apport * coefficient}}</td>
             </tr>
             <tr><td colspan="2"><strong>Oligo-élements</strong></td></tr>
-            <tr ng-repeat="oligo in nutriments.oligos">
-                <td>{{oligo.nom}}</td><td>{{oligo.value * coefficient}}</td>
+            <tr ng-repeat="oligo in nutriments.oligoElements">
+                <td>{{oligo.details}}</td><td>{{oligo.apport * coefficient}}</td>
             </tr>
         </table>
     </div>
@@ -45,19 +47,29 @@
         {{selectedRecette.nom}}
     </div>
     <div class="panel-body">
+        <h1>Information</h1>
         <div class="progress">
             <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{selectedRecette.note}}" aria-valuemin="0" aria-valuemax="100" style="width: {{selectedRecette.note}}%"/>
         </div>
         Nombre de personne: {{selectedRecette.nbPers}} <span ng-repeat="n in getNumber(selectedRecette.nbPers) track by $index" class="glyphicon glyphicon-user"/><br/>
-        Temps: {{selectedRecette.temps}}min<br/>
+        Calories: {{selectedRecette.calories}}<br/>
+        Temps: {{selectedRecette.tmpCuisson + selectedRecette.tmpMaceration + selectedRecette.tmpPreparation + selectedRecette.tmpRefrigeration}}min<br/>
         Vegetarien: <span ng-if="selectedRecette.vegetarien" class="label label-success">Oui</span><span ng-if="!(selectedRecette.vegetarien)" class="label label-danger">Non</span><br/><br/>
+        <h1>Réalisation</h1>
+        Temps de préparation: {{selectedRecette.tmpPreparation}}min<br/>
+        Temps de macération: {{selectedRecette.tmpMaceration}}min<br/>
+        Temps de cuisson: {{selectedRecette.tmpCuisson}}min<br/>
+        Temps de réfrigération: {{selectedRecette.tmpRefrigeration}}min<br/>
+        <h1>Ingredients</h1>
         <table class="table table-striped">
             <tr><th>Aliment</th><th>Quantité</th></tr>
-            <tr ng-repeat="aliment in selectedRecette.alimentsQuantites">
+            <tr ng-repeat="aliment in selectedRecette.aliments">
                 <td><a onClick="showDescription()" ng-click="getNutriments(aliment.aliment.id)">{{aliment.aliment.nom}}</a></td>
                 <td>{{aliment.quantite}}</td>
             </tr>
         </table>
+        <h1>Préparation</h1>
+        {{selectedRecette.preparation}}
     </div>
 </div>
 <div id="listRecette" class="panel panel-info">

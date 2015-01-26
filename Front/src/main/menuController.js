@@ -1,5 +1,5 @@
 BodyWiredApp.service('MenuService', function($http, Toast){
-    var urlRecettes = "http://iagl-server.cloudapp.net/api/recettes/lister";
+    var urlRecettes = "http://iagl-server.cloudapp.net/api2/recettes/lister";
     var urlNutriment = "http://iagl-server.cloudapp.net/api/nutriments/dec/";
     this.getRecettes = function() {
         return $http.get(urlRecettes)
@@ -26,22 +26,18 @@ BodyWiredApp.service('MenuService', function($http, Toast){
     }
 });
 
-BodyWiredApp.controller('MenuController', function($scope, MenuService){
+BodyWiredApp.controller('MenuController', function($scope, MenuService, AlimentService){
     MenuService.getRecettes().then(function(data) {
         $scope.recettes = data.data;
     });
     $scope.selectRecette = function(recette) {
         $scope.selectedRecette = recette;
-/*
-        MenuService.getMenu(menu.id).then(function(data) {
-            $scope.selectedMenu = data.data;
-        });
-*/
     }
     $scope.getNutriments = function(declinaison) {
         AlimentService.getNumtriments(declinaison).then(function(data) {
-            $scope.nutriments = data;
-            console.log($scope.nutriments)
+            console.log(declinaison)
+            $scope.coefficient = 1;
+            $scope.nutriments = data.data;
         });
     }
     $scope.getNumber = function(num) {

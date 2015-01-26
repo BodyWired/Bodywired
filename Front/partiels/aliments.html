@@ -68,7 +68,7 @@
     <div class="panel-body">
         <table class="table table-striped">
             <tr><th>Nom</th><th>Voir</th></tr>
-            <tr ng-repeat="aliment in aliments">
+            <tr ng-repeat="aliment in aliments.aliments">
                 <td>{{aliment.nom}}</td><td><a ng-click="getDeclinaison(aliment)" onClick="showDeclinaison()"><span class="glyphicon glyphicon-eye-open"/></a></td>
             </tr>
         </table>
