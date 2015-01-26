@@ -3,9 +3,8 @@ package org.bodywired.api.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bodywired.api.model.Aliment;
-import org.bodywired.api.model.AlimentRecette;
-import org.bodywired.api.model.Recette;
+import org.bodywired.api.model.menu.CategorieRecette;
+import org.bodywired.api.model.menu.Recette;
 import org.bodywired.api.service.AlimentService;
 import org.bodywired.api.service.RecetteService;
 import org.bodywired.api.utils.BodywiredURL;
@@ -44,26 +43,29 @@ public class RecetteController {
 	public @ResponseBody List<Recette> listerRecettes(@ApiParam(required = true, value = "wrapper de la recherche") @ModelAttribute RechercheWrapper wrapper) {
 		// return menuService.rechercherAliments(wrapper);
 
-		RechercheWrapper recherche = new RechercheWrapper();
-		List<Aliment> aliments = alimentService.rechercherAliments(recherche).getAliments();
-
 		List<Recette> listeRecettes = new ArrayList<Recette>();
 
-		Recette recette1 = new Recette("Recette 1", 30, Boolean.TRUE, 35, 4, null);
-		List<AlimentRecette> alimentQuantiteRecette1 = new ArrayList<AlimentRecette>();
-		alimentQuantiteRecette1.add(new AlimentRecette(aliments.get(0), recette1, 2));
-		alimentQuantiteRecette1.add(new AlimentRecette(aliments.get(1), recette1, 3));
-		alimentQuantiteRecette1.add(new AlimentRecette(aliments.get(2), recette1, 1));
-		recette1.setAlimentsQuantités(alimentQuantiteRecette1);
+		Recette recette1 = new Recette("Recette 1", 30, 20, 15, 0, "Ici voici le déroulement à suivre pour faire une super bonne recette 1", 500);
+		CategorieRecette categorie1 = new CategorieRecette("Catégorie 1");
+		categorie1.addRecette(recette1);
+		CategorieRecette categorie2 = new CategorieRecette("Catégorie 2");
+		categorie2.addRecette(recette1);
+		recette1.addAliment(alimentService.getAliment("Boeuf musqué"), 200);
+		recette1.addAliment(alimentService.getAliment("Champignon"), 150);
+		recette1.addAliment(alimentService.getAliment("Cerfeuil"), 50);
+		recette1.addAliment(alimentService.getAliment("Béluga"), 200);
 		listeRecettes.add(recette1);
-
-		Recette recette2 = new Recette("Recette 2", 45, Boolean.FALSE, 45, 6, null);
-		List<AlimentRecette> alimentQuantiteRecette2 = new ArrayList<AlimentRecette>();
-		alimentQuantiteRecette2.add(new AlimentRecette(aliments.get(3), recette2, 2));
-		alimentQuantiteRecette2.add(new AlimentRecette(aliments.get(4), recette2, 6));
-		alimentQuantiteRecette2.add(new AlimentRecette(aliments.get(5), recette2, 10));
-		recette1.setAlimentsQuantités(alimentQuantiteRecette2);
+		
+		Recette recette2 = new Recette("Recette 2", 45, 30, 0, 0, "Ici voici le déroulement à suivre pour faire une super bonne recette 2", 850);
+		CategorieRecette categorie3 = new CategorieRecette("Catégorie 3");
+		categorie3.addRecette(recette2);
+		recette2.addAliment(alimentService.getAliment("Baselle"), 200);
+		recette2.addAliment(alimentService.getAliment("Noix de coco"), 50);
+		recette2.addAliment(alimentService.getAliment("Oeuf de poule"), 350);
+		recette2.addAliment(alimentService.getAliment("Origan"), 125);
+		recette2.addAliment(alimentService.getAliment("Poireau"), 75);
 		listeRecettes.add(recette2);
+		
 
 		return listeRecettes;
 	}

@@ -1,20 +1,23 @@
 package org.bodywired.api.model.menu;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.bodywired.api.model.AbstractBaseModel;
+import org.bodywired.api.model.Aliment;
 import org.bodywired.api.utils.TypeIngredient;
 
 public class Recette extends AbstractBaseModel implements Ingredient {
 
 	private String							nom;
 
-	private ArrayList <CategorieRecette>	categories;
+	private List <CategorieRecette>			categories;
+	private Integer							note;
 
 	// Pour 500g
-	private Map <Ingredient, Integer>		ingredients;
+	private List <IngredientRecette>		recettes;
+	private List <IngredientAliment>		aliments;
 
 	private Integer							tmpPreparation;
 	private Integer							tmpCuisson;
@@ -28,8 +31,33 @@ public class Recette extends AbstractBaseModel implements Ingredient {
 
 	public Recette () {
 		this.categories = new ArrayList <CategorieRecette>();
-		this.ingredients = new HashMap <Ingredient, Integer>();
+		this.recettes = new ArrayList <IngredientRecette>();
+		this.aliments = new ArrayList <IngredientAliment>();
 	}
+	
+	
+
+	public Recette(String nom,
+			Integer tmpPreparation,
+			Integer tmpCuisson,
+			Integer tmpRefrigeration,
+			Integer tmpMaceration,
+			String preparation,
+			Integer calories) {
+		super();
+		this.nom = nom;
+		this.tmpPreparation = tmpPreparation;
+		this.tmpCuisson = tmpCuisson;
+		this.tmpRefrigeration = tmpRefrigeration;
+		this.tmpMaceration = tmpMaceration;
+		this.preparation = preparation;
+		this.calories = calories;
+		this.categories = new ArrayList <CategorieRecette>();
+		this.recettes = new ArrayList <IngredientRecette>();
+		this.aliments = new ArrayList <IngredientAliment>();
+	}
+
+
 
 	/**
 	 * @return the nom
@@ -49,7 +77,7 @@ public class Recette extends AbstractBaseModel implements Ingredient {
 	/**
 	 * @return the categories
 	 */
-	public ArrayList <CategorieRecette> getCategories () {
+	public List <CategorieRecette> getCategories () {
 		return categories;
 	}
 
@@ -70,22 +98,42 @@ public class Recette extends AbstractBaseModel implements Ingredient {
 	}
 
 	/**
-	 * @return the ingredients
+	 * @return the aliments
 	 */
-	public Map <Ingredient, Integer> getIngredients () {
-		return ingredients;
+	public List <IngredientAliment> getAliments () {
+		return aliments;
 	}
 
 	/**
 	 * @param ingredients
 	 *            the ingredients to set
 	 */
-	public void setIngredients ( Map <Ingredient, Integer> ingredients ) {
-		this.ingredients = ingredients;
+	public void setAliments ( List <IngredientAliment> aliments ) {
+		this.aliments = aliments;
 	}
 
-	public void addIngredient ( Ingredient ingredient, int quantite ) {
-		this.ingredients.put(ingredient, quantite);
+	public void addAliment ( Aliment aliment, int quantite ) {
+		this.aliments.add(new IngredientAliment(aliment, quantite));
+	}
+
+
+	/**
+	 * @return the recettes
+	 */
+	public List <IngredientRecette> getRecettes () {
+		return recettes;
+	}
+
+	/**
+	 * @param recettes
+	 *            the recettes to set
+	 */
+	public void setRecettes ( List <IngredientRecette> recettes ) {
+		this.recettes = recettes;
+	}
+
+	public void addRecette ( Recette recette, int quantite ) {
+		this.recettes.add(new IngredientRecette(recette, quantite));
 	}
 
 	/**
@@ -153,6 +201,18 @@ public class Recette extends AbstractBaseModel implements Ingredient {
 
 	public void setTmpMaceration ( Integer tmpMaceration ) {
 		this.tmpMaceration = tmpMaceration;
+	}
+
+	public void setCategories(List<CategorieRecette> categories) {
+		this.categories = categories;
+	}
+
+	public Integer getNote() {
+		return note;
+	}
+
+	public void setNote(Integer note) {
+		this.note = note;
 	}
 
 }

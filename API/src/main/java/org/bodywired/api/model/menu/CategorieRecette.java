@@ -1,10 +1,20 @@
 package org.bodywired.api.model.menu;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bodywired.api.model.AbstractBaseModel;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class CategorieRecette extends AbstractBaseModel {
+
+	public CategorieRecette() {}
+	
+	public CategorieRecette(String nom) {
+		this.nom = nom;
+		this.recettes = new ArrayList<Recette>();
+	}
 
 	private String			nom;
 
@@ -18,12 +28,12 @@ public class CategorieRecette extends AbstractBaseModel {
 		this.nom = nom;
 	}
 
+	@JsonIgnore
 	public List <Recette> getRecettes () {
 		return recettes;
 	}
 
 	public void addRecette ( Recette recette ) {
-		// TODO Auto-generated method stub
-
+		recette.getCategories().add(this);
 	}
 }

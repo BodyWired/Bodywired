@@ -181,7 +181,7 @@ public class ParseRecettes {
 
 							int qte = Integer.parseInt(quantite.get(a).text()
 									.substring(0, quantite.get(a).text().length() - 2));
-							recette.addIngredient(ingredient, qte);
+							recette.addRecette(ingredient, qte);
 						}
 						else {
 							/*
@@ -192,7 +192,7 @@ public class ParseRecettes {
 									.get(a).text());
 							int qte = Integer.parseInt(quantite.get(a).text()
 									.substring(0, quantite.get(a).text().length() - 2));
-							recette.addIngredient(ingredient, qte);
+							recette.addAliment(ingredient, qte);
 						}
 					}
 					// System.out.println(recette.getIngredients().toString());
@@ -277,7 +277,8 @@ public class ParseRecettes {
 					System.out.println("temps Cuisson : " + recette.getTmpCuisson());
 					System.out.println("temps Refrigreration : " + recette.getTmpRefrigeration());
 					System.out.println("temps Maceration : " + recette.getTmpMaceration());
-					System.out.println("ingredients : " + recette.getIngredients().size());
+					System.out.println("aliments : " + recette.getAliments().size());
+					System.out.println("recettes : " + recette.getRecettes().size());
 					System.out.println("--");
 
 					// service ajouterRecette(recette);
