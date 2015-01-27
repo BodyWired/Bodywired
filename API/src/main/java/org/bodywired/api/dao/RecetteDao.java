@@ -2,28 +2,31 @@ package org.bodywired.api.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.bodywired.api.model.Aliment;
 import org.bodywired.api.model.menu.CategorieRecette;
 import org.bodywired.api.model.menu.Recette;
 
 public interface RecetteDao {
 
-	Boolean ajouterRecette ( Recette recette );
+	List<Recette> getAllRecettes();
 
-	Recette rechercherRecetteParNom ( String nom );
+	Integer sauvegarderRecette(@Param("rec") Recette recette);
 
-	Recette rechercherRecetteIngredient ( String nom );
+	Recette rechercherRecetteParNom( @Param("nom") String nom);
 
-	Aliment rechercherAlimentIngredient ( String nom );
+	List<Recette> rechercherRecettesAssociees( @Param("nom") String nom);
 
-	Boolean ajouterCategorie ( CategorieRecette catRecette, Recette recette );
+	List<Aliment> rechercherAlimentsAssocies(String nom);
 
-	Boolean ajouterIngredientRecette ( Recette ingredient, int qte, Recette recette );
+	Integer sauvegarderCategorie(CategorieRecette catRecette, Recette recette);
 
-	Boolean ajouterIngredientAliment ( Aliment ingredient, int qte, Recette recette );
+	Integer sauvegarderIngredientRecette(Recette ingredient, int qte,
+			Recette recette);
 
-	Integer getTotalRecettes ();
-	
-	List<Recette> getAllRecettes ();
+	Integer sauvegarderIngredientAliment(Aliment ingredient, int qte,
+			Recette recette);
+
+	Integer getTotalRecettes();
 
 }

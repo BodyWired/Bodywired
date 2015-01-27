@@ -1,5 +1,7 @@
 package org.bodywired.api.service.impl;
 
+import java.util.List;
+
 import org.bodywired.api.dao.RecetteDao;
 import org.bodywired.api.model.Aliment;
 import org.bodywired.api.model.menu.CategorieRecette;
@@ -12,6 +14,11 @@ public class RecetteServiceImpl implements RecetteService {
 
 	// @Autowired
 	private RecetteDao recetteDao;
+	
+	@Override
+	public List<Recette> getAllRecettes() {
+		return recetteDao.getAllRecettes();
+	}
 
 	@Override
 	public Integer getTotalRecettes() {
@@ -20,7 +27,7 @@ public class RecetteServiceImpl implements RecetteService {
 
 	@Override
 	public Boolean sauvegarderRecette(Recette recette) {
-		return recetteDao.ajouterRecette(recette);
+		return recetteDao.sauvegarderRecette(recette) > 0;
 	}
 
 	@Override
@@ -29,29 +36,29 @@ public class RecetteServiceImpl implements RecetteService {
 	}
 
 	@Override
-	public Recette rechercherRecetteIngredient(String nom) {
-		return recetteDao.rechercherRecetteIngredient(nom);
+	public List<Recette> rechercherRecetteIngredient(String nom) {
+		return recetteDao.rechercherRecettesAssociees(nom);
 	}
 
 	@Override
-	public Aliment rechercherAlimentIngredient(String nom) {
-		return recetteDao.rechercherAlimentIngredient(nom);
+	public List<Aliment> rechercherAlimentIngredient(String nom) {
+		return recetteDao.rechercherAlimentsAssocies(nom);
 	}
 
 	@Override
 	public Boolean ajouterCategorieRecette(CategorieRecette catRecette, Recette recette) {
-		return recetteDao.ajouterCategorie(catRecette, recette);
+		return recetteDao.sauvegarderCategorie(catRecette, recette) > 0;
 
 	}
 
 	@Override
 	public Boolean ajouterRecetteIngredient(Recette ingredient, int qte, Recette recette) {
-		return recetteDao.ajouterIngredientRecette(ingredient, qte, recette);
+		return recetteDao.sauvegarderIngredientRecette(ingredient, qte, recette) > 0;
 	}
 
 	@Override
 	public Boolean ajouterAlimentIngredient(Aliment ingredient, int qte, Recette recette) {
-		return recetteDao.ajouterIngredientAliment(ingredient, qte, recette);
+		return recetteDao.sauvegarderIngredientAliment(ingredient, qte, recette) > 0;
 
 	}
 }

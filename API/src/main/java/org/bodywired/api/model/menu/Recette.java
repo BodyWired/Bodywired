@@ -2,7 +2,6 @@ package org.bodywired.api.model.menu;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.bodywired.api.model.AbstractBaseModel;
 import org.bodywired.api.model.Aliment;
@@ -210,6 +209,8 @@ public class Recette extends AbstractBaseModel implements Ingredient {
 	public Integer getNote() {
 		return note;
 	}
+
+
 
 	public void setNote(Integer note) {
 		this.note = note;
