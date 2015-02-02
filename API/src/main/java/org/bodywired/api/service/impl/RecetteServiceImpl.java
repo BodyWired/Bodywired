@@ -7,6 +7,7 @@ import org.bodywired.api.dao.RecetteDao;
 import org.bodywired.api.model.Aliment;
 import org.bodywired.api.model.menu.CategorieRecette;
 import org.bodywired.api.model.menu.IngredientAliment;
+import org.bodywired.api.model.menu.IngredientRecette;
 import org.bodywired.api.model.menu.Recette;
 import org.bodywired.api.service.RecetteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,17 +28,32 @@ public class RecetteServiceImpl implements RecetteService {
 	}
 
 	@Override
-	public Integer getTotalRecettes() {
-		return recetteDao.getTotalRecettes();
+	public Recette getRecette(Integer id) {
+		return recetteDao.getRecette(id);
 	}
 
 	@Override
 	public Boolean sauvegarderRecette(Recette recette) {
+		if ( recetteDao.sauvegarderRecette(recette) == 0)
+			return false;
+		
+		for (CategorieRecette categorie : recette.getCategories()) {
+			if ( recetteDao.sauvegarderCategorieRecette(categorie, recette) == 0 )
+				return false;
+		}
+		
 		for (IngredientAliment aliment : recette.getAliments()) {
+			if ( recetteDao.sauvegarderIngredientAliment(aliment.getAliment(), aliment.getQuantite(), recette) == 0)
+				return false;
 			
 		}
 		
-		return recetteDao.sauvegarderRecette(recette) > 0;
+		for (IngredientRecette ingredientRecette : recette.getRecettes()) {
+			if ( recetteDao.sauvegarderIngredientRecette(ingredientRecette.getRecetteAssociee(), ingredientRecette.getQuantite(), recette) == 0)
+				return false;
+		}
+		
+		return true;
 	}
 
 	@Override
@@ -70,5 +86,20 @@ public class RecetteServiceImpl implements RecetteService {
 	public Boolean ajouterAlimentIngredient(Aliment ingredient, int qte, Recette recette) {
 		return recetteDao.sauvegarderIngredientAliment(ingredient, qte, recette) > 0;
 
+	}
+
+	@Override
+	public Integer getTotalRecettes() {
+		return recetteDao.getTotalRecettes();
+	}
+
+	@Override
+	public Boolean ajouterCategorie(CategorieRecette categorie) {
+		return recetteDao.sauvegarderCategorie(categorie) == 1;
+	}
+
+	@Override
+	public List<CategorieRecette> getAllCategories() {
+		return recetteDao.getAllCategories();
 	}
 }

@@ -208,17 +208,12 @@ CREATE TABLE recette.Ingredient (
 	ing_type varchar(30) NOT NULL,
 	ing_quantite integer,
 	ing_id_ali integer references aliment.Aliment(ali_id),
-	ing_id_rec integer references recette.Recette(rec_id)
+	ing_id_rec integer references recette.Recette(rec_id),
+	ing_id_concernee_rec integer references recette.Recette(rec_id)
 );
 
 CREATE TABLE recette.Categorie_Recette (
 	primary key(car_id_cat, car_id_rec),
 	car_id_cat integer references recette.Categorie(cat_id) NOT NULL,
 	car_id_rec integer references recette.Recette(rec_id) NOT NULL
-);
-
-CREATE TABLE recette.Ingredient_Recette (
-	primary key(ir_id_ing, ir_id_rec),
-	ir_id_ing integer references recette.Ingredient(ing_id) NOT NULL,
-	ir_id_rec integer references recette.Recette(rec_id) NOT NULL
 );

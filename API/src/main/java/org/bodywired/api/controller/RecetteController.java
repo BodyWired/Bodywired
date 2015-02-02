@@ -13,6 +13,7 @@ import org.bodywired.api.wrapper.RechercheWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -45,31 +46,43 @@ public class RecetteController {
 	public @ResponseBody List<Recette> listerRecettes(@ApiParam(required = true, value = "wrapper de la recherche") @ModelAttribute RechercheWrapper wrapper) {
 		// return menuService.rechercherAliments(wrapper);
 
-		List<Recette> listeRecettes = new ArrayList<Recette>();
-
-		Recette recette1 = new Recette("Recette 1", 30, 20, 15, 0, "Ici voici le déroulement à suivre pour faire une super bonne recette 1", 500);
-		CategorieRecette categorie1 = new CategorieRecette("Catégorie 1");
-		categorie1.addRecette(recette1);
-		CategorieRecette categorie2 = new CategorieRecette("Catégorie 2");
-		categorie2.addRecette(recette1);
-		recette1.addAliment(alimentService.getAliment("Boeuf musqué"), 200);
-		recette1.addAliment(alimentService.getAliment("Champignon"), 150);
-		recette1.addAliment(alimentService.getAliment("Cerfeuil"), 50);
-		recette1.addAliment(alimentService.getAliment("Béluga"), 200);
-		listeRecettes.add(recette1);
+//		List<Recette> listeRecettes = new ArrayList<Recette>();
+//
+//		Recette recette1 = new Recette("Recette 1", 30, 20, 15, 0, "Ici voici le déroulement à suivre pour faire une super bonne recette 1", 500);
+//		CategorieRecette categorie1 = new CategorieRecette("Catégorie 1");
+//		categorie1.addRecette(recette1);
+//		CategorieRecette categorie2 = new CategorieRecette("Catégorie 2");
+//		categorie2.addRecette(recette1);
+//		recette1.addAliment(alimentService.getAliment("Boeuf musqué"), 200);
+//		recette1.addAliment(alimentService.getAliment("Champignon"), 150);
+//		recette1.addAliment(alimentService.getAliment("Cerfeuil"), 50);
+//		recette1.addAliment(alimentService.getAliment("Béluga"), 200);
+//		listeRecettes.add(recette1);
+//		
+//		Recette recette2 = new Recette("Recette 2", 45, 30, 0, 0, "Ici voici le déroulement à suivre pour faire une super bonne recette 2", 850);
+//		CategorieRecette categorie3 = new CategorieRecette("Catégorie 3");
+//		categorie3.addRecette(recette2);
+//		recette2.addAliment(alimentService.getAliment("Baselle"), 200);
+//		recette2.addAliment(alimentService.getAliment("Noix de coco"), 50);
+//		recette2.addAliment(alimentService.getAliment("Oeuf de poule"), 350);
+//		recette2.addAliment(alimentService.getAliment("Origan"), 125);
+//		recette2.addAliment(alimentService.getAliment("Poireau"), 75);
+//		listeRecettes.add(recette2);
 		
-		Recette recette2 = new Recette("Recette 2", 45, 30, 0, 0, "Ici voici le déroulement à suivre pour faire une super bonne recette 2", 850);
-		CategorieRecette categorie3 = new CategorieRecette("Catégorie 3");
-		categorie3.addRecette(recette2);
-		recette2.addAliment(alimentService.getAliment("Baselle"), 200);
-		recette2.addAliment(alimentService.getAliment("Noix de coco"), 50);
-		recette2.addAliment(alimentService.getAliment("Oeuf de poule"), 350);
-		recette2.addAliment(alimentService.getAliment("Origan"), 125);
-		recette2.addAliment(alimentService.getAliment("Poireau"), 75);
-		listeRecettes.add(recette2);
-		
 
-		return listeRecettes;
+		return recetteService.getAllRecettes();
+	}
+	
+	/**
+	 * Récupère une recette complète par id
+	 * 
+	 * @return la recette
+	 */
+	@ApiOperation(value = BodywiredURL.RECETTE, notes = "Récupère la recette complète par id")
+	@RequestMapping(value = BodywiredURL.RECETTE, method = RequestMethod.GET)
+	@ApiImplicitParam
+	public @ResponseBody Recette getRecette(@ApiParam(required = true, value = "id de la recette") @PathVariable(value="id") Integer id) {
+		return recetteService.getRecette(id);
 	}
 
 	/**
@@ -124,5 +137,30 @@ public class RecetteController {
 	@RequestMapping(value = BodywiredURL.TOTAL_RECETTES, method = RequestMethod.GET)
 	public @ResponseBody Integer totalRecettes() {
 		return recetteService.getTotalRecettes();
+	}
+
+	/**
+	 * Ajout d'une catégorie de recette en BDD
+	 * 
+	 * @param catégorie
+	 * @return
+	 */
+	@ApiOperation(value = BodywiredURL.AJOUTER_CATEGORIE_RECETTE, notes = "ajoute une catégorie de recette")
+	@RequestMapping(value = BodywiredURL.AJOUTER_CATEGORIE_RECETTE, method = RequestMethod.POST)
+	public @ResponseBody CategorieRecette ajouterRecette(@RequestBody CategorieRecette catRecette) {
+		recetteService.ajouterCategorie(catRecette);
+		return catRecette;
+	}
+	
+	/**
+	 * Récupère la liste des catégorie de recette
+	 * 
+	 * @return la liste des catégorie de recette
+	 */
+	@ApiOperation(value = BodywiredURL.CATEGORIES_RECETTES, notes = "Récupère la liste des ctégories de recette")
+	@RequestMapping(value = BodywiredURL.CATEGORIES_RECETTES, method = RequestMethod.GET)
+	@ApiImplicitParam
+	public @ResponseBody List<CategorieRecette> listerCategories() {
+		return recetteService.getAllCategories();
 	}
 }

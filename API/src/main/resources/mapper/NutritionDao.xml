@@ -9,7 +9,7 @@
 		<result property="apport" column="nut_apport" />
 		<result property="details" column="nut_details" />
 
-		<discriminator javaType="int" column="typ_code">
+		<discriminator javaType="String" column="typ_code">
 			<case value="CAL" resultType="org.bodywired.api.model.nutriment.Calorie">
 			</case>
 			<case value="CHO" resultType="org.bodywired.api.model.nutriment.Cholesterol">
@@ -34,7 +34,7 @@
 				<result column="tmi_id" property="id" />
 				<result column="tmi_code" property="code" />
 			</case>
-			<case value="OE" resultType="org.bodywired.api.model.nutriment.OligoElement">
+			<case value="OEL" resultType="org.bodywired.api.model.nutriment.OligoElement">
 				<result column="toe_id" property="id" />
 				<result column="toe_code" property="code" />
 			</case>

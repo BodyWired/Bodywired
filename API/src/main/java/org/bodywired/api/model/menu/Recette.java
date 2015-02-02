@@ -167,7 +167,7 @@ public class Recette extends AbstractBaseModel implements Ingredient {
 
 	@Override
 	public TypeIngredient getType () {
-		return TypeIngredient.RECETTE;
+		return TypeIngredient.REC;
 	}
 
 	public Integer getTmpPreparation () {
@@ -209,8 +209,6 @@ public class Recette extends AbstractBaseModel implements Ingredient {
 	public Integer getNote() {
 		return note;
 	}
-
-
 
 	public void setNote(Integer note) {
 		this.note = note;

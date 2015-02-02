@@ -11,6 +11,8 @@ public interface RecetteDao {
 
 	List<Recette> getAllRecettes();
 
+	Recette getRecette(@Param("rec_id") Integer id);
+
 	Integer sauvegarderRecette(@Param("rec") Recette recette);
 
 	Recette rechercherRecetteParNom( @Param("nom") String nom);
@@ -21,12 +23,16 @@ public interface RecetteDao {
 
 	Integer sauvegarderCategorieRecette(@Param("cat_rec") CategorieRecette catRecette, @Param("rec") Recette recette);
 
-	Integer sauvegarderIngredientRecette(Recette ingredient, int qte,
-			Recette recette);
+	Integer sauvegarderIngredientRecette(@Param("rec") Recette ingredient, @Param("qte") int qte,
+			@Param("rec_concernee") Recette recette);
 
-	Integer sauvegarderIngredientAliment(Aliment ingredient, int qte,
-			Recette recette);
+	Integer sauvegarderIngredientAliment(@Param("ali") Aliment ingredient, @Param("qte") int qte,
+			@Param("rec_concernee") Recette recette);
 
 	Integer getTotalRecettes();
+	
+	Integer sauvegarderCategorie(@Param("cat_rec") CategorieRecette catRecette);
+	
+	List<CategorieRecette> getAllCategories();
 
 }
