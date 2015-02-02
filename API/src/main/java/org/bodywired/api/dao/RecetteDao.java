@@ -19,7 +19,7 @@ public interface RecetteDao {
 
 	List<Aliment> rechercherAlimentsAssocies(String nom);
 
-	Integer sauvegarderCategorie(CategorieRecette catRecette, Recette recette);
+	Integer sauvegarderCategorieRecette(@Param("cat_rec") CategorieRecette catRecette, @Param("rec") Recette recette);
 
 	Integer sauvegarderIngredientRecette(Recette ingredient, int qte,
 			Recette recette);

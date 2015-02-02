@@ -2,18 +2,24 @@ package org.bodywired.api.service.impl;
 
 import java.util.List;
 
+import org.bodywired.api.dao.AlimentDao;
 import org.bodywired.api.dao.RecetteDao;
 import org.bodywired.api.model.Aliment;
 import org.bodywired.api.model.menu.CategorieRecette;
+import org.bodywired.api.model.menu.IngredientAliment;
 import org.bodywired.api.model.menu.Recette;
 import org.bodywired.api.service.RecetteService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RecetteServiceImpl implements RecetteService {
 
-	// @Autowired
+	@Autowired
 	private RecetteDao recetteDao;
+	
+	@Autowired
+	private AlimentDao alimentDao;
 	
 	@Override
 	public List<Recette> getAllRecettes() {
@@ -27,6 +33,10 @@ public class RecetteServiceImpl implements RecetteService {
 
 	@Override
 	public Boolean sauvegarderRecette(Recette recette) {
+		for (IngredientAliment aliment : recette.getAliments()) {
+			
+		}
+		
 		return recetteDao.sauvegarderRecette(recette) > 0;
 	}
 
@@ -47,7 +57,7 @@ public class RecetteServiceImpl implements RecetteService {
 
 	@Override
 	public Boolean ajouterCategorieRecette(CategorieRecette catRecette, Recette recette) {
-		return recetteDao.sauvegarderCategorie(catRecette, recette) > 0;
+		return recetteDao.sauvegarderCategorieRecette(catRecette, recette) > 0;
 
 	}
 

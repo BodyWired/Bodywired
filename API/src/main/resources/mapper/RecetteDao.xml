@@ -40,6 +40,27 @@
 		VALUES
 		(#{rec.nom},#{rec.note},#{rec.tmpPreparation},#{rec.tmpCuisson},#{rec.tmpRefrigeration},#{rec.tmpMaceration},#{rec.preparation},#{rec.calories})
 	</insert>
+
+	<insert id="sauvegarderCategorieRecette" >
+		<selectKey keyProperty="id_cat" resultType="int" order="BEFORE">
+			SELECT id FROM "recette"."categorie"
+			WHERE cat_nom = #{cat_rec.nom}
+		</selectKey>
+		<if test="id_cat == null">
+			INSERT INTO "recette"."categorie"
+			("cat_nom")
+			VALUES	
+			(#{cat_rec.nom})
+			<selectKey keyProperty="id_cat" resultType="int" order="BEFORE">
+				SELECT id FROM "recette"."categorie"
+				WHERE cat_nom = #{cat_rec.nom}
+			</selectKey>
+		</if>
+		INSERT INTO "recette"."categorie_recette"
+		("car_id_cat","car_id_rec")
+		VALUES
+		(#{id_cat},#{rec.id})
+	</insert>
 	
 	<select id="rechercherRecetteParNom" resultMap="Recette_ResultMap">
 		SELECT *
