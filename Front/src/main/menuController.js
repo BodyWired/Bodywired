@@ -1,6 +1,6 @@
 BodyWiredApp.service('MenuService', function($http, Toast){
-    var urlRecettes = "http://iagl-server.cloudapp.net/api2/recettes/lister";
-    var urlNutriment = "http://iagl-server.cloudapp.net/api/nutriments/dec/";
+    var urlRecettes = baseURL + "recettes/lister";
+    var urlNutriment = baseURL + "nutriments/dec/";
     this.getRecettes = function() {
         return $http.get(urlRecettes)
         .success(function(data) {

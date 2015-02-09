@@ -6,10 +6,10 @@ BodyWiredApp.factory('Aliment', function(){
 });
 
 BodyWiredApp.service('AlimentService', function($http, Toast){
-    var urlNutriments = "http://iagl-server.cloudapp.net/api/nutriments/dec/";
-    var urlDeclinaison = "aliment/declinaisons";
-    var urlCategories = " http://iagl-server.cloudapp.net/api/categories/lister";
-    var urlAlimentCategorie = "http://iagl-server.cloudapp.net/api/aliment/lister?idCategorie=";
+    var urlNutriments = baseURL + "nutriments/dec/";
+    var urlDeclinaison = baseURL + "aliment/declinaisons";
+    var urlCategories = baseURL+"categories/lister";
+    var urlAlimentCategorie = baseURL + "aliment/lister?idCategorie=";
     this.getCategories = function() {
         return $http.get(urlCategories)
         .success(function(data) {

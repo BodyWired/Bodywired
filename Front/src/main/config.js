@@ -8,6 +8,7 @@ BodyWiredApp.config(function($stateProvider, $urlRouterProvider) {
                   .state('profil', {url: '/profil', templateUrl: 'partiels/profil.html', controller: 'UserController'})
                   .state('editerProfil', {url: '/profilEdit', templateUrl: 'partiels/profilEdit.html', controller: 'UserController'})
                   .state('aliments', {url: '/aliments', templateUrl: 'partiels/aliments.html', controller:'AlimentController'})
+                  .state('carences', {url: '/carences', templateUrl: 'partiels/carences.html', controller:'CarenceController'})
                   .state('recettes', {url: '/recettes', templateUrl: 'partiels/recettes.html', controller:'MenuController'});
 });
 BodyWiredApp.config(["$locationProvider", function($locationProvider) {
@@ -33,3 +34,5 @@ BodyWiredApp.service('Toast', function(ngToast){
 						class:'alert alert-danger'});
 	}
 })
+
+var baseURL = "http://iagl-server.cloudapp.net/apitest/";
