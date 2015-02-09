@@ -6,10 +6,10 @@ BodyWiredApp.factory('Aliment', function(){
 });
 
 BodyWiredApp.service('AlimentService', function($http, Toast){
-    var urlNutriments = "http://iagl-server.cloudapp.net/api/nutriments/dec/";
-    var urlDeclinaison = "aliment/declinaisons";
-    var urlCategories = " http://iagl-server.cloudapp.net/api/categories/lister";
-    var urlAlimentCategorie = "http://iagl-server.cloudapp.net/api/aliment/lister?categorieId=";
+    var urlNutriments = baseURL + "nutriments/dec/";
+    var urlDeclinaison = baseURL + "aliment/declinaisons";
+    var urlCategories = baseURL+"categories/lister";
+    var urlAlimentCategorie = baseURL + "aliment/lister?idCategorie=";
     this.getCategories = function() {
         return $http.get(urlCategories)
         .success(function(data) {
@@ -43,6 +43,7 @@ BodyWiredApp.controller('AlimentController', function($scope, AlimentService){
     $scope.getAlimentsByCategorie = function(categorie) {
         AlimentService.getAlimentsByCategorie(categorie).then(function(data) {
             $scope.aliments = data.data;
+            console.log($scope.aliments);
         });
     }
     $scope.getDeclinaison = function(aliment) {
@@ -50,11 +51,12 @@ BodyWiredApp.controller('AlimentController', function($scope, AlimentService){
     }
     $scope.getNutriments = function(declinaison) {
         AlimentService.getNumtriments(declinaison).then(function(data) {
-            $scope.nutriments = data;
-            console.log($scope.nutriments)
+            $scope.nutriments = data.data;
+            console.log($scope.nutriments);
         });
     }
     AlimentService.getCategories().then(function(data) {
+        console.log(data.data);
         $scope.categories = data.data;
     });
 });
