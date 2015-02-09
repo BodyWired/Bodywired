@@ -2,14 +2,17 @@ app.controller("alimentsController",['$scope','$http','$modal',function($scope,$
 	$scope.nbAliments=0;
 	$scope.currentPage=1;
 	$scope.aliments=[];
+	$scope.filtre=undefined;
 
 	var loadAliments=function(){
 		var url=path+'/aliment/lister?offset='+(($scope.currentPage-1)*10)+'&limite=10';
+		if($scope.filtre!=undefined && $scope.filtre!=''){
+			url+='&filtre='+$scope.filtre;
+		}
 		$http.get(url).success(function(data,status){
-			$http.get(path+'/aliment/total').success(function(data2,status){
-				$scope.aliments=angular.fromJson(data);
-				$scope.nbAliments=data2;
-			});
+			var jsonObj=angular.fromJson(data);
+			$scope.aliments=jsonObj.aliments;
+			$scope.nbAliments=jsonObj.total;
 		});
 	};
 
@@ -44,7 +47,7 @@ app.controller("alimentsController",['$scope','$http','$modal',function($scope,$
 	loadAliments();
 }]);
 
-app.controller('formulaireAlimentsCtrl',['$scope','$alimentService','$http','$modalInstance', function ($scope,$http, $modalInstance) {
+app.controller('formulaireAlimentsCtrl',['$scope','$http','$modalInstance', function ($scope,$http, $modalInstance) {
 	$scope.categories=[];
 	$scope.categorieSelect=[];
 
@@ -60,7 +63,7 @@ app.controller('formulaireAlimentsCtrl',['$scope','$alimentService','$http','$mo
 			tab.push({id:$scope.categorieSelect[i]});
 		}
 		var data={nom:$scope.nom,categories:tab};
-		$http({url:path+'/aliment/ajouter',method:'POST',data:{data:angular.toJson(data)}}).success(function(data,status){
+		$http({url:path+'/aliment/ajouter',method:'POST',data:angular.toJson(data)}).success(function(data,status){
 			$modalInstance.close();
 		});
 	};

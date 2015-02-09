@@ -1,17 +1,29 @@
-var path="http://iagl-server.cloudapp.net/api";
+var path="apitest";
 
 var app=angular.module("bodywired",['ngRoute','ui.bootstrap']);     
 
 app.config(['$routeProvider','$httpProvider',
     function($routeProvider,$httpProvider) {
       $routeProvider
+	.when('/categories', {
+          templateUrl: 'categories.html',
+	  controller: 'categoriesController'
+        })
+	.when('/etats_declinaisons', {
+          templateUrl: 'etats.html',
+	  controller: 'etatsController'
+        })
         .when('/aliments', {
           templateUrl: 'aliments.html',
 	  controller: 'alimentsController'
         })
-        .when('/menus', {
-          templateUrl: 'menus.html',
-	  controller: 'menusController'
+	.when('/categoriesRecette', {
+          templateUrl: 'categoriesRecette.html',
+	  controller: 'categoriesRecetteController'
+        })
+        .when('/recettes', {
+          templateUrl: 'recettes.html',
+	  controller: 'recettesController'
         })
 	.otherwise({
 		redirectTo:'/aliments'

@@ -2,12 +2,12 @@
 	<div class="col-md-2">
 		<button type="button" class="btn btn-default" ng-click="add()"><span class="glyphicon glyphicon-plus" style="color:green"></span> Ajouter un aliment</button>
 	</div>
-	<div class="col-md-2 search-form">
+	<div class="col-md-3 col-md-offset-7 search-form">
 		<form class="form-inline" role="form">
 			<div class="form-group">
 				<div class="input-group">
-					<input class="form-control search-bar" type="text" placeholder="Rechercher"/>
-					<div class="input-group-addon glyphicon glyphicon-search btn"></div>
+					<input class="form-control search-bar" type="text" placeholder="Rechercher" ng-model="filtre"/>
+					<div class="input-group-addon glyphicon glyphicon-search btn" ng-click="pageChanged()"></div>
 				</div>
 			</div>
 		</form>
@@ -30,7 +30,7 @@
 				<td rowspan="2"><span ng-class="dev_item[aliment.id]?'glyphicon glyphicon-collapse-down':'glyphicon glyphicon-expand'" ng-click="dev_item[aliment.id]=!dev_item[aliment.id]"></span></td>
 				<td rowspan="2">{{aliment.id}}</td>
 				<td>{{aliment.nom}}</td>
-				<td><span ng-repeat="cat in aliment.categories">{{cat.nom}}</span></td>
+				<td><span ng-repeat="cat in aliment.categories">{{cat.nom}}<span ng-if="!$last">, </span></span></td>
 				<td rowspan="2"><span class="glyphicon glyphicon-pencil btn" style="color:green" ng-click="update(aliment.id)"></span></td>
 				<td rowspan="2"><span class="glyphicon glyphicon-trash btn" style="color:red" ng-click="delete(aliment.id)"></span></td>
 			</tr>
