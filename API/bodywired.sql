@@ -1,10 +1,12 @@
 DROP SCHEMA IF EXISTS aliment cascade;
 DROP SCHEMA IF EXISTS nutrition cascade;
 DROP SCHEMA IF EXISTS recette cascade;
+DROP SCHEMA IF EXISTS utilisateur cascade;
 
 CREATE SCHEMA aliment;
 CREATE SCHEMA nutrition;
 CREATE SCHEMA recette;
+CREATE SCHEMA utilisateur;
 
 /*
 CREATE TABLE aliment.Variete (
@@ -216,4 +218,23 @@ CREATE TABLE recette.Categorie_Recette (
 	primary key(car_id_cat, car_id_rec),
 	car_id_cat integer references recette.Categorie(cat_id) NOT NULL ON DELETE CASCADE,
 	car_id_rec integer references recette.Recette(rec_id) NOT NULL ON DELETE CASCADE
+);
+
+/* UTILISATEURS */
+CREATE TABLE utilisateur.Profil (
+	pro_id INTEGER NOT NULL PRIMARY KEY,
+	pro_login VARCHAR(30) UNIQUE,
+	pro_pwd VARCHAR(50) NOT NULL,
+	pro_mail VARCHAR(60) NOT NULL,
+	pro_sexe INTEGER,
+	pro_taille INTEGER,
+	pro_poids INTEGER
+);
+
+CREATE TABLE utilisateur.Planning (
+	pla_id integer NOT NULL PRIMARY KEY,
+	pla_id_pro integer references utilisateur.Profil(pro_id) NOT NULL ON DELETE CASCADE,
+	pla_id_rec integer references recette.Recette(rec_id) NOT NULL,
+	pla_repas integer NOT NULL,
+	pla_date date NOT NULL
 );
