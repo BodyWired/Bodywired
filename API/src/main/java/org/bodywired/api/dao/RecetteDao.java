@@ -2,28 +2,37 @@ package org.bodywired.api.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.bodywired.api.model.Aliment;
 import org.bodywired.api.model.menu.CategorieRecette;
 import org.bodywired.api.model.menu.Recette;
 
 public interface RecetteDao {
 
-	Boolean ajouterRecette ( Recette recette );
+	List<Recette> getAllRecettes();
 
-	Recette rechercherRecetteParNom ( String nom );
+	Recette getRecette(@Param("rec_id") Integer id);
 
-	Recette rechercherRecetteIngredient ( String nom );
+	Integer sauvegarderRecette(@Param("rec") Recette recette);
 
-	Aliment rechercherAlimentIngredient ( String nom );
+	Recette rechercherRecetteParNom( @Param("nom") String nom);
 
-	Boolean ajouterCategorie ( CategorieRecette catRecette, Recette recette );
+	List<Recette> rechercherRecettesAssociees( @Param("nom") String nom);
 
-	Boolean ajouterIngredientRecette ( Recette ingredient, int qte, Recette recette );
+	List<Aliment> rechercherAlimentsAssocies(String nom);
 
-	Boolean ajouterIngredientAliment ( Aliment ingredient, int qte, Recette recette );
+	Integer sauvegarderCategorieRecette(@Param("cat_rec") CategorieRecette catRecette, @Param("rec") Recette recette);
 
-	Integer getTotalRecettes ();
+	Integer sauvegarderIngredientRecette(@Param("rec") Recette ingredient, @Param("qte") int qte,
+			@Param("rec_concernee") Recette recette);
+
+	Integer sauvegarderIngredientAliment(@Param("ali") Aliment ingredient, @Param("qte") int qte,
+			@Param("rec_concernee") Recette recette);
+
+	Integer getTotalRecettes();
 	
-	List<Recette> getAllRecettes ();
+	Integer sauvegarderCategorie(@Param("cat_rec") CategorieRecette catRecette);
+	
+	List<CategorieRecette> getAllCategories();
 
 }

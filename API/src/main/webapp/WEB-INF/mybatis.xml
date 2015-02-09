@@ -8,7 +8,7 @@
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="org.postgresql.Driver" />
-		<property name="url" value="jdbc:postgresql://localhost:5432/bodywired" />
+		<property name="url" value="jdbc:postgresql://localhost:5432/bodywiredtst" />
 		<property name="username" value="postgres" />
 		<property name="password" value="postgres" />
 	</bean>
@@ -47,6 +47,11 @@
 
 	<bean id="declinaisonDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
 		<property name="mapperInterface" value="org.bodywired.api.dao.DeclinaisonDao" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="recetteDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="org.bodywired.api.dao.RecetteDao" />
 		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>
 </beans>

@@ -176,7 +176,7 @@ public class ParseRecettes {
 						if ( aliments.get(a).select("a[href*=recette_]").size() > 0 ) {
 							// Recette ingredient = new Recette();
 							// ingredient.setNom(aliments.get(a).text());
-							Recette ingredient = recetteService.rechercherRecetteIngredient(aliments
+							Recette ingredient = recetteService.rechercherRecetteParNom(aliments
 									.get(a).text());
 
 							int qte = Integer.parseInt(quantite.get(a).text()
@@ -188,7 +188,7 @@ public class ParseRecettes {
 							 * Aliment ingredient = new Aliment();
 							 * ingredient.setNom(aliments.get(a).text());
 							 */
-							Aliment ingredient = recetteService.rechercherAlimentIngredient(aliments
+							Aliment ingredient = alimentService.getAliment(aliments
 									.get(a).text());
 							int qte = Integer.parseInt(quantite.get(a).text()
 									.substring(0, quantite.get(a).text().length() - 2));

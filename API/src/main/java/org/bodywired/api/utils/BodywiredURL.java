@@ -45,8 +45,10 @@ public class BodywiredURL {
 	 * URL pour les recettes
 	 */
 	public final static String ROOT_RECETTES = "recettes";
+	public final static String RECETTE = "recette/{id}";
 	public final static String AJOUTER_RECETTE = "ajouter";
 	public final static String LISTER_RECETTES = "lister";
 	public final static String TOTAL_RECETTES = "total";
 	public final static String CATEGORIES_RECETTES = "categories";
+	public final static String AJOUTER_CATEGORIE_RECETTE = "categories/ajouter";
 }

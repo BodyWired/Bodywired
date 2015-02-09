@@ -51,6 +51,6 @@ public class Aliment extends AbstractBaseModel implements Ingredient {
 
 	@Override
 	public TypeIngredient getType () {
-		return TypeIngredient.ALIMENT;
+		return TypeIngredient.ALI;
 	}
 }
