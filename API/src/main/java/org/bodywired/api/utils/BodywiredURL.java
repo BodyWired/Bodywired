@@ -8,6 +8,8 @@ public class BodywiredURL {
 	public final static String ROOT_ALIMENTS = "aliment";
 	public final static String AJOUTER_ALIMENT = "ajouter";
 	public final static String LISTER_ALIMENTS = "lister";
+	public static final String MODIFIER_ALIMENT = "modifier";
+	public static final String SUPPRIMER_ALIMENT = "supprimer/{id}";
 
 	/**
 	 * URL pour les categories
@@ -51,4 +53,6 @@ public class BodywiredURL {
 	public final static String TOTAL_RECETTES = "total";
 	public final static String CATEGORIES_RECETTES = "categories";
 	public final static String AJOUTER_CATEGORIE_RECETTE = "categories/ajouter";
+	public static final String MODIFIER_RECETTE = "modifier";
+	public static final String SUPPRIMER_RECETTE = "supprimer/{id}";
 }

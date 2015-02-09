@@ -33,8 +33,8 @@ CREATE TABLE aliment.Aliment (
 
 CREATE TABLE aliment.Categorie_Aliment (
 	primary key(caa_id_cat, caa_id_ali),
-	caa_id_cat integer references aliment.Categorie(cat_id) NOT NULL,
-	caa_id_ali integer references aliment.Aliment(ali_id) NOT NULL
+	caa_id_cat integer references aliment.Categorie(cat_id) NOT NULL ON DELETE CASCADE,
+	caa_id_ali integer references aliment.Aliment(ali_id) NOT NULL ON DELETE CASCADE
 );
 
 CREATE TABLE aliment.Etat(
@@ -44,13 +44,13 @@ CREATE TABLE aliment.Etat(
 
 CREATE TABLE aliment.Declinaison(
 	dec_id serial primary key,
-	dec_id_ali integer references aliment.Aliment(ali_id) NOT NULL
+	dec_id_ali integer references aliment.Aliment(ali_id) NOT NULL ON DELETE CASCADE
 );
 
 CREATE TABLE aliment.Etat_Declinaison(
 	primary key(ede_id_dec, ede_id_eta),
-	ede_id_eta integer references aliment.Etat(eta_id) NOT NULL,
-	ede_id_dec integer references aliment.Declinaison(dec_id) NOT NULL
+	ede_id_eta integer references aliment.Etat(eta_id) NOT NULL ON DELETE CASCADE,
+	ede_id_dec integer references aliment.Declinaison(dec_id) NOT NULL ON DELETE CASCADE
 );
 
 
@@ -209,11 +209,11 @@ CREATE TABLE recette.Ingredient (
 	ing_quantite integer,
 	ing_id_ali integer references aliment.Aliment(ali_id),
 	ing_id_rec integer references recette.Recette(rec_id),
-	ing_id_concernee_rec integer references recette.Recette(rec_id)
+	ing_id_concernee_rec integer references recette.Recette(rec_id) ON DELETE CASCADE
 );
 
 CREATE TABLE recette.Categorie_Recette (
 	primary key(car_id_cat, car_id_rec),
-	car_id_cat integer references recette.Categorie(cat_id) NOT NULL,
-	car_id_rec integer references recette.Recette(rec_id) NOT NULL
+	car_id_cat integer references recette.Categorie(cat_id) NOT NULL ON DELETE CASCADE,
+	car_id_rec integer references recette.Recette(rec_id) NOT NULL ON DELETE CASCADE
 );

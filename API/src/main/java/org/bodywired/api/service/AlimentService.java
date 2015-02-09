@@ -12,4 +12,10 @@ public interface AlimentService {
 
 	public Aliment getAliment(String nom);
 
+	public Aliment getAlimentById(Integer id);
+	
+	public Boolean supprimerAliment(Integer id);
+	
+	public Boolean modifierAliment(Aliment aliment);
+
 }

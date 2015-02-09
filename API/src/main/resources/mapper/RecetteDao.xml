@@ -83,13 +83,17 @@
 		VALUES
 		(#{rec.nom},#{rec.note},#{rec.tmpPreparation},#{rec.tmpCuisson},#{rec.tmpRefrigeration},#{rec.tmpMaceration},#{rec.preparation},#{rec.calories})
 	</insert>
-
-	<insert id="sauvegarderCategorieRecette" >
-		INSERT INTO "recette"."categorie_recette"
-		("car_id_cat","car_id_rec")
-		VALUES
-		(#{cat_rec.id},#{rec.id})
-	</insert>
+	
+	<update id="modifierRecette">
+		UPDATE "recette"."recette"
+		SET rec_nom = #{rec.nom}, rec_note = #{rec.note}, rec_tmp_preparation = rec.tmpPreparation, rec_tmp_cuisson = #{rec.tmpCuisson}, rec_tmp_maceration = #{rec.tmpMaceration}, rec_preparation = #{rec.preparation}, rec_calories = #{rec.calories}
+		WHERE rec_id = #{rec.id}
+	</update>
+	
+	<delete id="supprimerRecette">
+		DELETE FROM "recette"."recette"
+		WHERE rec_id = #{rec_id}
+	</delete>
 
 	<insert id="sauvegarderIngredientRecette" >
 		INSERT INTO "recette"."ingredient"
@@ -97,6 +101,17 @@
 		VALUES
 		('REC',#{qte},#{rec.id},#{rec_concernee.id})
 	</insert>
+	
+	<delete id="supprimerIngredientRecette">
+		DELETE FROM "recette"."ingredient"
+		WHERE ing_id_rec = #{rec.id} AND ing_id_concernee_rec = #{rec_concernee.id}
+	</delete>
+	
+	<update id="modifierIngredientRecette">
+		UPDATE "recette"."ingredient"
+		SET ing_quantite = #{qte}
+		WHERE ing_id_rec = #{rec.id} AND ing_id_concernee_rec = #{rec_concernee.id}
+	</update>
 
 	<insert id="sauvegarderIngredientAliment" >
 		INSERT INTO "recette"."ingredient"
@@ -104,6 +119,29 @@
 		VALUES
 		('ALI',#{qte},#{ali.id},#{rec_concernee.id})
 	</insert>
+	
+	<delete id="supprimerIngredientAliment">
+		DELETE FROM "recette"."ingredient"
+		WHERE ing_id_ali = #{ali.id} AND ing_id_concernee_rec = #{rec_concernee.id}
+	</delete>
+	
+	<update id="modifierIngredientAliment">
+		UPDATE "recette"."ingredient"
+		SET ing_quantite = #{qte}
+		WHERE ing_id_ali = #{ali.id} AND ing_id_concernee_rec = #{rec_concernee.id}
+	</update>
+
+	<insert id="sauvegarderCategorieRecette" >
+		INSERT INTO "recette"."categorie_recette"
+		("car_id_cat","car_id_rec")
+		VALUES
+		(#{cat_rec.id},#{rec.id})
+	</insert>
+	
+	<delete id="supprimerCategorieRecette">
+		DELETE FROM "recette"."categorie_recette"
+		WHERE car_id_cat = #{cat_rec.id} AND car_id_rec = #{rec.id}
+	</delete>
 	
 	<select id="rechercherRecetteParNom" resultMap="Recette_ResultMap">
 		SELECT *
