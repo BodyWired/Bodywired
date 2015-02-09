@@ -1,0 +1,63 @@
+<div class="modal-header">
+	<h3 class="modal-title">{{recette.nom}} ({{recette.calories}} calorie)</h3>
+</div>
+<div class="modal-body">
+	<div class="row">
+		Temps de : <br/>
+		<ul>
+			<li>préparation : {{recette.tmpPreparation}} min</li>
+			<li>cuisson : {{recette.tmpCuisson}} min</li>
+			<li>réfrigération : {{recette.tmpRefrigeration}} min</li>
+			<li>macération : {{recette.tmpMaceration}} min</li>
+		</ul>
+	</div>
+	<div class="row">
+		Aliments :
+		<ul ng-init="dev_item=[]">
+			<li ng-repeat="aliment in recette.aliments" ng-init="dev_item[aliment.aliment.id]=false">
+				{{aliment.quantite}}g de <span ng-click="dev_item[aliment.aliment.id]=!dev_item[aliment.aliment.id]">{{aliment.aliment.nom}}</span>
+				<div class="row table-responsive list-table">
+				<table ng-show="dev_item[aliment.aliment.id]" class="table table-hover table-bordered">
+					<thead>
+					<tr class="success">
+						<th>Déclinaison</th>
+						<th>Vitamines</th>
+						<th>Oligos éléments</th>
+						<th>Minéraux</th>
+						<th>Calorie</th>
+						<th>Cholesterol</th>
+						<th>Eau</th>
+						<th>Glucide</th>
+						<th>Lipide</th>
+						<th>Protéine</th>
+					</tr>
+					</thead>
+					<tbody >
+					<tr ng-repeat="dec in aliment.aliment.declinaisons" ng-class="(($index%2) == 1) ? 'active' : ''">
+						<td>Déclinaison</td>
+						<td>{{dec.nutriments.vitamines.apport}}</td>
+						<td>{{dec.nutriments.oligosElements.apport}}</td>
+						<td>{{dec.nutriments.mineraux.apport}}</td>
+						<td>{{dec.nutriments.calorie.apport}}</td>
+						<td>{{dec.nutriments.cholesterol.apport}}</td>
+						<td>{{dec.nutriments.eau.apport}}</td>
+						<td><ul><li>Fibres alimentaire : {{dec.nutriments.glucide.fibreAlimentaire}}</li><li>Apport : {{dec.nutriments.glucide.apport}}</li></ul></td>
+						<td><ul>
+							<li>Gras poly insature : {{dec.nutriments.vitamines.grasPolyInsature}}</li>
+							<li>Gras sature : {{dec.nutriments.vitamines.grasSature}}</li>
+							<li>Gras mono insature : {{dec.nutriments.vitamines.grasMonoSature}}</li>
+							<li>Apport : <li>Gras sature : {{dec.nutriments.vitamines.apport}}</li>
+						</ul></td>
+						<td>{{dec.nutriments.proteine.apport}}</td>
+					</tr>
+					</tbody>
+				</table>
+				</div>
+			</li>
+		</ul>
+	</div> 
+	<div class="row">
+		Préparation :<br/>
+		{{recette.preparation}}
+	</div>
+</div>

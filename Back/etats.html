@@ -1,0 +1,38 @@
+<header class="row">
+	<div class="col-md-2">
+		<button type="button" class="btn btn-default" ng-click="add()"><span class="glyphicon glyphicon-plus" style="color:green"></span> Ajouter un état de déclinaison</button>
+	</div>
+	<div class="col-md-3 col-md-offset-7 search-form">
+		<form class="form-inline" role="form">
+			<div class="form-group">
+				<div class="input-group">
+					<input class="form-control search-bar" type="text" placeholder="Rechercher" ng-model="filtre"/>
+					<div class="input-group-addon glyphicon glyphicon-search btn" ng-click="pageChanged()"></div>
+				</div>
+			</div>
+		</form>
+	</div>
+</header>
+<article class="row table-responsive list-table">
+	<table class="table table-hover table-bordered">
+		<thead>
+			<tr class="success">
+				<th>Id</th>
+				<th>Nom</th>
+				<th><span class="glyphicon glyphicon-pencil" style="color:green"></span></th>
+				<th><span class="glyphicon glyphicon-trash" style="color:red"></span></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="etat in etats" ng-class="(($index%2) == 1) ? 'active' : ''">
+				<td>{{etat.id}}</td>
+				<td>{{etat.nom}}</td>
+				<td><span class="glyphicon glyphicon-pencil btn" style="color:green" ng-click="update(cat.id)"></span></td>
+				<td><span class="glyphicon glyphicon-trash btn" style="color:red" ng-click="delete(cat.id)"></span></td>
+			</tr>
+		</tbody>
+	</table>
+</article>
+<footer style="text-align:center">
+	<pagination total-items="nbAliments" ng-model="currentPage" max-size="5" class="pagination-sm" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-change="pageChanged()"></pagination>
+</footer>
