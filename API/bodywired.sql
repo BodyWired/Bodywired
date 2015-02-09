@@ -5,6 +5,7 @@ DROP SCHEMA IF EXISTS recette cascade;
 CREATE SCHEMA aliment;
 CREATE SCHEMA nutrition;
 CREATE SCHEMA recette;
+CREATE SCHEMA utilisateur;
 
 /*
 CREATE TABLE aliment.Variete (
@@ -16,6 +17,24 @@ CREATE TABLE aliment.FamilleVariete (
 	fmv_id SERIAL PRIMARY KEY,
 	fmv_nom varchar(255) UNIQUE
 );*/
+
+CREATE TABLE utilisateur.Profil(
+	profil_id INTEGER NOT NULL PRIMARY KEY,
+	login VARCHAR(30) UNIQUE,
+	pwd VARCHAR(50) NOT NULL,
+	mail VARCHAR(60) NOT NULL,
+	sex INTEGER,
+	taille INTEGER,
+	poids INTEGER
+);
+
+CREATE TABLE utilisateur.Planning(
+	planning_id INTEGER NOT NULL PRIMARY KEY,
+	profil_id_planning INTEGER REFERENCES utilisateur.Profil(profil_id) NOT NULL,
+	recette_id_planning INTEGER REFERENCES recette.Recette(rec_id) NOT NULL,
+	repas INTEGER,
+	jour date
+);
 
 CREATE TABLE aliment.Categorie (
 	cat_id serial PRIMARY KEY,
