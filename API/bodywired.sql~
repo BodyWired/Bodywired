@@ -1,7 +1,7 @@
 DROP SCHEMA IF EXISTS aliment cascade;
 DROP SCHEMA IF EXISTS nutrition cascade;
 DROP SCHEMA IF EXISTS recette cascade;
-DROP SCHEMA IF EXISTS utilisateur casacade;
+DROP SCHEMA IF EXISTS utilisateur;
 
 CREATE SCHEMA aliment;
 CREATE SCHEMA nutrition;
