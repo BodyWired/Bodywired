@@ -93,7 +93,6 @@ app.controller('formulaireRecettesCtrl', function ($scope,$http, $modalInstance,
 	var globalData=data;
 
 	if(data!=undefined){
-		console.log(data);
 		$scope.nom=data.nom;
 		$scope.calories=data.calories;
 		$scope.preparation=data.preparation;
@@ -105,13 +104,13 @@ app.controller('formulaireRecettesCtrl', function ($scope,$http, $modalInstance,
 		$scope.tempsRefrigM=data.tmpRefrigeration%60;
 		$scope.tempsMacerationH=Math.floor(data.tmpMaceration/60);
 		$scope.tempsMacerationM=data.tmpMaceration%60;
-		var aliments=[];
+		var aliments={};
 		for(var al in data.aliments){
-			aliments.push({
+			aliments[data.aliments[al].aliment.nom]={
 				quantite:data.aliments[al].quantite,
 				id:data.aliments[al].aliment.id,
 				nom:data.aliments[al].aliment.nom
-			});
+			};
 		}
 		$scope.aliments=aliments;
 	}
@@ -120,8 +119,10 @@ app.controller('formulaireRecettesCtrl', function ($scope,$http, $modalInstance,
 		var categorie=[];
 		var url=path+'/recettes/categories';
 		$http.get(url).success(function(data,status){
-				for(var cat in globalData.categories){
-					categorie.push(globalData.categories[cat].id);
+				if(globalData != undefined){
+					for(var cat in globalData.categories){
+						categorie.push(globalData.categories[cat].id);
+					}
 				}
 				$scope.categorie=categorie;
 				$scope.categories=angular.fromJson(data);
