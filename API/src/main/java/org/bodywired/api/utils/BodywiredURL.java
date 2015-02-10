@@ -58,4 +58,11 @@ public class BodywiredURL {
 	public final static String AJOUTER_CATEGORIE_RECETTE = "categories/ajouter";
 	public final static String MODIFIER_RECETTE = "modifier";
 	public final static String SUPPRIMER_RECETTE = "supprimer/{id}";
+
+	/**
+	 * URL pour les utilisateurs
+	 */
+	public final static String ROOT_UTILISATEURS = "users";
+	public final static String AJOUTER_UTILISATEUR = "ajouter/{login}/{pwd}";
+	public final static String CONNECTER_UTILISATEUR = "signin/{login}/{pwd}";
 }

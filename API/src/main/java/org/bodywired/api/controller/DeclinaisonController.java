@@ -50,7 +50,7 @@ public class DeclinaisonController {
 	 * @param declinaison
 	 * @return
 	 */
-	@ApiOperation(value = BodywiredURL.SUPPRIMER_DECLINAISON, notes = "ajoute une déclinaison pour un aliment")
+	@ApiOperation(value = BodywiredURL.SUPPRIMER_DECLINAISON, notes = "supprime une déclinaison pour un aliment")
 	@RequestMapping(value = BodywiredURL.SUPPRIMER_DECLINAISON, method = RequestMethod.DELETE)
 	public ResponseEntity<String> supprimerDeclinaison(@PathVariable(value="id") Integer id) {
 		if (!declinaisonService.supprimerDeclinaison(id)) {

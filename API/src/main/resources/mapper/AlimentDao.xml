@@ -24,8 +24,7 @@
 		LEFT JOIN
 		aliment.categorie_aliment
 		ON caa_id_cat = cat_id
-		WHERE caa_id_ali =
-		#{ali_id}
+		WHERE caa_id_ali = #{ali_id}
 	</select>
 
 	<select id="select_declinaisons"

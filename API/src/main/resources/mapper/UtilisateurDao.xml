@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.bodywired.api.dao.UtilisateurDao">
+	<resultMap type="org.bodywired.api.model.Utilisateur" id="Profil_ResultMap">
+		<id column="pro_id" property="id"/>
+		<result column="pro_login" property="login"/>
+		<result column="pro_pwd" property="pwd"/>
+		<result column="pro_mail" property="mail"/>
+		<result column="pro_sexe" property="sexe"/>
+		<result column="pro_taille" property="taille"/>
+		<result column="pro_poids" property="poids"/>
+		<collection property="favoris" select="select_favoris" column="pro_id"/>
+		<collection property="plannings" select="select_plannings" column="pro_id"/>
+	</resultMap>
+	
+	<resultMap type="org.bodywired.api.model.Planning" id="Planning_ResultMap">
+		<id column="pla_id" property="id"/>
+		<result column="pla_repas" property="repas"/>
+		<result column="pla_date" property="date"/>
+		<association property="recette" javaType="org.bodywired.api.model.menu.Recette" resultMap="org.bodywired.api.dao.RecetteDao.Recette_ResultMap"/>
+	</resultMap>
+	
+	<select id="select_favoris" resultMap="org.bodywired.api.dao.RecetteDao.Recette_ResultMap">
+		SELECT *
+		FROM recette.recette
+		LEFT JOIN utilisateur.favoris
+		ON fav_id_rec = rec_id
+		WHERE fav_id_pro = #{pro_id}
+	</select>
+	
+	<select id="select_plannings" resultMap="org.bodywired.api.dao.UtilisateurDao.Planning_ResultMap">
+		SELECT *
+		FROM recette.recette
+		LEFT JOIN utilisateur.planning
+		ON pla_id_rec = rec_id
+		WHERE pla_id_pro = #{pro_id}
+	</select>
+	
+	<insert id="creerUtilisateur" useGeneratedKeys="true" keyColumn="pro_id" keyProperty="uti.id">
+		INSERT INTO utilisateur.profil
+		(pro_login,pro_pwd)
+		VALUES
+		(#{uti.login},#{uti.pwd})
+	</insert>
+	
+	<update id="modifierProfil">
+		UPDATE utilisateur.profil
+		SET pro_login = #{uti.login}, pro_pwd = #{uti.pwd}, pro_mail = #{uti.mail}, pro_sexe = {uti.sexe}, pro_taille = #{uti.taille}, pro_poids = #{uti.taille}
+		WHERE pro_id = #{uti.id}
+	</update>
+	
+	<select id="getUtilisateurByLogin" resultMap="org.bodywired.api.dao.UtilisateurDao.Profil_ResultMap">
+		SELECT *
+		FROM utilisateur.profil
+		WHERE pro_login = #{login}
+	</select>
+	
+	<select id="getUtilisateurById">
+		SELECT *
+		FROM utilisateur.profil
+		WHERE pro_id = #{id}
+	</select>
+	
+<!-- 	<select id="favorisPourUnUtilisateur">
+
+	</select>
+
+	<select id="planningPourUnUtilisateur">
+	
+	</select> -->
+</mapper>

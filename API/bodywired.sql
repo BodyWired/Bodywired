@@ -35,8 +35,8 @@ CREATE TABLE aliment.Aliment (
 
 CREATE TABLE aliment.Categorie_Aliment (
 	primary key(caa_id_cat, caa_id_ali),
-	caa_id_cat integer references aliment.Categorie(cat_id) NOT NULL ON DELETE CASCADE,
-	caa_id_ali integer references aliment.Aliment(ali_id) NOT NULL ON DELETE CASCADE
+	caa_id_cat integer references aliment.Categorie(cat_id) ON DELETE CASCADE NOT NULL,
+	caa_id_ali integer references aliment.Aliment(ali_id) ON DELETE CASCADE NOT NULL
 );
 
 CREATE TABLE aliment.Etat(
@@ -46,13 +46,13 @@ CREATE TABLE aliment.Etat(
 
 CREATE TABLE aliment.Declinaison(
 	dec_id serial primary key,
-	dec_id_ali integer references aliment.Aliment(ali_id) NOT NULL ON DELETE CASCADE
+	dec_id_ali integer references aliment.Aliment(ali_id) ON DELETE CASCADE NOT NULL
 );
 
 CREATE TABLE aliment.Etat_Declinaison(
 	primary key(ede_id_dec, ede_id_eta),
-	ede_id_eta integer references aliment.Etat(eta_id) NOT NULL ON DELETE CASCADE,
-	ede_id_dec integer references aliment.Declinaison(dec_id) NOT NULL ON DELETE CASCADE
+	ede_id_eta integer references aliment.Etat(eta_id) ON DELETE CASCADE NOT NULL,
+	ede_id_dec integer references aliment.Declinaison(dec_id) ON DELETE CASCADE NOT NULL
 );
 
 
@@ -143,7 +143,7 @@ CREATE TABLE nutrition.Nutriment(
 	nut_id_tmi integer references nutrition.Type_Mineral(tmi_id),
 	nut_id_toe integer references nutrition.type_oligo_element(toe_id),
 	
-	nut_id_dec integer references aliment.Declinaison(dec_id),
+	nut_id_dec integer references aliment.Declinaison(dec_id) ON DELETE CASCADE,
 	nut_apport float default 0.0,
 	nut_details varchar(255)
 );
@@ -216,25 +216,32 @@ CREATE TABLE recette.Ingredient (
 
 CREATE TABLE recette.Categorie_Recette (
 	primary key(car_id_cat, car_id_rec),
-	car_id_cat integer references recette.Categorie(cat_id) NOT NULL ON DELETE CASCADE,
-	car_id_rec integer references recette.Recette(rec_id) NOT NULL ON DELETE CASCADE
+	car_id_cat integer references recette.Categorie(cat_id) ON DELETE CASCADE NOT NULL,
+	car_id_rec integer references recette.Recette(rec_id) ON DELETE CASCADE NOT NULL
 );
 
 /* UTILISATEURS */
 CREATE TABLE utilisateur.Profil (
-	pro_id INTEGER NOT NULL PRIMARY KEY,
+	pro_id serial PRIMARY KEY,
 	pro_login VARCHAR(30) UNIQUE,
 	pro_pwd VARCHAR(50) NOT NULL,
 	pro_mail VARCHAR(60) NOT NULL,
-	pro_sexe INTEGER,
-	pro_taille INTEGER,
-	pro_poids INTEGER
+	pro_sexe integer,
+	pro_taille integer,
+	pro_poids integer
 );
+
+CREATE TABLE utilisateur.Favoris (
+	fav_id serial PRIMARY KEY,
+	fav_id_pro integer references utilisateur.Profil(pro_id) ON DELETE CASCADE NOT NULL,
+	fav_id_rec integer references recette.Recette(rec_id) ON DELETE CASCADE NOT NULL
+);
+
 
 CREATE TABLE utilisateur.Planning (
 	pla_id integer NOT NULL PRIMARY KEY,
-	pla_id_pro integer references utilisateur.Profil(pro_id) NOT NULL ON DELETE CASCADE,
-	pla_id_rec integer references recette.Recette(rec_id) NOT NULL,
+	pla_id_pro integer references utilisateur.Profil(pro_id) ON DELETE CASCADE NOT NULL,
+	pla_id_rec integer references recette.Recette(rec_id) ON DELETE CASCADE NOT NULL,
 	pla_repas integer NOT NULL,
 	pla_date date NOT NULL
 );

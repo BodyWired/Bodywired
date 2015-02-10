@@ -18,7 +18,6 @@
 	</resultMap>
 	
 	<resultMap type="org.bodywired.api.model.menu.Recette" id="Recette_Et_Ingredients_ResultMap" extends="Recette_ResultMap">
-		
 		<collection property="recettes" select="select_recettes"
 			column="rec_id" />
 		<collection property="aliments" select="select_aliments"
