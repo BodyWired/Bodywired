@@ -27,8 +27,8 @@
 			<tr ng-repeat="etat in etats" ng-class="(($index%2) == 1) ? 'active' : ''">
 				<td>{{etat.id}}</td>
 				<td>{{etat.nom}}</td>
-				<td><span class="glyphicon glyphicon-pencil btn" style="color:green" ng-click="update(cat.id)"></span></td>
-				<td><span class="glyphicon glyphicon-trash btn" style="color:red" ng-click="delete(cat.id)"></span></td>
+				<td><span class="glyphicon glyphicon-pencil btn" style="color:green" ng-click="updateEtat(etat)"></span></td>
+				<td><span class="glyphicon glyphicon-trash btn" style="color:red" ng-click="deleteEtat(etat.id)"></span></td>
 			</tr>
 		</tbody>
 	</table>

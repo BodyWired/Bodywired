@@ -31,7 +31,7 @@
 				<td rowspan="2">{{aliment.id}}</td>
 				<td>{{aliment.nom}}</td>
 				<td><span ng-repeat="cat in aliment.categories">{{cat.nom}}<span ng-if="!$last">, </span></span></td>
-				<td rowspan="2"><span class="glyphicon glyphicon-pencil btn" style="color:green" ng-click="update(aliment.id)"></span></td>
+				<td rowspan="2"><span class="glyphicon glyphicon-pencil btn" style="color:green" ng-click="updateAliment(aliment)"></span></td>
 				<td rowspan="2"><span class="glyphicon glyphicon-trash btn" style="color:red" ng-click="deleteAliment(aliment.id)"></span></td>
 			</tr>
 			<tr ng-repeat-end>

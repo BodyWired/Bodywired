@@ -16,6 +16,19 @@ app.controller("alimentsController",['$scope','$http','$modal',function($scope,$
 		});
 	};
 
+	var openModal=function(data){
+		var modalInstance = $modal.open({
+			templateUrl: 'aliments/formulaireAliments.html',
+			controller: 'formulaireAlimentsCtrl',
+			size: 'lg',
+			resolve:{
+				data : function(){
+					return data;
+				}
+			}
+    		});
+	};
+
 	$scope.parseEtat=function(etats){
 		var etats_tab=[];
 		for(var i=0;i<etats.length;i++){
@@ -24,25 +37,27 @@ app.controller("alimentsController",['$scope','$http','$modal',function($scope,$
 		return etats_tab.join(', ');
 	};
 
+	$scope.updateAliment=function(aliment){
+		openModal(aliment);
+	};
+		
+
 	$scope.add=function(){
-		var modalInstance = $modal.open({
-			templateUrl: 'aliments/formulaireAliments.html',
-			controller: 'formulaireAlimentsCtrl',
-			size: 'lg'
-    		});
+		openModal(undefined);
 	};
 
 	$scope.deleteAliment=function(id){
 		var url=path+'/aliment/supprimer/'+id;
-		/*$http.delete(url).success(function(data,status){
+		$http.delete(url).success(function(data,status){
 			loadAliments();
-		});*/
-		$http({  
-        method: "DELETE",  
-        url: url, 
-	data:'',  
-        headers: {'Content-Type': 'application/json', 'Content-Length':0 }  
-    }); 
+		});
+	};
+
+	$scope.deleteDeclinaison=function(id){
+		var url=path+'/declinaison/rm/'+id;
+		$http.delete(url).success(function(data,status){
+			loadAliments();
+		});
 	};
 
 	$scope.addDeclinaison=function(){
@@ -60,9 +75,20 @@ app.controller("alimentsController",['$scope','$http','$modal',function($scope,$
 	loadAliments();
 }]);
 
-app.controller('formulaireAlimentsCtrl',['$scope','$http','$modalInstance', function ($scope,$http, $modalInstance) {
+app.controller('formulaireAlimentsCtrl',['$scope','$http','$modalInstance','data', function ($scope,$http, $modalInstance,data) {
 	$scope.categories=[];
 	$scope.categorieSelect=[];
+
+	var globalData=data;
+
+	if(data!=undefined){
+		$scope.nom=data.nom;
+		var categories=[];
+		for(var cat in data.categories){
+			categories.push(data.categories[cat].id);
+		}
+		$scope.categorieSelect=categories;
+	}
 
 	loadCategorie=function(){
 		$http.get(path+'/categories/lister').success(function(data,status){
@@ -76,9 +102,17 @@ app.controller('formulaireAlimentsCtrl',['$scope','$http','$modalInstance', func
 			tab.push({id:$scope.categorieSelect[i]});
 		}
 		var data={nom:$scope.nom,categories:tab};
-		$http({url:path+'/aliment/ajouter',method:'POST',data:angular.toJson(data)}).success(function(data,status){
-			$modalInstance.close();
-		});
+		if(globalData!=undefined){
+			data.id=globalData.id;
+			$http({url:path+'/aliment/modifier',method:'PUT',data:angular.toJson(data)}).success(function(data,status){
+				$modalInstance.close();
+			});
+		}
+		else{
+			$http({url:path+'/aliment/ajouter',method:'POST',data:angular.toJson(data)}).success(function(data,status){
+				$modalInstance.close();
+			});
+		}
 	};
 
 	$scope.cancel = function () {
