@@ -1,4 +1,4 @@
-var BodyWiredApp = angular.module('BodyWiredApp', ['ui.router', 'ngToast']);
+var BodyWiredApp = angular.module('BodyWiredApp', ['ui.router', 'ngToast','ui.calendar']);
 
 BodyWiredApp.config(function($stateProvider, $urlRouterProvider) {
 	$urlRouterProvider.otherwise('/');
