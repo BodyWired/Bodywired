@@ -10,13 +10,13 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="src/lib/ngtoast/dist/ngToast.min.css">
   </head>
-  <body ng-init="user = {}">
+  <body ng-init="user = {}" style="background:url('img/legume-de-vara.jpg') no-repeat center center">
     <ng-toast></ng-toast>
     <div ng-controller="PartielsController">
-      <div ng-include="header.url"></div>
+      <div ng-include="header.url" style="background-color:white"></div>
     </div>
 
-    <div class="container">
+    <div class="container" style="background:rgba(255,255,255,0.7);border-radius:20px">
       <div ui-view autoscroll="false"></div>
 
       <div ng-controller="PartielsController">
