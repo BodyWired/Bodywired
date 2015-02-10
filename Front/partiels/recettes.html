@@ -43,13 +43,14 @@
 </div>
 <div id="recette" class="panel panel-success" hidden="true">
     <div class="panel-heading">
-        <a onClick="showList()"><span class="glyphicon glyphicon-chevron-left"/></a>
+        <a ng-if="previousRecette !== undefined" ng-click="selectRecette(previousRecette)" onClick="showRecette()"><span class="glyphicon glyphicon-chevron-left"/></a>
+        <a ng-if="previousRecette === undefined" onClick="showList()"><span class="glyphicon glyphicon-chevron-left"/></a>
         {{selectedRecette.nom}}
     </div>
     <div class="panel-body">
         <h1>Information</h1>
         <div class="progress">
-            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{selectedRecette.note}}" aria-valuemin="0" aria-valuemax="100" style="width: {{selectedRecette.note}}%"/>
+            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{selectedRecette.note}}" aria-valuemin="0" aria-valuemax="10" style="width: {{selectedRecette.note}}%"/>
         </div>
         Nombre de personne: {{selectedRecette.nbPers}} <span ng-repeat="n in getNumber(selectedRecette.nbPers) track by $index" class="glyphicon glyphicon-user"/><br/>
         Calories: {{selectedRecette.calories}}<br/>
@@ -60,6 +61,16 @@
         Temps de macération: {{selectedRecette.tmpMaceration}}min<br/>
         Temps de cuisson: {{selectedRecette.tmpCuisson}}min<br/>
         Temps de réfrigération: {{selectedRecette.tmpRefrigeration}}min<br/>
+        <div ng-if="selectedRecette.recettes.length > 0">
+            <h1>Recettes associées</h1>
+            <table class="table table-striped">
+                <tr><th>Recette</th><th>Quantité</th></tr>
+                <tr ng-repeat="recette in selectedRecette.recettes">
+                    <td><a ng-click="selectRecette(recette.recetteAssociee.id, selectedRecette.id)" onClick="showRecette()">{{recette.recetteAssociee.nom}}</a></td>
+                    <td>{{recette.quantite}}</td>
+                </tr>
+            </table>
+        </div>
         <h1>Ingredients</h1>
         <table class="table table-striped">
             <tr><th>Aliment</th><th>Quantité</th></tr>
@@ -75,13 +86,14 @@
 <div id="listRecette" class="panel panel-info">
     <div class="panel-heading">
         Menus
+        <div style="float: right">Recherche: <input ng-model="rechercheRecette.nom"></div>
     </div>
     <div class="panel-body">
         <table class="table table-striped">
             <tr><th>Recette</th><th>Voir</th></tr>
-            <tr ng-repeat="recette in recettes">
+            <tr ng-repeat="recette in recettes | filter:rechercheRecette:strict">
                 <td>{{recette.nom}}</td>
-                <td><a ng-click="selectRecette(recette)" onClick="showRecette()"><span class="glyphicon glyphicon-eye-open"/></a></td>
+                <td><a ng-click="selectRecette(recette.id)" onClick="showRecette()"><span class="glyphicon glyphicon-eye-open"/></a></td>
             </tr>
         </table>
     </div>
