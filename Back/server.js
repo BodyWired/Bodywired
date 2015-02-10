@@ -18,24 +18,28 @@ var apiProxy = httpProxy.createProxyServer();
 // proxify api routes
 app.all("/apitest/*", function(req, res){
 console.log("param");
-console.log(req.headers);
 delete req.headers.host;
 var data = JSON.stringify(req.body);
+if(req.method=="DELETE"){
+	req.headers['Content-Length']=0;
+}
+console.log(req.headers);
 var options = {
 	host: 'cache.univ-lille1.fr',
 	port: 3128,
+	//host:'http://iagl-server.cloudapp.net' + req.path + '?' + querystring.stringify(req.query),
 	method: req.method,
 	path: 'http://iagl-server.cloudapp.net' + req.path + '?' + querystring.stringify(req.query),
 	headers: req.headers
 }; 
-console.log(options,data);
+//console.log(options,data);
 var request = http.request(options, function (response) {
 	res.writeHead(response.statusCode, response.headers);
 	response.on('data', function (chuck) {
 		res.write(chuck);
 	});
 	response.on('end', function () {
-console.log('test');
+//console.log('test');
 		res.end();
 	});
 }).on('error', function () {});

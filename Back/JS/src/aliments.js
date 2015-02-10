@@ -32,6 +32,19 @@ app.controller("alimentsController",['$scope','$http','$modal',function($scope,$
     		});
 	};
 
+	$scope.deleteAliment=function(id){
+		var url=path+'/aliment/supprimer/'+id;
+		/*$http.delete(url).success(function(data,status){
+			loadAliments();
+		});*/
+		$http({  
+        method: "DELETE",  
+        url: url, 
+	data:'',  
+        headers: {'Content-Type': 'application/json', 'Content-Length':0 }  
+    }); 
+	};
+
 	$scope.addDeclinaison=function(){
 		var modalInstance = $modal.open({
 			templateUrl: 'aliments/formulaireDeclinaison.html',

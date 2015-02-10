@@ -9,8 +9,8 @@
 		</div>
 		<div class="form-group">
 			<label for="categorieMenu">Catégorie du menu</label>
-			<select multiple row="3" class="form-control" id="categorieMenu">
-				<option ng-repeat="cat in categories" value="cat.id">{{cat.nom}}</option>
+			<select multiple row="3" class="form-control" id="categorieMenu" ng-multiple="true" ng-model="categorie">
+				<option ng-repeat="cat in categories" ng-value="cat.id" ng-selected="categorie.indexOf(cat.id)>-1">{{cat.nom}}</option>
 			</select>
 		</div>
 		<div class="form-group form-inline">
@@ -23,7 +23,7 @@
 		</div>
 		<div class="form-group form-inline">
 			<label for="tempsRefrigMenu">Temps de réfrigération : </label>
-			<input type="number" class="form-control" ng-model="tempsRefrigH"/> : <input type="number" class="form-control" ng-model="tempsRefrigM"/>
+			<input type="number" class="form-control" ng-model="tempsMacerationH"/> : <input type="number" class="form-control" ng-model="tempsMacerationM"/>
 		</div>
 		<div class="form-group form-inline">
 			<label for="tempsRefrigMenu">Temps de macération : </label>

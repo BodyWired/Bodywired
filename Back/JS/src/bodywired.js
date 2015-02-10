@@ -30,6 +30,7 @@ app.config(['$routeProvider','$httpProvider',
 	});
 	//$httpProvider.defaults.headers.common['Content-Type'] = 'application/json; charset=utf-8';
 	delete $httpProvider.defaults.headers.common['X-Requested-With'];
+	$httpProvider.defaults.headers.delete = { 'Content-Type' : 'application/json','Content-Length' : 0 };
     	$httpProvider.defaults.useXDomain = true;
     }
 ]);
