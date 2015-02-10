@@ -86,7 +86,7 @@
 	
 	<update id="modifierRecette">
 		UPDATE "recette"."recette"
-		SET rec_nom = #{rec.nom}, rec_note = #{rec.note}, rec_tmp_preparation = rec.tmpPreparation, rec_tmp_cuisson = #{rec.tmpCuisson}, rec_tmp_maceration = #{rec.tmpMaceration}, rec_preparation = #{rec.preparation}, rec_calories = #{rec.calories}
+		SET rec_nom = #{rec.nom}, rec_note = #{rec.note}, rec_tmp_preparation = #{rec.tmpPreparation}, rec_tmp_cuisson = #{rec.tmpCuisson}, rec_tmp_maceration = #{rec.tmpMaceration}, rec_preparation = #{rec.preparation}, rec_calories = #{rec.calories}
 		WHERE rec_id = #{rec.id}
 	</update>
 	

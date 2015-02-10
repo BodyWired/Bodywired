@@ -20,27 +20,6 @@
 		WHERE ede_id_dec = #{dec_id}
 	</select>
 
-	<insert id="sauvegarderEtat" useGeneratedKeys="true" keyColumn="eta_id"
-		keyProperty="eta.id">
-		INSERT INTO aliment.etat(eta_nom)
-		VALUES (#{eta.nom});
-	</insert>
-
-	<insert id="sauvegarderDeclinaison" useGeneratedKeys="true"
-		keyColumn="dec_id" keyProperty="dec.id">
-		INSERT INTO
-		aliment.declinaison(dec_id_ali)
-		VALUES (#{dec.aliment.id});
-	</insert>
-
-	<insert id="ajouterEtatALaDeclinaison">
-		INSERT INTO aliment.etat_declinaison(
-		ede_id_eta,
-		ede_id_dec)
-		VALUES (#{eta.id}, #{dec.id});
-
-	</insert>
-
 	<select id="getEtat" resultMap="Etat_ResultMap">
 		SELECT eta_id, eta_nom FROM
 		aliment.etat
@@ -53,5 +32,49 @@
 		aliment.etat
 		order by eta_nom
 	</select>
+
+	<insert id="sauvegarderEtat" useGeneratedKeys="true" keyColumn="eta_id"
+		keyProperty="eta.id">
+		INSERT INTO aliment.etat(eta_nom)
+		VALUES (#{eta.nom});
+	</insert>
+	
+	<update id="modifierEtat" parameterType="org.bodywired.api.model.classement.Etat">
+		UPDATE aliment.etat
+		SET eta_nom = #{eta.nom}
+		WHERE eta_id = #{eta.id}
+	</update>
+	
+	<delete id="supprimerEtat">
+		DELETE
+		FROM aliment.etat
+		WHERE eta_id = #{eta_id}
+	</delete>
+
+	<insert id="sauvegarderDeclinaison" useGeneratedKeys="true"
+		keyColumn="dec_id" keyProperty="dec.id">
+		INSERT INTO
+		aliment.declinaison(dec_id_ali)
+		VALUES (#{dec.aliment.id});
+	</insert>
+	
+	<delete id="supprimerDeclinaison">
+		DELETE
+		FROM aliment.declinaison
+		WHERE dec_id = #{dec_id}
+	</delete>
+
+	<insert id="ajouterEtatALaDeclinaison">
+		INSERT INTO aliment.etat_declinaison(
+		ede_id_eta,
+		ede_id_dec)
+		VALUES (#{eta.id}, #{dec.id});
+	</insert>
+	
+	<delete id="supprimerEtatDeclinaison">
+		DELETE
+		FROM aliment.Etat_Declinaison
+		WHERE ede_id_eta = #{eta_id} AND ede_id_dec = #{dec_id}
+	</delete>
 	
 </mapper>

@@ -23,16 +23,19 @@ public class BodywiredURL {
 	 */
 	public final static String ROOT_DECLINAISONS = "declinaison";
 	public final static String AJOUTER_DECLINAISON = "ajouter";
+	public final static String SUPPRIMER_DECLINAISON = "rm/{id}";
 	public final static String LISTER_DECLINAISON = "lister";
 	public final static String AJOUTER_ETAT_DECLINAISON = "etat/ajouter";
+	public final static String MODIFIER_ETAT_DECLINAISON = "etat/modifier";
 	public final static String LISTER_ETAT_DECLINAISON = "etat/lister";
+	public final static String SUPPRIMER_ETAT_DECLINAISON = "etat/{id}";
 
 	/**
 	 * URL pour les nutriments
 	 */
 	public final static String ROOT_NUTRIMENTS = "nutriments";
 	public final static String LISTER_NUTRIMENTS_DECLINAISON = "dec/{id}";
-	public static final String TYPES_NUTRIMENTS = "types";
+	public final static String TYPES_NUTRIMENTS = "types";
 
 	/**
 	 * URL pour les menus
@@ -53,6 +56,6 @@ public class BodywiredURL {
 	public final static String TOTAL_RECETTES = "total";
 	public final static String CATEGORIES_RECETTES = "categories";
 	public final static String AJOUTER_CATEGORIE_RECETTE = "categories/ajouter";
-	public static final String MODIFIER_RECETTE = "modifier";
-	public static final String SUPPRIMER_RECETTE = "supprimer/{id}";
+	public final static String MODIFIER_RECETTE = "modifier";
+	public final static String SUPPRIMER_RECETTE = "supprimer/{id}";
 }
