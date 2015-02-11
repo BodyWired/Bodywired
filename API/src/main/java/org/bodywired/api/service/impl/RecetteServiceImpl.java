@@ -1,6 +1,7 @@
 package org.bodywired.api.service.impl;
 
 import java.util.List;
+import java.util.Set;
 
 import org.bodywired.api.dao.AlimentDao;
 import org.bodywired.api.dao.RecetteDao;
@@ -165,11 +166,22 @@ public class RecetteServiceImpl implements RecetteService {
 	}
 
 	private void calculerCaloriesRecette(Recette recette) {
-		// init accumulateur calories
-		recette.getAliments();		
-		// calculer moyenne calories aliment & ajouter à accu calories
-		recette.getRecettes();
-		// test caloriesRec = 0 -> calculerCaloriesRecette(Recette recette)
-		// ajouter caloriesRec a accu calories
+		Double calories = 0.0;
+		for(IngredientAliment ingredient : recette.getAliments()){
+			Double moyenne = 0.0;
+			Set<Declinaison> declinaisons = ingredient.getAliment().getDeclinaisons(); 
+			for(Declinaison dec : declinaisons) {
+				moyenne = moyenne + dec.getNutriments().getCalorie().getApport();
+			}
+			moyenne = moyenne / declinaisons.size();
+			calories =  (calories + ((moyenne * ingredient.getQuantite()) / 100));
+		}
+		for(IngredientRecette ingredientRecette: recette.getRecettes()){
+			Recette rec = ingredientRecette.getRecetteAssociee();
+			if(rec.getCalories() == null || rec.getCalories() == 0) 
+				calculerCaloriesRecette(rec);
+			calories = calories + rec.getCalories();			
+		}
+		recette.setCalories(calories.intValue());
 	}
 }
