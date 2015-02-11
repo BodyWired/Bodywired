@@ -183,5 +183,6 @@ public class RecetteServiceImpl implements RecetteService {
 			calories = calories + rec.getCalories();			
 		}
 		recette.setCalories(calories.intValue());
+		recetteDao.sauvegarderRecette(recette);
 	}
 }
