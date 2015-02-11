@@ -1,11 +1,14 @@
 package org.bodywired.api.controller;
 
+import java.util.Date;
 import java.util.Set;
 
 import org.bodywired.api.model.Planning;
 import org.bodywired.api.model.Utilisateur;
 import org.bodywired.api.model.menu.Recette;
 import org.bodywired.api.service.UtilisateurService;
+import org.bodywired.api.service.UtilisateurService.ServiceUtilisateurException;
+import org.bodywired.api.service.UtilisateurService.PlanningInexistantException;
 import org.bodywired.api.service.UtilisateurService.RecetteInexistanteException;
 import org.bodywired.api.service.UtilisateurService.UtilisateurExistantException;
 import org.bodywired.api.service.UtilisateurService.UtilisateurInexistantException;
@@ -89,11 +92,40 @@ public class UtilisateurController {
 
 		return utilisateurService.plannings(userId);
 	}
+	
+	@ApiOperation(value = BodywiredURL.AJOUTER_PLANNING, notes = "ajoute une entrée de planning à l'utilisateur")
+	@RequestMapping(value = BodywiredURL.AJOUTER_PLANNING, method = RequestMethod.GET)
+	public @ResponseBody Planning ajouterPlanning(@PathVariable(value="userid") Integer userId, @PathVariable(value="recid") Integer recId, @PathVariable(value="date") Long date, @PathVariable(value="repas") Integer repas)
+			throws UtilisateurInexistantException, RecetteInexistanteException, ServiceUtilisateurException {
+		
+		Date dateObject = new Date(date);
 
-	/* EXCEPTIONS */
-	public class ServiceUtilisateurException extends Exception {
-		private static final long serialVersionUID = 7041376106709430874L;
-		ServiceUtilisateurException(String msg) { super(msg); }
+		return utilisateurService.ajouterPlanning(userId, recId, dateObject, repas);
+		
+	}
+	
+	@ApiOperation(value = BodywiredURL.MODIFIER_PLANNING, notes = "modifie une entrée de planning à l'utilisateur")
+	@RequestMapping(value = BodywiredURL.MODIFIER_PLANNING, method = RequestMethod.GET)
+	public ResponseEntity<String> modifierPlanning(@PathVariable(value="planid") Integer planId, @PathVariable(value="recid") Integer recId, @PathVariable(value="date") Long date, @PathVariable(value="repas") Integer repas)
+			throws RecetteInexistanteException, ServiceUtilisateurException, PlanningInexistantException {
+		
+		Date dateObject = new Date(date);
+		
+		if (utilisateurService.modifierPlanning(planId, recId, dateObject, repas))
+			return new ResponseEntity<String>(HttpStatus.ACCEPTED);
+		
+		throw new ServiceUtilisateurException("Modification impossible de l'entrée de planning");
+	}
+	
+	@ApiOperation(value = BodywiredURL.SUPPRIMER_PLANNING, notes = "supprime une entrée de planning à l'utilisateur")
+	@RequestMapping(value = BodywiredURL.SUPPRIMER_PLANNING, method = RequestMethod.GET)
+	public ResponseEntity<String> supprimerPlanning(@PathVariable(value="planid") Integer planId)
+			throws ServiceUtilisateurException, PlanningInexistantException {
+		
+		if (utilisateurService.supprimerPlanning(planId))
+			return new ResponseEntity<String>(HttpStatus.ACCEPTED);
+		
+		throw new ServiceUtilisateurException("Suppression impossible de l'entrée de planning");
 	}
 	
 	/* EXCEPTIONS HANDLERS */
@@ -126,5 +158,11 @@ public class UtilisateurController {
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
 	public ResponseEntity<String> handleException(RecetteInexistanteException e) {
 		return new ResponseEntity<String>("Recette inexistante", HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(PlanningInexistantException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	public ResponseEntity<String> handleException(PlanningInexistantException e) {
+		return new ResponseEntity<String>("Planning inexistant", HttpStatus.BAD_REQUEST);
 	}
 }

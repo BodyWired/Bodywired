@@ -239,7 +239,7 @@ CREATE TABLE utilisateur.Favoris (
 
 
 CREATE TABLE utilisateur.Planning (
-	pla_id integer NOT NULL PRIMARY KEY,
+	pla_id serial PRIMARY KEY,
 	pla_id_pro integer references utilisateur.Profil(pro_id) ON DELETE CASCADE NOT NULL,
 	pla_id_rec integer references recette.Recette(rec_id) ON DELETE CASCADE NOT NULL,
 	pla_repas integer NOT NULL,

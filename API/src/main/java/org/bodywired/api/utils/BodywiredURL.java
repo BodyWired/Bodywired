@@ -69,4 +69,7 @@ public class BodywiredURL {
 	public final static String SUPPRIMER_FAVORI = "supprimerFavori/{userid}/{recid}";
 	public final static String FAVORIS = "favoris/{userid}";
 	public final static String PLANNINGS = "plannings/{userid}";
+	public final static String AJOUTER_PLANNING = "ajouterPlanning/{userid}/{recid}/{date}/{repas}";
+	public final static String MODIFIER_PLANNING = "modifierPlanning/{planid}/{recid}/{date}/{repas}";
+	public final static String SUPPRIMER_PLANNING = "supprimerPlanning/{planid}";
 }

@@ -1,5 +1,6 @@
 package org.bodywired.api.service.impl;
 
+import java.util.Date;
 import java.util.Set;
 
 import org.bodywired.api.dao.RecetteDao;
@@ -95,6 +96,49 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 			throw new UtilisateurInexistantException();
 		
 		return utilisateur.getPlannings();
+	}
+
+	@Override
+	public Planning ajouterPlanning(Integer userId, Integer recId, Date dateObject, Integer repas)
+			throws UtilisateurInexistantException, RecetteInexistanteException, ServiceUtilisateurException {
+		Utilisateur utilisateur = utilisateurDao.getUtilisateurById(userId);
+		if (utilisateur == null)
+			throw new UtilisateurInexistantException();
+		
+		Recette recette = recetteDao.getRecette(recId);
+		if (recette == null)
+			throw new RecetteInexistanteException();
+		
+		Planning planning = new Planning();
+		planning.setUtilisateur(utilisateur);
+		planning.setRecette(recette);
+		planning.setDate(dateObject);
+		planning.setRepas(repas);
+		
+		if (utilisateurDao.ajouterPlanning(planning) == 1)
+			return planning;
+		
+		throw new ServiceUtilisateurException("Création planning impossible");
+	}
+
+	@Override
+	public Boolean modifierPlanning(Integer planId, Integer recId, Date dateObject, Integer repas)
+			throws PlanningInexistantException, RecetteInexistanteException {
+		if (utilisateurDao.getPlanningById(planId) == null)
+			throw new PlanningInexistantException();
+		
+		if (recetteDao.getRecette(recId) == null)
+			throw new RecetteInexistanteException();
+		
+		return (utilisateurDao.modifierPlanning(planId, recId, dateObject, repas) == 1);
+	}
+
+	@Override
+	public Boolean supprimerPlanning(Integer planId) throws PlanningInexistantException {
+		if (utilisateurDao.getPlanningById(planId) == null)
+			throw new PlanningInexistantException();
+		
+		return (utilisateurDao.supprimerPlanning(planId) == 1);
 	}
 
 
