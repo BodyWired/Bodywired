@@ -62,6 +62,18 @@
 		WHERE pro_id = #{id}
 	</select>
 	
+	<insert id="ajouterFavori">
+		INSERT INTO utilisateur.favoris
+		(fav_id_pro, fav_id_rec)
+		VALUES
+		(#{uti_id}, #{rec_id})
+	</insert>
+	
+	<delete id="supprimerFavori">
+		DELETE FROM utilisateur.favoris
+		WHERE fav_id_pro = #{uti_id} AND fav_id_rec = #{rec_id}
+	</delete>
+	
 <!-- 	<select id="favorisPourUnUtilisateur">
 
 	</select>

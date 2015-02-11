@@ -1,10 +1,12 @@
 package org.bodywired.api.controller;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.util.Set;
 
 import org.bodywired.api.model.Utilisateur;
+import org.bodywired.api.model.menu.Recette;
 import org.bodywired.api.service.UtilisateurService;
+import org.bodywired.api.service.UtilisateurService.RecetteInexistanteException;
+import org.bodywired.api.service.UtilisateurService.UtilisateurInexistantException;
 import org.bodywired.api.utils.BodywiredURL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +33,7 @@ public class UtilisateurController {
 	@ApiOperation(value = BodywiredURL.AJOUTER_UTILISATEUR, notes = "ajoute un nouvel utilisateur")
 	@RequestMapping(value = BodywiredURL.AJOUTER_UTILISATEUR, method = RequestMethod.GET)
 	public @ResponseBody Utilisateur ajouterUtilisateur(@PathVariable(value="login") String login, @PathVariable(value="pwd") String pwd)
-		throws UtilisateurExistantException, ServiceUtilisateurException {
+			throws UtilisateurExistantException, ServiceUtilisateurException {
 		
 		if (utilisateurService.getUtilisateurByLogin(login) != null) {
 			throw new UtilisateurExistantException();
@@ -59,6 +61,35 @@ public class UtilisateurController {
 		return new ResponseEntity<String>(HttpStatus.ACCEPTED);
 	}
 	
+	@ApiOperation(value = BodywiredURL.FAVORIS, notes = "retourne les recettes favories de l'utilisateur")
+	@RequestMapping(value = BodywiredURL.FAVORIS, method = RequestMethod.GET)
+	public @ResponseBody Set<Recette> ajouterFavori(@PathVariable(value="userid") Integer userId)
+			throws UtilisateurInexistantException {
+
+		return utilisateurService.favoris(userId);
+	}
+	
+	@ApiOperation(value = BodywiredURL.AJOUTER_FAVORI, notes = "ajoute une recette favorie à l'utilisateur")
+	@RequestMapping(value = BodywiredURL.AJOUTER_FAVORI, method = RequestMethod.GET)
+	public ResponseEntity<String> ajouterFavori(@PathVariable(value="userid") Integer userId, @PathVariable(value="recid") Integer recId)
+			throws UtilisateurInexistantException, RecetteInexistanteException, ServiceUtilisateurException {
+		
+		if (utilisateurService.ajouterFavori(userId, recId))
+			return new ResponseEntity<String>(HttpStatus.OK);
+		
+		throw new ServiceUtilisateurException("Création impossible du nouveau favori");
+	}
+	
+	@ApiOperation(value = BodywiredURL.SUPPRIMER_FAVORI, notes = "supprime une recette favorie à l'utilisateur")
+	@RequestMapping(value = BodywiredURL.SUPPRIMER_FAVORI, method = RequestMethod.GET)
+	public ResponseEntity<String> supprimerFavori(@PathVariable(value="userid") Integer userId, @PathVariable(value="recid") Integer recId)
+			throws UtilisateurInexistantException, RecetteInexistanteException, ServiceUtilisateurException {
+		
+		if (utilisateurService.supprimerFavori(userId, recId))
+			return new ResponseEntity<String>(HttpStatus.OK);
+		
+		throw new ServiceUtilisateurException("Suppression impossible du favori");
+	}
 	
 	
 	public class UtilisateurExistantException extends Exception {
@@ -68,7 +99,7 @@ public class UtilisateurController {
 	@ExceptionHandler(UtilisateurExistantException.class)
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
 	public ResponseEntity<String> handleException(UtilisateurExistantException e) {
-		return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<String>("Utilisateur existant", HttpStatus.BAD_REQUEST);
 	}
 	
 	public class ServiceUtilisateurException extends Exception {
@@ -81,6 +112,19 @@ public class UtilisateurController {
 	public ResponseEntity<String> handleException(ServiceUtilisateurException e) {
 		return new ResponseEntity<String>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+
+	@ExceptionHandler(UtilisateurInexistantException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	public ResponseEntity<String> handleException(UtilisateurInexistantException e) {
+		return new ResponseEntity<String>("Utilisateur inexistant", HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(RecetteInexistanteException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	public ResponseEntity<String> handleException(RecetteInexistanteException e) {
+		return new ResponseEntity<String>("Recette inexistante", HttpStatus.BAD_REQUEST);
+	}
+	
 	
 	private String MD5(String md5) {
 		try {

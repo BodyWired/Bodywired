@@ -65,4 +65,7 @@ public class BodywiredURL {
 	public final static String ROOT_UTILISATEURS = "users";
 	public final static String AJOUTER_UTILISATEUR = "ajouter/{login}/{pwd}";
 	public final static String CONNECTER_UTILISATEUR = "signin/{login}/{pwd}";
+	public final static String AJOUTER_FAVORI = "ajouterFavori/{userid}/{recid}";
+	public final static String SUPPRIMER_FAVORI = "supprimerFavori/{userid}/{recid}";
+	public static final String FAVORIS = "favoris/{userid}";
 }

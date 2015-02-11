@@ -12,6 +12,10 @@ public interface UtilisateurDao {
 	public Utilisateur getUtilisateurByLogin(@Param("login") String login);
 	
 	public Utilisateur getUtilisateurById(@Param("uti_id") Integer id);
+
+	public Integer ajouterFavori(@Param("uti_id") Integer userId, @Param("rec_id") Integer recId);
+
+	public Integer supprimerFavori(@Param("uti_id") Integer userId, @Param("rec_id") Integer recId);
 	
 //	public List <Recette> favorisPourUnUtilisateur(@Param("uti") Utilisateur utilisateur);
 //	
