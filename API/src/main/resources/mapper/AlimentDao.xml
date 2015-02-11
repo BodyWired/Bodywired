@@ -38,8 +38,8 @@
 
 	<insert id="sauvegarderAliment" useGeneratedKeys="true"
 		keyColumn="ali_id" keyProperty="ali.id">
-		INSERT INTO aliment.aliment(ali_nom)
-		VALUES (#{ali.nom});
+		INSERT INTO aliment.aliment(ali_nom, ali_href)
+		VALUES (#{ali.nom}, #{ali.href});
 
 	</insert>
 
@@ -71,6 +71,13 @@
 		<if test="limite != null">
 			LIMIT #{limite}
 		</if>
+	</select>
+
+	<select id="rechercherAlimentParHref" resultMap="Aliment_ResultMap">
+		SELECT * FROM
+		aliment.aliment
+		WHERE
+		ali_href = #{href}
 	</select>
 
 </mapper>

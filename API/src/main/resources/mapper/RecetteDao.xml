@@ -7,125 +7,167 @@
 		<id column="rec_id" property="id" />
 		<result column="rec_nom" property="nom" />
 		<result column="rec_note" property="note" />
-		<result column="rec_tmp_preparation" property="tmpPreparation"/>
-		<result column="rec_tmp_cuisson" property="tmpCuisson"/>
-		<result column="rec_tmp_refrigeration" property="tmpRefrigeration"/>
-		<result column="rec_tmp_maceration" property="tmpMaceration"/>
-		<result column="rec_preparation" property="preparation"/>
-		<result column="rec_calories" property="calories"/>
+		<result column="rec_tmp_preparation" property="tmpPreparation" />
+		<result column="rec_tmp_cuisson" property="tmpCuisson" />
+		<result column="rec_tmp_refrigeration" property="tmpRefrigeration" />
+		<result column="rec_tmp_maceration" property="tmpMaceration" />
+		<result column="rec_preparation" property="preparation" />
+		<result column="rec_calories" property="calories" />
 		<collection property="categories" select="select_categories"
 			column="rec_id" />
 	</resultMap>
-	
-	<resultMap type="org.bodywired.api.model.menu.Recette" id="Recette_Et_Ingredients_ResultMap" extends="Recette_ResultMap">
-		
+
+	<resultMap type="org.bodywired.api.model.menu.Recette" id="Recette_Et_Ingredients_ResultMap"
+		extends="Recette_ResultMap">
+
 		<collection property="recettes" select="select_recettes"
 			column="rec_id" />
 		<collection property="aliments" select="select_aliments"
 			column="rec_id" />
 	</resultMap>
-	
-	<resultMap type="org.bodywired.api.model.menu.CategorieRecette" id="org.bodywired.api.dao.RecetteDao.Categorie_ResultMap">
+
+	<resultMap type="org.bodywired.api.model.menu.CategorieRecette"
+		id="org.bodywired.api.dao.RecetteDao.Categorie_ResultMap">
 		<result column="cat_id" property="id" />
 		<result column="cat_nom" property="nom" />
 	</resultMap>
-	
+
 	<select id="getAllRecettes" resultMap="Recette_ResultMap">
 		SELECT *
-		FROM recette.recette
+		FROM
+		recette.recette
 	</select>
-	
+
 	<select id="getRecette" resultMap="Recette_Et_Ingredients_ResultMap">
 		SELECT *
 		FROM recette.recette
 		WHERE rec_id = #{rec_id}
 	</select>
-	
-	<select id="select_categories" resultMap="org.bodywired.api.dao.RecetteDao.Categorie_ResultMap">
+
+	<select id="select_categories"
+		resultMap="org.bodywired.api.dao.RecetteDao.Categorie_ResultMap">
 		SELECT *
 		FROM recette.categorie
-		LEFT JOIN recette.categorie_recette
+		LEFT JOIN
+		recette.categorie_recette
 		ON car_id_cat = cat_id
-		WHERE car_id_rec = #{rec_id}
+		WHERE car_id_rec =
+		#{rec_id}
 	</select>
-	
+
 	<select id="select_recettes" resultMap="Recette_ResultMap">
 		SELECT *
-		FROM recette.recette
+		FROM
+		recette.recette
 		LEFT JOIN recette.ingredient
 		ON rec_id = ing_id_rec
 		WHERE ing_id_concernee_rec = #{rec_id}
 		AND ing_type = 'REC'
 	</select>
-	
+
 	<select id="select_aliments" resultMap="org.bodywired.api.dao.AlimentDao.Aliment_ResultMap">
 		SELECT *
-		FROM aliment.aliment
+		FROM
+		aliment.aliment
 		LEFT JOIN recette.ingredient
 		ON ali_id = ing_id_ali
 		WHERE ing_id_concernee_rec = #{rec_id}
 		AND ing_type = 'ALI'
 	</select>
-	
-	<insert id="sauvegarderRecette"  useGeneratedKeys="true" keyColumn="rec_id" keyProperty="rec.id">
+
+	<insert id="sauvegarderRecette" useGeneratedKeys="true"
+		keyColumn="rec_id" keyProperty="rec.id">
 		INSERT INTO "recette"."recette"
-		("rec_nom","rec_note","rec_tmp_preparation","rec_tmp_cuisson","rec_tmp_refrigeration","rec_tmp_maceration","rec_preparation","rec_calories")
+		("rec_href","rec_nom","rec_note","rec_tmp_preparation","rec_tmp_cuisson","rec_tmp_refrigeration","rec_tmp_maceration","rec_preparation","rec_calories")
 		VALUES
-		(#{rec.nom},#{rec.note},#{rec.tmpPreparation},#{rec.tmpCuisson},#{rec.tmpRefrigeration},#{rec.tmpMaceration},#{rec.preparation},#{rec.calories})
+		(#{rec.href},#{rec.nom},#{rec.note},#{rec.tmpPreparation},#{rec.tmpCuisson},#{rec.tmpRefrigeration},#{rec.tmpMaceration},#{rec.preparation},#{rec.calories})
 	</insert>
 
-	<insert id="sauvegarderCategorieRecette" >
-		INSERT INTO "recette"."categorie_recette"
+	<insert id="sauvegarderCategorieRecette">
+		INSERT INTO
+		"recette"."categorie_recette"
 		("car_id_cat","car_id_rec")
 		VALUES
 		(#{cat_rec.id},#{rec.id})
 	</insert>
 
-	<insert id="sauvegarderIngredientRecette" >
-		INSERT INTO "recette"."ingredient"
+	<insert id="sauvegarderIngredientRecette">
+		INSERT INTO
+		"recette"."ingredient"
 		("ing_type","ing_quantite","ing_id_rec","ing_id_concernee_rec")
 		VALUES
 		('REC',#{qte},#{rec.id},#{rec_concernee.id})
 	</insert>
 
-	<insert id="sauvegarderIngredientAliment" >
-		INSERT INTO "recette"."ingredient"
+	<insert id="sauvegarderIngredientAliment">
+		INSERT INTO
+		"recette"."ingredient"
 		("ing_type","ing_quantite","ing_id_ali","ing_id_concernee_rec")
 		VALUES
 		('ALI',#{qte},#{ali.id},#{rec_concernee.id})
 	</insert>
-	
+
 	<select id="rechercherRecetteParNom" resultMap="Recette_ResultMap">
 		SELECT *
-		FROM recette.recette
+		FROM
+		recette.recette
 		WHERE
-		rec_nom = #{nom}
+		lower(trim(rec_nom)) = lower(trim(#{nom}))
 	</select>
-	
+
 	<select id="rechercherRecettesAssociees" resultMap="Recette_ResultMap">
-		SELECT requested.rec_id, requested.rec_nom, requested.rec_note, requested.rec_tmp_preparation, requested.rec_tmp_cuisson, requested.rec_tmp_refrigeration, requested.rec_tmp_maceration, requested.rec_preparation, requested.rec_calories 
-		FROM recette.recette AS answered
+		SELECT
+		requested.rec_id, requested.rec_nom, requested.rec_note,
+		requested.rec_tmp_preparation, requested.rec_tmp_cuisson,
+		requested.rec_tmp_refrigeration, requested.rec_tmp_maceration,
+		requested.rec_preparation, requested.rec_calories
+		FROM recette.recette
+		AS answered
 		LEFT JOIN recette.Ingredient_Recette
-		ON rec_id = ir_id_rec
+		ON
+		rec_id = ir_id_rec
 		LEFT JOIN recette.Ingredient
 		ON ir_id_ing = ing_id
-		LEFT JOIN recette.recette AS requested
+		LEFT JOIN
+		recette.recette AS requested
 		ON ing_id_rec = rec_id
 		WHERE
 		answered.rec_nom = #{nom}
 		AND ing_type = 'REC'
 	</select>
 
-	<insert id="sauvegarderCategorie" useGeneratedKeys="true" keyColumn="cat_id" keyProperty="cat_rec.id">
+	<insert id="sauvegarderCategorie" useGeneratedKeys="true"
+		keyColumn="cat_id" keyProperty="cat.id">
 		INSERT INTO recette.categorie
 		("cat_nom")
 		VALUES
-		(#{cat_rec.nom})
-	</insert>	
-	
-	<select id="getAllCategories" resultMap="org.bodywired.api.dao.RecetteDao.Categorie_ResultMap">
+		(#{cat.nom})
+	</insert>
+
+	<select id="getAllCategories"
+		resultMap="org.bodywired.api.dao.RecetteDao.Categorie_ResultMap">
 		SELECT *
 		FROM recette.categorie
+	</select>
+
+	<select id="rechercherCategorie"
+		resultMap="org.bodywired.api.dao.RecetteDao.Categorie_ResultMap">
+		SELECT *
+		FROM recette.categorie
+		WHERE cat_nom = #{text}
+	</select>
+
+	<select id="recetteEstDansCategorie" resultType="java.lang.Boolean">
+		SELECT
+		count(car_id_rec)=1 FROM recette.categorie_recette
+		WHERE car_id_cat =
+		#{cat.id} AND car_id_rec = #{rec.id}
+	</select>
+
+	<select id="rechercherRecetteParHref" resultMap="Recette_ResultMap">
+		SELECT *
+		FROM recette.recette
+		WHERE rec_href = #{href}
 	</select>
 </mapper>
 

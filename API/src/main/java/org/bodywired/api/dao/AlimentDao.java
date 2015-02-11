@@ -13,4 +13,6 @@ public interface AlimentDao {
 
 	public Aliment getAliment(@Param("nom") String nom);
 
+	public Aliment rechercherAlimentParHref(@Param("href") String href);
+
 }

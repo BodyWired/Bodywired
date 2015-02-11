@@ -2,8 +2,9 @@ package org.bodywired.api.service.impl;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.bodywired.api.dao.ClassementAlimentDao;
-import org.bodywired.api.dao.ClassementRecetteDao;
+import org.bodywired.api.dao.RecetteDao;
 import org.bodywired.api.model.Aliment;
 import org.bodywired.api.model.classement.Categorie;
 import org.bodywired.api.model.menu.CategorieRecette;
@@ -17,8 +18,8 @@ public class CategorieServiceImpl implements CategorieService {
 	@Autowired
 	private ClassementAlimentDao classementAlimentDao;
 
-	// @Autowired
-	private ClassementRecetteDao classementRecetteDao;
+	@Autowired
+	private RecetteDao recetteDao;
 
 	@Override
 	public Boolean sauvegarderCategorieAliment(Categorie categorie) {
@@ -37,12 +38,21 @@ public class CategorieServiceImpl implements CategorieService {
 
 	@Override
 	public Boolean sauvegarderCategorieRecette(CategorieRecette categorie) {
-		return classementRecetteDao.sauvegarderCategorieRecette(categorie);
+		CategorieRecette existante = rechercherCategorieRecette(categorie.getNom());
+		if (existante == null) {
+			return recetteDao.sauvegarderCategorie(categorie) == 1;
+		} else {
+			categorie.setId(existante.getId());
+			return true;
+		}
 	}
 
 	@Override
 	public CategorieRecette rechercherCategorieRecette(String text) {
-		return classementRecetteDao.rechercherCategorieRecette(text);
+		LOGGER.debug("Recherche CR : ["+text+"]");
+		return recetteDao.rechercherCategorie(text);
 	}
+	
+	private static final Logger LOGGER = Logger.getLogger(CategorieServiceImpl.class);
 
 }

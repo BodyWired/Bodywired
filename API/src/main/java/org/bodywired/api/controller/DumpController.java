@@ -1,6 +1,9 @@
 package org.bodywired.api.controller;
 
+import org.apache.log4j.Logger;
 import org.bodywired.api.service.ParseAliments;
+import org.bodywired.api.service.ParseRecettes;
+import org.bodywired.api.service.impl.AlimentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,20 +15,32 @@ import com.mangofactory.swagger.annotations.ApiIgnore;
 @ApiIgnore
 public class DumpController {
 
+	public static boolean RUN = false;
+
 	@Autowired
-	private ParseAliments parser;
+	private ParseAliments parserAliment;
+	@Autowired
+	private ParseRecettes parserRecette;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String redirect() {
 		return "redirect:index.html";
 	}
 
+	private static final Logger LOGGER = Logger.getLogger(DumpController.class);
+
 	@RequestMapping(value = "/data/dump", method = RequestMethod.GET)
 	public String main() {
 		try {
-			parser.run();
+			// parserAliment.run();
+			if (!RUN) {
+				long start = System.currentTimeMillis();
+				RUN = true;
+				parserRecette.run();
+				RUN = false;
+				LOGGER.debug("\nDurée : " + (System.currentTimeMillis() - start));
+			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return "redirect:index.html";

@@ -9,48 +9,64 @@ import org.bodywired.api.utils.TypeIngredient;
 
 public class Aliment extends AbstractBaseModel implements Ingredient {
 
-	private String				nom;
+	private String href;
 
-	private Set <Categorie>		categories;
+	private String nom;
 
-	private Set <Declinaison>	declinaisons;
+	private Set<Categorie> categories;
 
-	public Aliment () {
-		categories = new LinkedHashSet <Categorie>();
+	private Set<Declinaison> declinaisons;
+
+	public Aliment() {
+		categories = new LinkedHashSet<Categorie>();
 	}
 
-	public String getNom () {
+	public String getNom() {
 		return nom;
 	}
 
-	public Set <Declinaison> getDeclinaisons () {
+	public Set<Declinaison> getDeclinaisons() {
 		return declinaisons;
 	}
 
-	public void setNom ( String nom ) {
+	public void setNom(String nom) {
 		this.nom = nom;
 	}
 
-	public void setDeclinaisons ( Set <Declinaison> declinaisons ) {
+	public void setDeclinaisons(Set<Declinaison> declinaisons) {
 		this.declinaisons = declinaisons;
 	}
 
-	public void addCategorieAliment ( Categorie categorieAliment ) {}
+	public void addCategorieAliment(Categorie categorieAliment) {
+	}
 
-	public Set <Categorie> getCategories () {
+	public Set<Categorie> getCategories() {
 		return categories;
 	}
 
-	public void setCategories ( Set <Categorie> categories ) {
+	public void setCategories(Set<Categorie> categories) {
 		this.categories = categories;
 	}
 
-	public void addCategorie ( Categorie categorieAliment ) {
+	public void addCategorie(Categorie categorieAliment) {
 		categories.add(categorieAliment);
 	}
 
 	@Override
-	public TypeIngredient getType () {
+	public TypeIngredient getType() {
 		return TypeIngredient.ALI;
+	}
+
+	public String getHref() {
+		return href;
+	}
+
+	public void setHref(String href) {
+		this.href = href;
+	}
+
+	@Override
+	public String toString() {
+		return getId() + " : " + getNom() + " - " + getHref();
 	}
 }

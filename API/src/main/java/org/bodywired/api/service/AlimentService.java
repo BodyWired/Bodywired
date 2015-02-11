@@ -12,4 +12,6 @@ public interface AlimentService {
 
 	public Aliment getAliment(String nom);
 
+	public Aliment rechercherAlimentParHref(String href);
+
 }

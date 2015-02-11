@@ -29,8 +29,8 @@
 	<insert id="sauvegarderDeclinaison" useGeneratedKeys="true"
 		keyColumn="dec_id" keyProperty="dec.id">
 		INSERT INTO
-		aliment.declinaison(dec_id_ali)
-		VALUES (#{dec.aliment.id});
+		aliment.declinaison(dec_id_ali,dec_href)
+		VALUES (#{dec.aliment.id},#{dec.href});
 	</insert>
 
 	<insert id="ajouterEtatALaDeclinaison">
