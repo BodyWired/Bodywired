@@ -5,6 +5,7 @@ import java.util.List;
 import org.bodywired.api.dao.AlimentDao;
 import org.bodywired.api.dao.RecetteDao;
 import org.bodywired.api.model.Aliment;
+import org.bodywired.api.model.Declinaison;
 import org.bodywired.api.model.menu.CategorieRecette;
 import org.bodywired.api.model.menu.IngredientAliment;
 import org.bodywired.api.model.menu.IngredientRecette;
@@ -24,7 +25,12 @@ public class RecetteServiceImpl implements RecetteService {
 	
 	@Override
 	public List<Recette> getAllRecettes() {
-		return recetteDao.getAllRecettes();
+		List<Recette> recettes = recetteDao.getAllRecettes();
+		for (Recette recette : recettes) {
+			if (recette.getCalories() == null || recette.getCalories().equals(Integer.valueOf(0)))
+				calculerCaloriesRecette(recette);
+		}
+		return recettes;
 	}
 
 	@Override
@@ -156,5 +162,14 @@ public class RecetteServiceImpl implements RecetteService {
 	@Override
 	public List<CategorieRecette> getAllCategories() {
 		return recetteDao.getAllCategories();
+	}
+
+	private void calculerCaloriesRecette(Recette recette) {
+		// init accumulateur calories
+		recette.getAliments();		
+		// calculer moyenne calories aliment & ajouter à accu calories
+		recette.getRecettes();
+		// test caloriesRec = 0 -> calculerCaloriesRecette(Recette recette)
+		// ajouter caloriesRec a accu calories
 	}
 }

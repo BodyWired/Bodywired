@@ -56,10 +56,10 @@
 		WHERE pro_login = #{login}
 	</select>
 	
-	<select id="getUtilisateurById">
+	<select id="getUtilisateurById" resultMap="org.bodywired.api.dao.UtilisateurDao.Profil_ResultMap">
 		SELECT *
 		FROM utilisateur.profil
-		WHERE pro_id = #{id}
+		WHERE pro_id = #{uti_id}
 	</select>
 	
 	<insert id="ajouterFavori">

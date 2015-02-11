@@ -2,11 +2,14 @@ package org.bodywired.api.controller;
 
 import java.util.Set;
 
+import org.bodywired.api.model.Planning;
 import org.bodywired.api.model.Utilisateur;
 import org.bodywired.api.model.menu.Recette;
 import org.bodywired.api.service.UtilisateurService;
 import org.bodywired.api.service.UtilisateurService.RecetteInexistanteException;
+import org.bodywired.api.service.UtilisateurService.UtilisateurExistantException;
 import org.bodywired.api.service.UtilisateurService.UtilisateurInexistantException;
+import org.bodywired.api.service.UtilisateurService.UtilisateurNonAuthentifieException;
 import org.bodywired.api.utils.BodywiredURL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,38 +35,26 @@ public class UtilisateurController {
 		
 	@ApiOperation(value = BodywiredURL.AJOUTER_UTILISATEUR, notes = "ajoute un nouvel utilisateur")
 	@RequestMapping(value = BodywiredURL.AJOUTER_UTILISATEUR, method = RequestMethod.GET)
-	public @ResponseBody Utilisateur ajouterUtilisateur(@PathVariable(value="login") String login, @PathVariable(value="pwd") String pwd)
+	public ResponseEntity<String> ajouterUtilisateur(@PathVariable(value="login") String login, @PathVariable(value="pwd") String pwd)
 			throws UtilisateurExistantException, ServiceUtilisateurException {
 		
-		if (utilisateurService.getUtilisateurByLogin(login) != null) {
-			throw new UtilisateurExistantException();
-		}
-		Utilisateur utilisateur = new Utilisateur ();
-		utilisateur.setLogin(login);
-		utilisateur.setPwd(MD5(pwd));
-		
-		if (utilisateurService.creerUtilisateur(utilisateur)) {
-			return utilisateur;
+		if (utilisateurService.creerUtilisateur(login, pwd)) {
+			return new ResponseEntity<String>(HttpStatus.CREATED);
 		}
 		
-		throw new ServiceUtilisateurException("Création impossible du nouvel utilisateur");
+		throw new ServiceUtilisateurException("Création authentification impossible de l'utilisateur");
 	}
 	
 	@ApiOperation(value = BodywiredURL.CONNECTER_UTILISATEUR, notes = "ajoute un nouvel utilisateur")
 	@RequestMapping(value = BodywiredURL.CONNECTER_UTILISATEUR, method = RequestMethod.GET)
-	public ResponseEntity<String> connecterUtilisateur (@PathVariable(value="login") String login, @PathVariable(value="pwd") String pwd) throws ServiceUtilisateurException {
-		Utilisateur utilisateur = utilisateurService.getUtilisateurByLogin(login);
-
-		if (utilisateur == null || !utilisateur.getPwd().equals(MD5(pwd))) {
-			return new ResponseEntity<String>(HttpStatus.UNAUTHORIZED);
-		}
-		
-		return new ResponseEntity<String>(HttpStatus.ACCEPTED);
+	public @ResponseBody Utilisateur connecterUtilisateur (@PathVariable(value="login") String login, @PathVariable(value="pwd") String pwd)
+			throws UtilisateurNonAuthentifieException {
+		return utilisateurService.authentifie(login,pwd);
 	}
 	
 	@ApiOperation(value = BodywiredURL.FAVORIS, notes = "retourne les recettes favories de l'utilisateur")
 	@RequestMapping(value = BodywiredURL.FAVORIS, method = RequestMethod.GET)
-	public @ResponseBody Set<Recette> ajouterFavori(@PathVariable(value="userid") Integer userId)
+	public @ResponseBody Set<Recette> favoris(@PathVariable(value="userid") Integer userId)
 			throws UtilisateurInexistantException {
 
 		return utilisateurService.favoris(userId);
@@ -75,7 +66,7 @@ public class UtilisateurController {
 			throws UtilisateurInexistantException, RecetteInexistanteException, ServiceUtilisateurException {
 		
 		if (utilisateurService.ajouterFavori(userId, recId))
-			return new ResponseEntity<String>(HttpStatus.OK);
+			return new ResponseEntity<String>(HttpStatus.CREATED);
 		
 		throw new ServiceUtilisateurException("Création impossible du nouveau favori");
 	}
@@ -86,31 +77,43 @@ public class UtilisateurController {
 			throws UtilisateurInexistantException, RecetteInexistanteException, ServiceUtilisateurException {
 		
 		if (utilisateurService.supprimerFavori(userId, recId))
-			return new ResponseEntity<String>(HttpStatus.OK);
+			return new ResponseEntity<String>(HttpStatus.ACCEPTED);
 		
 		throw new ServiceUtilisateurException("Suppression impossible du favori");
 	}
 	
+	@ApiOperation(value = BodywiredURL.PLANNINGS, notes = "retourne les plannings de l'utilisateur")
+	@RequestMapping(value = BodywiredURL.PLANNINGS, method = RequestMethod.GET)
+	public @ResponseBody Set<Planning> plannings(@PathVariable(value="userid") Integer userId)
+			throws UtilisateurInexistantException {
+
+		return utilisateurService.plannings(userId);
+	}
+
+	/* EXCEPTIONS */
+	public class ServiceUtilisateurException extends Exception {
+		private static final long serialVersionUID = 7041376106709430874L;
+		ServiceUtilisateurException(String msg) { super(msg); }
+	}
 	
-	public class UtilisateurExistantException extends Exception {
-		private static final long serialVersionUID = 5638669174371926085L;
+	/* EXCEPTIONS HANDLERS */
+	@ExceptionHandler(ServiceUtilisateurException.class)
+	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+	public ResponseEntity<String> handleException(ServiceUtilisateurException e) {
+		return new ResponseEntity<String>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+
+	@ExceptionHandler(UtilisateurNonAuthentifieException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	public ResponseEntity<String> handleException(UtilisateurNonAuthentifieException e) {
+		return new ResponseEntity<String>("Utilisateur non authentifié", HttpStatus.UNAUTHORIZED);
 	}
 
 	@ExceptionHandler(UtilisateurExistantException.class)
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
 	public ResponseEntity<String> handleException(UtilisateurExistantException e) {
 		return new ResponseEntity<String>("Utilisateur existant", HttpStatus.BAD_REQUEST);
-	}
-	
-	public class ServiceUtilisateurException extends Exception {
-		private static final long serialVersionUID = 7041376106709430874L;
-		ServiceUtilisateurException(String msg) { super(msg); }
-	}
-	
-	@ExceptionHandler(ServiceUtilisateurException.class)
-	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-	public ResponseEntity<String> handleException(ServiceUtilisateurException e) {
-		return new ResponseEntity<String>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@ExceptionHandler(UtilisateurInexistantException.class)
@@ -123,20 +126,5 @@ public class UtilisateurController {
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
 	public ResponseEntity<String> handleException(RecetteInexistanteException e) {
 		return new ResponseEntity<String>("Recette inexistante", HttpStatus.BAD_REQUEST);
-	}
-	
-	
-	private String MD5(String md5) {
-		try {
-			java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
-			byte[] array = md.digest(md5.getBytes());
-			StringBuffer sb = new StringBuffer();
-			for (int i = 0; i < array.length; ++i) {
-				sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1,3));
-			}
-			return sb.toString();
-		} catch (java.security.NoSuchAlgorithmException e) {
-		}
-		return null;
 	}
 }
