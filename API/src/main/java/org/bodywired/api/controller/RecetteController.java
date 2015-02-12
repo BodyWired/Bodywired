@@ -11,6 +11,8 @@ import org.bodywired.api.service.RecetteService;
 import org.bodywired.api.utils.BodywiredURL;
 import org.bodywired.api.wrapper.RechercheWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,30 +48,6 @@ public class RecetteController {
 	public @ResponseBody List<Recette> listerRecettes(@ApiParam(required = true, value = "wrapper de la recherche") @ModelAttribute RechercheWrapper wrapper) {
 		// return menuService.rechercherAliments(wrapper);
 
-//		List<Recette> listeRecettes = new ArrayList<Recette>();
-//
-//		Recette recette1 = new Recette("Recette 1", 30, 20, 15, 0, "Ici voici le déroulement à suivre pour faire une super bonne recette 1", 500);
-//		CategorieRecette categorie1 = new CategorieRecette("Catégorie 1");
-//		categorie1.addRecette(recette1);
-//		CategorieRecette categorie2 = new CategorieRecette("Catégorie 2");
-//		categorie2.addRecette(recette1);
-//		recette1.addAliment(alimentService.getAliment("Boeuf musqué"), 200);
-//		recette1.addAliment(alimentService.getAliment("Champignon"), 150);
-//		recette1.addAliment(alimentService.getAliment("Cerfeuil"), 50);
-//		recette1.addAliment(alimentService.getAliment("Béluga"), 200);
-//		listeRecettes.add(recette1);
-//		
-//		Recette recette2 = new Recette("Recette 2", 45, 30, 0, 0, "Ici voici le déroulement à suivre pour faire une super bonne recette 2", 850);
-//		CategorieRecette categorie3 = new CategorieRecette("Catégorie 3");
-//		categorie3.addRecette(recette2);
-//		recette2.addAliment(alimentService.getAliment("Baselle"), 200);
-//		recette2.addAliment(alimentService.getAliment("Noix de coco"), 50);
-//		recette2.addAliment(alimentService.getAliment("Oeuf de poule"), 350);
-//		recette2.addAliment(alimentService.getAliment("Origan"), 125);
-//		recette2.addAliment(alimentService.getAliment("Poireau"), 75);
-//		listeRecettes.add(recette2);
-		
-
 		return recetteService.getAllRecettes();
 	}
 	
@@ -96,6 +74,40 @@ public class RecetteController {
 	public @ResponseBody Recette ajouterRecette(@RequestBody Recette recette) {
 		recetteService.sauvegarderRecette(recette);
 		return recette;
+	}
+
+	/**
+	 * Modification d'une recette en BDD
+	 * 
+	 * @param recette
+	 * @return
+	 */
+	@ApiOperation(value = BodywiredURL.MODIFIER_RECETTE, notes = "modification d'une recette")
+	@RequestMapping(value = BodywiredURL.MODIFIER_RECETTE, method = RequestMethod.PUT)
+	public ResponseEntity<String> modifierRecette(@RequestBody Recette recette) {
+		if (recette.getId() == null || !recetteService.modifierRecette(recette)) {
+			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return new ResponseEntity<String>(HttpStatus.OK);
+	}
+
+	/**
+	 * Suppression d'une recette en BDD
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@ApiOperation(value = BodywiredURL.SUPPRIMER_RECETTE, notes = "suppression d'une recette")
+	@RequestMapping(value = BodywiredURL.SUPPRIMER_RECETTE, method = RequestMethod.DELETE)
+	public ResponseEntity<String> supprimerRecette(@PathVariable(value="id") Integer id) {
+		Recette recette = recetteService.getRecette(id);
+		
+		if (recette == null || !recetteService.supprimerRecette(id)) {
+			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return new ResponseEntity<String>(HttpStatus.OK);
 	}
 	
 	

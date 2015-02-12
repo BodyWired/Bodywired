@@ -13,4 +13,10 @@ public interface DeclinaisonService {
 
 	List<Etat> getEtats();
 
+	Boolean modifierEtat(Etat etat);
+
+	Boolean supprimerEtat(Integer id);
+
+	Boolean supprimerDeclinaison(Integer id);
+
 }

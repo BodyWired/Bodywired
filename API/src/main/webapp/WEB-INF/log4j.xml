@@ -10,9 +10,10 @@
 		</layout>
 	</appender>
 
-	<appender name="file" class="org.apache.log4j.RollingFileAppender">
+	<appender name="file" class="org.apache.log4j.FileAppender">
 		<param name="append" value="false" />
-		<param name="maxFileSize" value="50KB" />
+		<param name="immediateFlush" value="true"/>
+		<param name="maxFileSize" value="100MB" />
 		<param name="maxBackupIndex" value="20" />
 		<!-- For Tomcat -->
 		<param name="file" value="${catalina.home}/logs/bodywired.log" />
@@ -30,12 +31,8 @@
 	</logger>
 
 	<root>
-		<priority value="ERROR" />
+		<priority value="INFO" />
 		<appender-ref ref="file" />
 	</root>
-	
-		<root>
-		<priority value="INFO" />
-		<appender-ref ref="console" />
-	</root>
+
 </log4j:configuration>

@@ -61,14 +61,14 @@ public class ParseAliments {
 			}
 			return Jsoup.parse(String.valueOf(tmp));
 		} catch (Exception ex) {
-			System.err.println("EX : " + httpurl);
+			LOGGER.error("EX : " + httpurl, ex);
 			return null;
 		}
 
 	}
 
 	private static final Logger LOGGER = Logger.getLogger(ParseAliments.class);
-	
+
 	public void run() throws Exception {
 		// Document doc =
 		// Jsoup.connect("http://www.guide-des-aliments.com/dietetique/aliments_par_categorie.html").get();
@@ -91,6 +91,8 @@ public class ParseAliments {
 			Categorie categorie = new Categorie();
 			categorie.setNom(categorieElement.html());
 
+			LOGGER.debug(categorie.getNom());
+
 			// ALIMENT
 			Document listeDesAlimentsDoc = getDoc("http://www.guide-des-aliments.com/dietetique/" + categorieElement.attr("href"));
 			Elements alimentElements = listeDesAlimentsDoc.select("a[href*=fiche_]");
@@ -108,7 +110,7 @@ public class ParseAliments {
 				String nom = alimentElement.html();
 
 				// aliment = alimentService.getAliment(nom);
-				aliment = alimentService.rechercherAlimentParHref("http://www.guide-des-aliments.com/dietetique/"+alimentElement.attr("href"));
+				aliment = alimentService.rechercherAlimentParHref("http://www.guide-des-aliments.com/dietetique/" + alimentElement.attr("href"));
 				if (aliment != null) {
 					categorieService.ajouterAlimentDansCategorie(aliment, categorie);
 					continue;

@@ -32,13 +32,17 @@ public class DumpController {
 	@RequestMapping(value = "/data/dump", method = RequestMethod.GET)
 	public String main() {
 		try {
-			// parserAliment.run();
 			if (!RUN) {
+				LOGGER.debug("start");
 				long start = System.currentTimeMillis();
 				RUN = true;
-				parserRecette.run();
-				RUN = false;
+				parserAliment.run();
 				LOGGER.debug("\nDurée : " + (System.currentTimeMillis() - start));
+				start = System.currentTimeMillis();
+				parserRecette.run();
+				RUN = false; 
+				LOGGER.debug("\nDurée : " + (System.currentTimeMillis() - start));
+				LOGGER.debug("end");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -14,6 +14,10 @@ public interface RecetteService {
 	public Recette getRecette(Integer id);
 
 	public Boolean sauvegarderRecette(Recette recette);
+	
+	public Boolean supprimerRecette(Integer id);
+	
+	public Boolean modifierRecette(Recette recette);
 
 	public Recette rechercherRecetteParNom(String recherche);
 

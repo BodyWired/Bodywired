@@ -19,11 +19,24 @@
 
 	<resultMap type="org.bodywired.api.model.menu.Recette" id="Recette_Et_Ingredients_ResultMap"
 		extends="Recette_ResultMap">
-
 		<collection property="recettes" select="select_recettes"
 			column="rec_id" />
 		<collection property="aliments" select="select_aliments"
 			column="rec_id" />
+	</resultMap>
+
+	<resultMap type="org.bodywired.api.model.menu.IngredientRecette"
+		id="Recette_Recette_ResultMap">
+		<result column="ing_quantite" property="quantite" />
+		<association property="recetteAssociee"
+			javaType="org.bodywired.api.model.menu.Recette" resultMap="Recette_ResultMap" />
+	</resultMap>
+
+	<resultMap type="org.bodywired.api.model.menu.IngredientAliment"
+		id="Recette_Aliment_ResultMap">
+		<result column="ing_quantite" property="quantite" />
+		<association property="aliment" javaType="org.bodywired.api.model.Aliment"
+			resultMap="org.bodywired.api.dao.AlimentDao.Aliment_ResultMap" />
 	</resultMap>
 
 	<resultMap type="org.bodywired.api.model.menu.CategorieRecette"
@@ -55,7 +68,7 @@
 		#{rec_id}
 	</select>
 
-	<select id="select_recettes" resultMap="Recette_ResultMap">
+	<select id="select_recettes" resultMap="Recette_Recette_ResultMap">
 		SELECT *
 		FROM
 		recette.recette
@@ -65,7 +78,7 @@
 		AND ing_type = 'REC'
 	</select>
 
-	<select id="select_aliments" resultMap="org.bodywired.api.dao.AlimentDao.Aliment_ResultMap">
+	<select id="select_aliments" resultMap="Recette_Aliment_ResultMap">
 		SELECT *
 		FROM
 		aliment.aliment
@@ -78,18 +91,26 @@
 	<insert id="sauvegarderRecette" useGeneratedKeys="true"
 		keyColumn="rec_id" keyProperty="rec.id">
 		INSERT INTO "recette"."recette"
-		("rec_href","rec_nom","rec_note","rec_tmp_preparation","rec_tmp_cuisson","rec_tmp_refrigeration","rec_tmp_maceration","rec_preparation","rec_calories")
+		("rec_nom","rec_note","rec_tmp_preparation","rec_tmp_cuisson","rec_tmp_refrigeration","rec_tmp_maceration","rec_preparation","rec_calories")
 		VALUES
-		(#{rec.href},#{rec.nom},#{rec.note},#{rec.tmpPreparation},#{rec.tmpCuisson},#{rec.tmpRefrigeration},#{rec.tmpMaceration},#{rec.preparation},#{rec.calories})
+		(#{rec.nom},#{rec.note},#{rec.tmpPreparation},#{rec.tmpCuisson},#{rec.tmpRefrigeration},#{rec.tmpMaceration},#{rec.preparation},#{rec.calories})
 	</insert>
 
-	<insert id="sauvegarderCategorieRecette">
-		INSERT INTO
-		"recette"."categorie_recette"
-		("car_id_cat","car_id_rec")
-		VALUES
-		(#{cat_rec.id},#{rec.id})
-	</insert>
+	<update id="modifierRecette">
+		UPDATE "recette"."recette"
+		SET rec_nom = #{rec.nom},
+		rec_note = #{rec.note}, rec_tmp_preparation = #{rec.tmpPreparation},
+		rec_tmp_cuisson = #{rec.tmpCuisson}, rec_tmp_maceration =
+		#{rec.tmpMaceration}, rec_preparation = #{rec.preparation},
+		rec_calories = #{rec.calories}
+		WHERE rec_id = #{rec.id}
+	</update>
+
+	<delete id="supprimerRecette">
+		DELETE FROM "recette"."recette"
+		WHERE rec_id =
+		#{rec_id}
+	</delete>
 
 	<insert id="sauvegarderIngredientRecette">
 		INSERT INTO
@@ -99,6 +120,20 @@
 		('REC',#{qte},#{rec.id},#{rec_concernee.id})
 	</insert>
 
+	<delete id="supprimerIngredientRecette">
+		DELETE FROM "recette"."ingredient"
+		WHERE ing_id_rec =
+		#{rec.id} AND ing_id_concernee_rec = #{rec_concernee.id}
+	</delete>
+
+	<update id="modifierIngredientRecette">
+		UPDATE "recette"."ingredient"
+		SET ing_quantite =
+		#{qte}
+		WHERE ing_id_rec = #{rec.id} AND ing_id_concernee_rec =
+		#{rec_concernee.id}
+	</update>
+
 	<insert id="sauvegarderIngredientAliment">
 		INSERT INTO
 		"recette"."ingredient"
@@ -107,12 +142,40 @@
 		('ALI',#{qte},#{ali.id},#{rec_concernee.id})
 	</insert>
 
+	<delete id="supprimerIngredientAliment">
+		DELETE FROM "recette"."ingredient"
+		WHERE ing_id_ali =
+		#{ali.id} AND ing_id_concernee_rec = #{rec_concernee.id}
+	</delete>
+
+	<update id="modifierIngredientAliment">
+		UPDATE "recette"."ingredient"
+		SET ing_quantite =
+		#{qte}
+		WHERE ing_id_ali = #{ali.id} AND ing_id_concernee_rec =
+		#{rec_concernee.id}
+	</update>
+
+	<insert id="sauvegarderCategorieRecette">
+		INSERT INTO
+		"recette"."categorie_recette"
+		("car_id_cat","car_id_rec")
+		VALUES
+		(#{cat_rec.id},#{rec.id})
+	</insert>
+
+	<delete id="supprimerCategorieRecette">
+		DELETE FROM "recette"."categorie_recette"
+		WHERE
+		car_id_cat = #{cat_rec.id} AND car_id_rec = #{rec.id}
+	</delete>
+
 	<select id="rechercherRecetteParNom" resultMap="Recette_ResultMap">
 		SELECT *
 		FROM
 		recette.recette
 		WHERE
-		lower(trim(rec_nom)) = lower(trim(#{nom}))
+		rec_nom = #{nom}
 	</select>
 
 	<select id="rechercherRecettesAssociees" resultMap="Recette_ResultMap">
@@ -137,11 +200,11 @@
 	</select>
 
 	<insert id="sauvegarderCategorie" useGeneratedKeys="true"
-		keyColumn="cat_id" keyProperty="cat.id">
+		keyColumn="cat_id" keyProperty="cat_rec.id">
 		INSERT INTO recette.categorie
 		("cat_nom")
 		VALUES
-		(#{cat.nom})
+		(#{cat_rec.nom})
 	</insert>
 
 	<select id="getAllCategories"
@@ -166,7 +229,8 @@
 
 	<select id="rechercherRecetteParHref" resultMap="Recette_ResultMap">
 		SELECT *
-		FROM recette.recette
+		FROM
+		recette.recette
 		WHERE rec_href = #{href}
 	</select>
 </mapper>

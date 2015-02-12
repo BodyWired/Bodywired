@@ -85,4 +85,19 @@ public class DeclinaisonServiceImpl implements DeclinaisonService {
 		return (declinaisonDao.getEtats());
 	}
 
+	@Override
+	public Boolean modifierEtat(Etat etat) {
+		return (declinaisonDao.modifierEtat(etat) == 1);
+	}
+
+	@Override
+	public Boolean supprimerEtat(Integer id) {
+		return (declinaisonDao.supprimerEtat(id) == 1);
+	}
+
+	@Override
+	public Boolean supprimerDeclinaison(Integer id) {
+		return (declinaisonDao.supprimerDeclinaison(id) == 1);
+	}
+
 }

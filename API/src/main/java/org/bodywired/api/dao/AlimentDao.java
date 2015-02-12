@@ -12,6 +12,12 @@ public interface AlimentDao {
 	public ResultatRechercheWrapper rechercherAliments(RechercheWrapper wrapper);
 
 	public Aliment getAliment(@Param("nom") String nom);
+	
+	public Integer supprimerAliment(@Param("id") Integer id);
+
+	public Aliment getAlimentById(@Param("id") Integer id);
+	
+	public Integer modifierAliment(@Param("ali") Aliment aliment);
 
 	public Aliment rechercherAlimentParHref(@Param("href") String href);
 

@@ -54,4 +54,9 @@
 		<property name="mapperInterface" value="org.bodywired.api.dao.RecetteDao" />
 		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>
+
+	<bean id="utilisateurDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="org.bodywired.api.dao.UtilisateurDao" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
 </beans>

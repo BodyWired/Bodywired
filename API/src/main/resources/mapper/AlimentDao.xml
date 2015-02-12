@@ -24,8 +24,7 @@
 		LEFT JOIN
 		aliment.categorie_aliment
 		ON caa_id_cat = cat_id
-		WHERE caa_id_ali =
-		#{ali_id}
+		WHERE caa_id_ali = #{ali_id}
 	</select>
 
 	<select id="select_declinaisons"
@@ -72,6 +71,24 @@
 			LIMIT #{limite}
 		</if>
 	</select>
+	
+	<delete id="supprimerAliment">
+		DELETE
+		FROM aliment.Aliment
+		WHERE ali_id = #{id}
+	</delete>
+	
+	<select id="getAlimentById" resultMap="Aliment_ResultMap">
+		SELECT ali_id, ali_nom FROM
+		aliment.aliment
+		WHERE ali_id = #{id}
+	</select>
+	
+	<update id="modifierAliment" parameterType="org.bodywired.api.model.Aliment">
+		UPDATE aliment.aliment
+		SET ali_nom = #{ali.nom}
+		WHERE ali_id = #{ali.id}
+	</update>
 
 	<select id="rechercherAlimentParHref" resultMap="Aliment_ResultMap">
 		SELECT * FROM
