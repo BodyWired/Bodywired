@@ -1,24 +1,21 @@
 package org.bodywired.api.service;
 
-import java.util.List;
-
 import org.bodywired.api.model.Aliment;
-import org.bodywired.api.model.Declinaison;
-import org.bodywired.api.model.classement.CategorieAliment;
 import org.bodywired.api.wrapper.RechercheWrapper;
+import org.bodywired.api.wrapper.ResultatRechercheWrapper;
 
 public interface AlimentService {
 
-	public boolean ajouterAlimentDansCategorie ( CategorieAliment categorieAliment, Aliment aliment );
+	public Boolean sauvegarderAliment(Aliment aliment);
 
-	public boolean ajouterDeclinaisonAliment ( Aliment aliment, Declinaison declinaison );
+	public ResultatRechercheWrapper rechercherAliments(RechercheWrapper wrapper);
 
-	public void sauvegarderAliment ( Aliment aliment );
+	public Aliment getAliment(String nom);
 
-	public List <CategorieAliment> getCategoriesAliments ();
-
-	public List <Aliment> getAliments ( RechercheWrapper wrapper );
-
-	public int getTotal ();
+	public Aliment getAlimentById(Integer id);
+	
+	public Boolean supprimerAliment(Integer id);
+	
+	public Boolean modifierAliment(Aliment aliment);
 
 }

@@ -1,24 +1,22 @@
 package org.bodywired.api.dao;
 
-import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
 import org.bodywired.api.model.Aliment;
-import org.bodywired.api.model.Declinaison;
-import org.bodywired.api.model.classement.CategorieAliment;
 import org.bodywired.api.wrapper.RechercheWrapper;
+import org.bodywired.api.wrapper.ResultatRechercheWrapper;
 
 public interface AlimentDao {
 
-	public Integer sauvegarderAliment ( @Param ( "ali" ) Aliment aliment );
+	public Integer sauvegarderAliment(@Param("ali") Aliment aliment);
 
-	public Integer sauvegarderDeclinaison ( @Param ( "dec" ) Declinaison declinaison );
+	public ResultatRechercheWrapper rechercherAliments(RechercheWrapper wrapper);
 
-	// TODO
-	public List <CategorieAliment> getCategoriesAliments ();
+	public Aliment getAliment(@Param("nom") String nom);
+	
+	public Integer supprimerAliment(@Param("id") Integer id);
 
-	public List <Aliment> getAliments ( RechercheWrapper wrapper );
-
-	public int getTotal ();
+	public Aliment getAlimentById(@Param("id") Integer id);
+	
+	public Integer modifierAliment(@Param("ali") Aliment aliment);
 
 }
