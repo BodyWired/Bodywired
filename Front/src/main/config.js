@@ -1,4 +1,4 @@
-var BodyWiredApp = angular.module('BodyWiredApp', ['ui.router', 'ngToast']);
+var BodyWiredApp = angular.module('BodyWiredApp', ['ui.router', 'ngToast','ui.calendar']);
 
 BodyWiredApp.config(function($stateProvider, $urlRouterProvider) {
 	$urlRouterProvider.otherwise('/');
@@ -9,7 +9,8 @@ BodyWiredApp.config(function($stateProvider, $urlRouterProvider) {
                   .state('editerProfil', {url: '/profilEdit', templateUrl: 'partiels/profilEdit.html', controller: 'UserController'})
                   .state('aliments', {url: '/aliments', templateUrl: 'partiels/aliments.html', controller:'AlimentController'})
                   .state('carences', {url: '/carences', templateUrl: 'partiels/carences.html', controller:'CarenceController'})
-                  .state('recettes', {url: '/recettes', templateUrl: 'partiels/recettes.html', controller:'MenuController'});
+                  .state('recettes', {url: '/recettes', templateUrl: 'partiels/recettes.html', controller:'MenuController'})
+		  .state('favoris', {url: '/favoris', templateUrl: 'partiels/favoris.html', controller:'FavorisController'});
 });
 BodyWiredApp.config(["$locationProvider", function($locationProvider) {
   $locationProvider.html5Mode(true);

@@ -17,34 +17,33 @@
             Valeur pour <input type="number" ng-model="coefficient"/> grammes.    
         </div>
         <table class="table table-striped">
+            <tr><td colspan="2"><strong>Calories</strong></td></tr>
             <tr><td>Calorie</td><td>{{nutriments.calorie.apport * coefficient}}</td></tr>
-            <tr><td>Protéines</td><td>{{nutriments.proteine.apport * coefficient}}</td></tr>
-            <tr><td>Eau</td><td>{{nutriments.eau.apport * coefficient}}</td></tr>
+            <tr><td colspan="2"><strong>Cholesterol</strong></td></tr>
+            <tr><td>Cholesterol</td><td>{{nutriments.cholesterol.apport * coefficient}}</td></tr>
             <tr><td colspan="2"><strong>Lipides</strong></td></tr>
-            <tr ng-if="nutriments.lipide.constructor === Array" ng-repeat="lipide in nutriments.lipide">
-                <td>{{lipide.details}}</td><td>{{lipide.apport * coefficient}}</td>
-            </tr>
-            <tr<tr ng-if="nutriments.lipide.constructor != Array">
-                <td>{{nutriments.lipide.details}}</td><td>{{nutriments.lipide.apport * coefficient}}</td>                
+            <tr ng-repeat="lipide in nutriments.lipides">
+                <td>{{lipide.nom}}</td><td>{{lipide.value * coefficient}}</td>
             </tr>
             <tr><td colspan="2"><strong>Glucides</strong></td></tr>
-            <tr ng-if="nutriments.glucide.constructor === Array" ng-repeat="glucide in nutriments.glucide">
-                <td>{{glucide.details}}</td><td>{{glucide.apport * coefficient}}</td>
+            <tr ng-repeat="glucide in nutriments.glucides">
+                <td>{{glucide.nom}}</td><td>{{glucide.value * coefficient}}</td>
             </tr>
-            <tr<tr ng-if="nutriments.glucide.constructor != Array">
-                <td>{{nutriments.glucide.details}}</td><td>{{nutriments.glucide.apport * coefficient}}</td>                
-            </tr>
+            <tr><td colspan="2"><strong>Protéines</strong></td></tr>
+            <tr><td>{{nutriments.proteine.details}}</td><td>{{nutriments.proteine.apport * coefficient}}</td></tr>
+            <tr><td colspan="2"><strong>Eau</strong></td></tr>
+            <tr><td>Eau</td><td>{{nutriments.eau.apport * coefficient}}</td></tr>
             <tr><td colspan="2"><strong>Vitamines</strong></td></tr>
             <tr ng-repeat="vitamine in nutriments.vitamines">
-                <td>{{vitamine.typeVitamine}}</td><td>{{vitamine.apport * coefficient}}</td>
+                <td>{{vitamine.details}}</td><td>{{vitamine.apport * coefficient}}</td>
             </tr>
             <tr><td colspan="2"><strong>Mineraux</strong></td></tr>
             <tr ng-repeat="minerau in nutriments.mineraux">
-                <td>{{minerau.typeMineral}}</td><td>{{minerau.apport * coefficient}}</td>
+                <td>{{minerau.details}}</td><td>{{minerau.apport * coefficient}}</td>
             </tr>
             <tr><td colspan="2"><strong>Oligo-élements</strong></td></tr>
             <tr ng-repeat="oligo in nutriments.oligoElements">
-                <td>{{oligo.typeOligoElement}}</td><td>{{oligo.apport * coefficient}}</td>
+                <td>{{oligo.details}}</td><td>{{oligo.apport * coefficient}}</td>
             </tr>
         </table>
     </div>
@@ -64,11 +63,11 @@
     </div>
 </div>
 <div class="panel panel-warning" id="table" hidden="true">
-    <div class="panel-heading">Liste des aliments</div>
+    <div class="panel-heading">Liste des aliments <div style="float: right">Recherche: <input ng-model="rechercheAliment.nom"></div></div>
     <div class="panel-body">
         <table class="table table-striped">
             <tr><th>Nom</th><th>Voir</th></tr>
-            <tr ng-repeat="aliment in aliments.aliments">
+            <tr ng-repeat="aliment in aliments.aliments | filter:rechercheAliment">
                 <td>{{aliment.nom}}</td><td><a ng-click="getDeclinaison(aliment)" onClick="showDeclinaison()"><span class="glyphicon glyphicon-eye-open"/></a></td>
             </tr>
         </table>

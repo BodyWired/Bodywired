@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.bodywired.api.dao.DeclinaisonDao">
+	<resultMap type="org.bodywired.api.model.classement.Etat" id="Etat_ResultMap">
+		<id column="eta_id" property="id" />
+		<result column="eta_nom" property="nom" />
+	</resultMap>
+	
+	<resultMap type="org.bodywired.api.model.Declinaison" id="Declinaison_ResultMap">
+		<id column="dec_id" property="id"/>
+		<association property="etats" select="select_etats" column="dec_id" />
+	</resultMap>
+	
+	<select id="select_etats" resultMap="Etat_ResultMap">
+		SELECT eta_id, eta_nom
+		FROM aliment.etat
+		LEFT JOIN aliment.etat_declinaison
+		ON ede_id_eta = eta_id
+		WHERE ede_id_dec = #{dec_id}
+	</select>
+
+	<select id="getEtat" resultMap="Etat_ResultMap">
+		SELECT eta_id, eta_nom FROM
+		aliment.etat
+		WHERE eta_nom = #{eta.nom}
+		order by eta_nom
+	</select>
+
+	<select id="getEtats" resultMap="Etat_ResultMap">
+		SELECT eta_id, eta_nom FROM
+		aliment.etat
+		order by eta_nom
+	</select>
+
+	<insert id="sauvegarderEtat" useGeneratedKeys="true" keyColumn="eta_id"
+		keyProperty="eta.id">
+		INSERT INTO aliment.etat(eta_nom)
+		VALUES (#{eta.nom});
+	</insert>
+	
+	<update id="modifierEtat" parameterType="org.bodywired.api.model.classement.Etat">
+		UPDATE aliment.etat
+		SET eta_nom = #{eta.nom}
+		WHERE eta_id = #{eta.id}
+	</update>
+	
+	<delete id="supprimerEtat">
+		DELETE
+		FROM aliment.etat
+		WHERE eta_id = #{eta_id}
+	</delete>
+
+	<insert id="sauvegarderDeclinaison" useGeneratedKeys="true"
+		keyColumn="dec_id" keyProperty="dec.id">
+		INSERT INTO
+		aliment.declinaison(dec_id_ali)
+		VALUES (#{dec.aliment.id});
+	</insert>
+	
+	<delete id="supprimerDeclinaison">
+		DELETE
+		FROM aliment.declinaison
+		WHERE dec_id = #{dec_id}
+	</delete>
+
+	<insert id="ajouterEtatALaDeclinaison">
+		INSERT INTO aliment.etat_declinaison(
+		ede_id_eta,
+		ede_id_dec)
+		VALUES (#{eta.id}, #{dec.id});
+	</insert>
+	
+	<delete id="supprimerEtatDeclinaison">
+		DELETE
+		FROM aliment.Etat_Declinaison
+		WHERE ede_id_eta = #{eta_id} AND ede_id_dec = #{dec_id}
+	</delete>
+	
+</mapper>

@@ -1,32 +1,55 @@
 package org.bodywired.api.wrapper;
 
+import org.springframework.stereotype.Component;
+
+import com.wordnik.swagger.annotations.ApiParam;
+
+@Component
+// @ApiModel(description = "Wrapper pour la recherche d'un aliment")
 public class RechercheWrapper {
 
-	private String	filtre;
-	private int		offset;
-	private int		limit;
+	// @ApiModelProperty("la recherche")
+	@ApiParam(name = "filtre", required = true)
+	private String filtre;
 
-	public int getLimit () {
-		return limit;
+	// @ApiModelProperty("le décalage")
+	private Integer offset;
+
+	// @ApiModelProperty("limite de résultat")
+	private Integer limite;
+
+	private Integer idCategorie;
+
+	public Integer getIdCategorie() {
+		return idCategorie;
 	}
 
-	public void setLimit ( int limit ) {
-		this.limit = limit;
+	public void setIdCategorie(Integer idCategorie) {
+		this.idCategorie = idCategorie;
 	}
 
-	public int getOffset () {
-		return offset;
-	}
-
-	public void setOffset ( int offset ) {
-		this.offset = offset;
-	}
-
-	public String getFiltre () {
+	public String getFiltre() {
 		return filtre;
 	}
 
-	public void setFiltre ( String filtre ) {
+	public void setFiltre(String filtre) {
 		this.filtre = filtre;
 	}
+
+	public Integer getOffset() {
+		return offset;
+	}
+
+	public void setOffset(Integer offset) {
+		this.offset = offset;
+	}
+
+	public Integer getLimite() {
+		return limite;
+	}
+
+	public void setLimite(Integer limite) {
+		this.limite = limite;
+	}
+
 }

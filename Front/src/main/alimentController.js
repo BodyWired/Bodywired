@@ -43,7 +43,6 @@ BodyWiredApp.controller('AlimentController', function($scope, AlimentService){
     $scope.getAlimentsByCategorie = function(categorie) {
         AlimentService.getAlimentsByCategorie(categorie).then(function(data) {
             $scope.aliments = data.data;
-            console.log($scope.aliments);
         });
     }
     $scope.getDeclinaison = function(aliment) {
@@ -52,11 +51,10 @@ BodyWiredApp.controller('AlimentController', function($scope, AlimentService){
     $scope.getNutriments = function(declinaison) {
         AlimentService.getNumtriments(declinaison).then(function(data) {
             $scope.nutriments = data.data;
-            console.log($scope.nutriments);
+            console.log(data.data);
         });
     }
     AlimentService.getCategories().then(function(data) {
-        console.log(data.data);
         $scope.categories = data.data;
     });
 });

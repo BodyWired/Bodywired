@@ -1,45 +1,42 @@
 package org.bodywired.api.model.nutriment;
 
 import org.bodywired.api.model.AbstractBaseModel;
-import org.bodywired.api.model.ApportNutritionnel;
 
 public abstract class AbstractNutriment extends AbstractBaseModel {
-	private String nom;
-	private double quantite;
+
+	public enum Ref {
+		CAL, CHO, EAU, PRO, LIP, GLU, VIT, MIN, OEL
+	}
+
+	public abstract Ref getRef();
+
+	/**
+	 * Quantité apports nutritionnel pour 100 grammes de la déclinaison
+	 */
+	public static final int QUANTITE_REF = 100;
+
+	private double apport;
+
 	private String details;
-	
-	private ApportNutritionnel apportNutritionnel;
-	
-	public AbstractNutriment(ApportNutritionnel apportNutritionnel) {
-		this.apportNutritionnel = apportNutritionnel;
-		quantite = 0.0;
+
+	public AbstractNutriment() {
+		apport = 0.0;
 	}
-	
-	public String getNom() {
-		return nom;
-	}
-	
-	public void setQuantite(double quantite) {
-		this.quantite = quantite;
-	}
-	
-	public double getQuantite() {
-		return quantite;
-	}
-	
+
 	public void setDetails(String details) {
 		this.details = details;
 	}
-	
+
 	public String getDetails() {
 		return details;
 	}
 
-	public ApportNutritionnel getApportNutritionnel() {
-		return apportNutritionnel;
+	public double getApport() {
+		return apport;
 	}
 
-	public void setApportNutritionnel(ApportNutritionnel apportNutritionnel) {
-		this.apportNutritionnel = apportNutritionnel;
+	public void setApport(double apport) {
+		this.apport = apport;
 	}
+
 }

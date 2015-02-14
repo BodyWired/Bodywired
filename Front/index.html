@@ -9,14 +9,15 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="src/lib/ngtoast/dist/ngToast.min.css">
+    <link rel="stylesheet" href="src/lib/fullcalendar/dist/fullcalendar.min.css">
   </head>
   <body ng-init="user = {}" style="background:url('img/legume-de-vara.jpg') no-repeat center center">
     <ng-toast></ng-toast>
     <div ng-controller="PartielsController">
-      <div ng-include="header.url" style="background-color: white"></div>
+      <div ng-include="header.url" style="background-color:white"></div>
     </div>
 
-    <div class="container" style="background:rgba(255,255,255,0.7);border-radius: 25px;">
+    <div class="container" style="background:rgba(255,255,255,0.7);border-radius:20px">
       <div ui-view autoscroll="false"></div>
 
       <div ng-controller="PartielsController">
@@ -32,12 +33,24 @@
     <script src="src/lib/angular-sanitize/angular-sanitize.min.js"></script>
     <script src="src/lib/ngtoast/dist/ngToast.min.js"></script>
 
+    <!-- JQuery (Calendar) -->
+    <script src="src/lib/jquery/jquery.min.js"></script>
+    <script src="src/lib/jquery/jquery-ui.custom.min.js"></script>
+    
+    <!-- Calendar -->
+    <script src="http://momentjs.com/downloads/moment.js"></script>
+    <script src="src/lib/calendar/calendar.js"></script>
+    <script src="src/lib/fullcalendar/dist/fullcalendar.js"></script>
+    <script src="src/lib/fullcalendar/dist/lang/fr.js"></script>
+
     <script src="src/main/config.js"></script>
     <script src='src/main//partielsController.js'></script>
     <script src='src/main/homeController.js'></script>
     <script src="src/main/userController.js"></script>
     <script src="src/main/alimentController.js"></script>
     <script src="src/main/menuController.js"></script>
+    <script src="src/main/calendarController.js"></script>
+    <script src="src/main/favorisController.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 </body>
 </html>
