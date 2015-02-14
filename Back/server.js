@@ -7,15 +7,50 @@ var express 	= require('express'),
 	http        = require('http'),
 	path        = require('path'),
 	serveStatic = require('serve-static'),
-	httpProxy 	= require('http-proxy');
+	httpProxy 	= require('http-proxy'),
+	querystring 	= require('querystring');
 
 var app = express();
+app.use(bodyParser.json());
 var server = http.createServer(app);
 var apiProxy = httpProxy.createProxyServer();
 
 // proxify api routes
-app.all("/api/*", function(req, res){ 
-  apiProxy.web(req, res, { target: 'http://iagl-server.cloudapp.net' });
+app.all("/apitest/*", function(req, res){
+console.log("param");
+delete req.headers.host;
+var data = JSON.stringify(req.body);
+if(req.method=="DELETE"){
+	req.headers['Content-Length']=0;
+}
+console.log(req.headers);
+var options = {
+	host: 'cache.univ-lille1.fr',
+	port: 3128,
+	//host:'http://iagl-server.cloudapp.net' + req.path + '?' + querystring.stringify(req.query),
+	method: req.method,
+	path: 'http://iagl-server.cloudapp.net' + req.path + '?' + querystring.stringify(req.query),
+	headers: req.headers
+}; 
+//console.log(options,data);
+var request = http.request(options, function (response) {
+	res.writeHead(response.statusCode, response.headers);
+	response.on('data', function (chuck) {
+		res.write(chuck);
+	});
+	response.on('end', function () {
+//console.log('test');
+		res.end();
+	});
+}).on('error', function () {});
+request.write(data);
+request.end();
+//req.headers['host'] ="iagl-server.cloudapp.net";
+
+  /*apiProxy.web(req, res, {
+	 target: 'http://cache.univ-lille1.fr',
+port: 3128,
+    toProxy: true});*/
 });
 
 app.set('port', process.env.PORT || 3001);

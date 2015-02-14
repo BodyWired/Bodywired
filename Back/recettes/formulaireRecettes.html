@@ -5,15 +5,12 @@
 	<form role="form">
 		<div class="form-group">
 			<label for="nomMenu">Nom du menu</label>
-			<input type="text" class="form-control" id="nomMenu" placeholder="Nom du menu"/>
+			<input type="text" ng-model="nom" class="form-control" id="nomMenu" placeholder="Nom du menu"/>
 		</div>
 		<div class="form-group">
 			<label for="categorieMenu">Catégorie du menu</label>
-			<select multiple row="3" class="form-control" id="categorieMenu">
-				<option value="0">Apéritif</option>
-				<option value="1">Entrée</option>
-				<option value="2">Plat</option>
-				<option value="3">Dessert</option>
+			<select multiple row="3" class="form-control" id="categorieMenu" ng-multiple="true" ng-model="categorie">
+				<option ng-repeat="cat in categories" ng-value="cat.id" ng-selected="categorie.indexOf(cat.id)>-1">{{cat.nom}}</option>
 			</select>
 		</div>
 		<div class="form-group form-inline">
@@ -26,19 +23,26 @@
 		</div>
 		<div class="form-group form-inline">
 			<label for="tempsRefrigMenu">Temps de réfrigération : </label>
+			<input type="number" class="form-control" ng-model="tempsMacerationH"/> : <input type="number" class="form-control" ng-model="tempsMacerationM"/>
+		</div>
+		<div class="form-group form-inline">
+			<label for="tempsRefrigMenu">Temps de macération : </label>
 			<input type="number" class="form-control" ng-model="tempsRefrigH"/> : <input type="number" class="form-control" ng-model="tempsRefrigM"/>
 		</div>
 		<div class="form-group form-inline">
+			<label for="calories">Calorie : </label>
+			<input type="number" class="form-control" ng-model="calories"/>
+		</div>
+		<!--<div class="form-group form-inline">
 			<label for="nbPersMenu">Nombre de personne : </label>
 			<input type="number" class="form-control" ng-model="nbPers"/>
-		</div>
+		</div>-->
 		<div class="form-group form-inline">
 			<label for="alimentRecette">Aliments</label>
 			<div class="input-group">
-				<input type="text" id="alimentRecette" class="form-control" list="listAliments" ng-model="alimentMenu"/>
+				<input type="text" id="alimentRecette" class="form-control" list="listAliments" ng-model="alimentRecette" ng-change="choisirAliment()"/>
 				<datalist id="listAliments">
-					<option value="Carotte"/>
-					<option value="Pomme"/>
+					<option ng-repeat="aliment in listeAliment" ng-value="aliment.nom"/>
 				</datalist>
 				<div class="input-group-addon glyphicon glyphicon-plus btn" ng-click="addAliment()"></div>
 			</div>
@@ -53,15 +57,15 @@
 			</thead>
 			<tbody>
 				<tr ng-repeat="aliment in aliments" ng-class="(($index%2) == 1) ? 'active' : ''">
-					<td>{{aliment.name}}</td>
-					<td><input type="number" ng-model="aliment.nb" class="form-control"/></td>
-					<td><span class="glyphicon glyphicon-trash btn" style="color:red" ng-click="removeAliment(aliment.name)"></span></td>
+					<td>{{aliment.nom}}</td>
+					<td><input type="number" ng-model="aliment.quantite" class="form-control"/></td>
+					<td><span class="glyphicon glyphicon-trash btn" style="color:red" ng-click="removeAliment(aliment.nom)"></span></td>
 				</tr>
 			</tbody>
 		</table>
 		<div class="form-group">
 			<label for="recetteMenu">Recette</label>
-			<textarea class="form-control" id="recetteMenu"></textarea>
+			<textarea class="form-control" id="recetteMenu" ng-model="preparation"></textarea>
 		</div>
 	</form>	
 </div>

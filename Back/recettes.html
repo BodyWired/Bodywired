@@ -19,20 +19,26 @@
 			<tr class="success">
 				<th>Id</th>
 				<th>Nom</th>
-				<th>Catégorie</th>
-				<th>Date de modification</th>
+				<th>Temps préparation</th>
+				<th>Temps cuisson</th>
+				<th>Temps réfrigération</th>
+				<th>Temps macération</th>
+				<th>Calories</th>
 				<th><span class="glyphicon glyphicon-pencil" style="color:green"></span></th>
 				<th><span class="glyphicon glyphicon-trash" style="color:red"></span></th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="menu in menus" ng-class="(($index%2) == 1) ? 'active' : ''">
-				<td>{{menu.id}}</td>
-				<td>{{menu.nom}}</td>
-				<td>{{menu.categorie}}</td>
-				<td>{{menu.update}}</td>
-				<td><span class="glyphicon glyphicon-pencil btn" style="color:green" ng-click="update(menu.id)"></span></td>
-				<td><span class="glyphicon glyphicon-trash btn" style="color:red" ng-click="delete(menu.id)"></span></td>
+			<tr ng-repeat="recette in recettes" ng-class="(($index%2) == 1) ? 'active' : ''">
+				<td>{{recette.id}}</td>
+				<td ng-click="showRecette(recette)">{{recette.nom}}</td>
+				<td>{{recette.tmpPreparation}} min</td>
+				<td>{{recette.tmpCuisson}} min</td>
+				<td>{{recette.tmpRefrigeration}} min</td>
+				<td>{{recette.tmpMaceration}} min</td>
+				<td>{{recette.calories}}</td>
+				<td><span class="glyphicon glyphicon-pencil btn" style="color:green" ng-click="updateRecette(recette.id)"></span></td>
+				<td><span class="glyphicon glyphicon-trash btn" style="color:red" ng-click="deleteRecette(recette.id)"></span></td>
 			</tr>
 		</tbody>
 	</table>
