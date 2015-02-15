@@ -15,12 +15,12 @@
 		<org.mybatis-version>3.2.8</org.mybatis-version>
 	</properties>
 
-	<parent>
+<!-- 	<parent>
 		<groupId>org.bodywired</groupId>
 		<artifactId>parent</artifactId>
 		<version>0.0.1</version>
 		<relativePath>..</relativePath>
-	</parent>
+	</parent> -->
 
 	<dependencies>
 		<!-- Jackson -->
@@ -220,6 +220,7 @@
 	</repositories>
 
 	<build>
+		<finalName>api</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-eclipse-plugin</artifactId>
