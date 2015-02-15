@@ -28,8 +28,10 @@ BodyWiredApp.controller('CalendarController', function($scope,$http,uiCalendarCo
 				case 2: title+="Midi\r\n"+data[p].recette.nom; break;
 				case 3: title+="Soir\r\n"+data[p].recette.nom; break;
 			}
-
-			$scope.events.push({title:title,start:new Date(parseInt(data[p].date)),allDay:false});
+			var date=new Date(parseInt(data[p].date));
+			var day=date.getDate()<9?'0'+date.getDate():date.getDate();
+			var month=date.getMonth()<9?'0'+(date.getMonth()+1):(date.getMonth()+1);
+			$scope.events.push({title:title,start:date.getFullYear()+"-"+month+"-"+day});
 	    	}
 	}).error(function(error) {
             Toast.error("Une erreur est survenue lors de la récuperation des favoris");

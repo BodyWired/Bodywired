@@ -13,7 +13,6 @@ BodyWiredApp.factory('User', function(){
                 return this.name + " " + this.lastname;
             },
 	    isFavoris:function(id){
-		console.log("id : "+id);
 		for(var fav in this.favoris){
 			if(this.favoris[fav].id==id){
 				return true;

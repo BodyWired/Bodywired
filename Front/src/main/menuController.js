@@ -31,7 +31,7 @@ BodyWiredApp.service('MenuService', function($http, Toast){
     };
 });
 
-BodyWiredApp.controller('MenuController', function($scope, MenuService, AlimentService,UserService,FavorisService){
+BodyWiredApp.controller('MenuController', function($scope,$modal, MenuService, AlimentService,UserService,FavorisService){
     $scope.previousRecette = undefined;
     MenuService.getRecettes().then(function(data) {
         $scope.recettes = data.data;
@@ -42,7 +42,6 @@ BodyWiredApp.controller('MenuController', function($scope, MenuService, AlimentS
 	    });
     }
     $scope.selectRecette = function(id, previous) {
-//        $scope.selectedRecette = recette;
         $scope.previousRecette = previous;
         console.log($scope.previousRecette);
         MenuService.getRecette(id).then(function(data) {
@@ -70,5 +69,13 @@ BodyWiredApp.controller('MenuController', function($scope, MenuService, AlimentS
 		return UserService.user.isFavoris(id);
 	}
 	return false;
+     };
+     $scope.addPlanning=function(recette){
+	var modalInstance = $modal.open({
+		      templateUrl: 'partiels/addPlanning.html',
+		      controller: 'AddPlanningCtrl',
+		      size: 'sm'
+    });
+
      };
 });
