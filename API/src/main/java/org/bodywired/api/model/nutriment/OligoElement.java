@@ -1,38 +1,22 @@
 package org.bodywired.api.model.nutriment;
 
-import org.bodywired.api.model.ApportNutritionnel;
-
-
-
 public class OligoElement extends AbstractNutriment {
-	private CODE type;
 
-	public OligoElement(ApportNutritionnel apportNutritionnel, CODE type) {
-		super(apportNutritionnel);
-		this.type = type;
+	public String code;
+
+	public String getCode() {
+		return code;
 	}
 
-	public static enum CODE {
-		Fe("fer"), Zn("zinc"), Cu("cuivre"), Se("selenium");
+	public void setCode(String code) {
+		this.code = code;
+	}
 
-		private String nom;
-		
-		public static CODE getType(String text) {
-			for (CODE c : values()) {
-				if (c.getNom().equalsIgnoreCase(text)) {
-					return c;
-				}
-			}
-			return null;
-		}
+	public OligoElement() {
+	}
 
-		private CODE(String nom) {
-			this.nom = nom;
-		}
-
-		public String getNom() {
-			return nom;
-		}
-
+	@Override
+	public Ref getRef() {
+		return Ref.OEL;
 	}
 }

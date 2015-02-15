@@ -4,9 +4,9 @@
 <div class="modal-body">
 	<form role="form">
 		<div class="form-group">
-			<label for="categorieAliment">Catégorie de l'aliment</label><button type="button" class="btn btn-default" ng-click="addCategorie()"><span class="glyphicon glyphicon-plus" style="color:green"></span></button>
-			<select multiple rows="5" class="form-control" id="categorieAliment" ng-model="categorie">
-				<option ng-repeat="cat in categories" ng-value="{{cat.id}}">{{cat.nom}}</option>
+			<label for="categorieAliment">Catégorie de l'aliment</label>
+			<select multiple rows="5" class="form-control" id="categorieAliment" ng-model="categorieSelect">
+				<option ng-repeat="cat in categories" ng-value="{{cat.id}}" ng-selected="categorieSelect.indexOf(cat.id)>-1">{{cat.nom}}</option>
 			</select>
 		</div>
 		<div class="form-group">

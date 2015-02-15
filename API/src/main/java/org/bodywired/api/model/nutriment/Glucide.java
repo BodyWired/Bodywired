@@ -1,21 +1,20 @@
 package org.bodywired.api.model.nutriment;
 
-import org.bodywired.api.model.ApportNutritionnel;
-
 public class Glucide extends AbstractNutriment {
-	
-	private double dontFibresAlimentaires;
 
-	public double getDontFibresAlimentaires() {
-		return dontFibresAlimentaires;
+	private double fibreAlimentaire;
+
+	public double getFibreAlimentaire() {
+		return fibreAlimentaire;
 	}
 
-	public void setDontFibresAlimentaires(double dontFibresAlimentaires) {
-		this.dontFibresAlimentaires = dontFibresAlimentaires;
+	public void setFibreAlimentaire(double fibreAlimentaire) {
+		this.fibreAlimentaire = fibreAlimentaire;
 	}
 
-	public Glucide(ApportNutritionnel apportNutritionnel) {
-		super(apportNutritionnel);
+	@Override
+	public Ref getRef() {
+		return Ref.GLU;
 	}
 
 }
