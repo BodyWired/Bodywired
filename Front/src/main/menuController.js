@@ -71,11 +71,22 @@ BodyWiredApp.controller('MenuController', function($scope,$modal, MenuService, A
 	return false;
      };
      $scope.addPlanning=function(recette){
+	console.log(recette);
 	var modalInstance = $modal.open({
 		      templateUrl: 'partiels/addPlanning.html',
-		      controller: 'AddPlanningCtrl',
-		      size: 'sm'
-    });
+		      controller: 'AddPlanningController',
+		      size: 'sm',
+		      resolve:{
+			recette : function(){
+				return recette;
+			}
+		      }
+    	});
 
      };
+});
+
+BodyWiredApp.controller('AddPlanningController', function($scope,$modalInstance, recette){
+    console.log(recette);
+    $scope.recette=recette;
 });

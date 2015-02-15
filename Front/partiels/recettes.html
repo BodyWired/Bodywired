@@ -47,10 +47,10 @@
         <a ng-if="previousRecette === undefined" onClick="showList()"><span class="glyphicon glyphicon-chevron-left"/></a>
         {{selectedRecette.nom}}
 	<div style="float:right;">
-		<span style="cursor:pointer;" ng-click="addPlanning(recette)">Ajouter au planning</span>
+		<span class="glyphicon glyphicon-calendar" style="cursor:pointer;" ng-click="addPlanning(selectedRecette)"></span>
 		|
-		<span style="cursor:pointer;" ng-click="setFavoris(recette.id)" >
-			<span class="glyphicon glyphicon-star" style="color:yellow" ng-click="setFavoris(recette.id)"></span> Ajouter aux favoris
+		<span style="cursor:pointer;" ng-click="setFavoris(selectedRecette.id)" >
+			<span class="glyphicon glyphicon-star" style="color:yellow"></span> Ajouter aux favoris
 		</span>
 	</div>
     </div>

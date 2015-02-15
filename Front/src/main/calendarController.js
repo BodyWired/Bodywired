@@ -22,16 +22,17 @@ BodyWiredApp.controller('CalendarController', function($scope,$http,uiCalendarCo
         .success(function(data) {
         	for(var p in data){
 			$scope.events.splice(0,$scope.events.length)
-			var title="";
+			var title=data[p].recette.nom;
+			var className="";
 			switch(data[p].repas){
-				case 1: title+="Matin\r\n"+data[p].recette.nom; break;
-				case 2: title+="Midi\r\n"+data[p].recette.nom; break;
-				case 3: title+="Soir\r\n"+data[p].recette.nom; break;
+				case 1: className+="matin"; break;
+				case 2: className+="midi"; break;
+				case 3: className+="soir"; break;
 			}
 			var date=new Date(parseInt(data[p].date));
 			var day=date.getDate()<9?'0'+date.getDate():date.getDate();
 			var month=date.getMonth()<9?'0'+(date.getMonth()+1):(date.getMonth()+1);
-			$scope.events.push({title:title,start:date.getFullYear()+"-"+month+"-"+day});
+			$scope.events.push({title:title,start:date.getFullYear()+"-"+month+"-"+day,className:[className]});
 	    	}
 	}).error(function(error) {
             Toast.error("Une erreur est survenue lors de la récuperation des favoris");
@@ -99,9 +100,9 @@ BodyWiredApp.controller('CalendarController', function($scope,$http,uiCalendarCo
     /* config object */
     $scope.uiConfig = {
       calendar:{
-        height: 450,
+        height: 250,
         defaultView: 'basicWeek',
-        editable: true,
+        editable: false,
         header:{
           left: 'title',
           center: '',
