@@ -56,10 +56,10 @@
 		WHERE pro_login = #{login}
 	</select>
 	
-	<select id="getUtilisateurById">
+	<select id="getUtilisateurById" resultMap="org.bodywired.api.dao.UtilisateurDao.Profil_ResultMap">
 		SELECT *
 		FROM utilisateur.profil
-		WHERE pro_id = #{id}
+		WHERE pro_id = #{uti_id}
 	</select>
 	
 	<insert id="ajouterFavori">
@@ -72,6 +72,24 @@
 	<delete id="supprimerFavori">
 		DELETE FROM utilisateur.favoris
 		WHERE fav_id_pro = #{uti_id} AND fav_id_rec = #{rec_id}
+	</delete>
+	
+	<insert id="ajouterPlanning" useGeneratedKeys="true" keyColumn="plan_id" keyProperty="plan.id">
+		INSERT INTO utilisateur.planning
+		(pla_id_pro, pla_id_rec, pla_repas, pla_date)
+		VALUES
+		(#{plan.user.id}, #{plan.recette.id}, #{plan.repas}, #{plan.date})
+	</insert>
+	
+	<update id="modifierPlanning">
+		UPDATE utilisateur.planning
+		SET pla_id_rec = #{rec_id}, pla_repas = #{repas}, pla_date = #{date}
+		WHERE pla_id = #{plan_id}
+	</update>
+	
+	<delete id="supprimerPlanning">
+		DELETE FROM utilisateur.planning
+		WHERE pla_id = #{plan_id}
 	</delete>
 	
 <!-- 	<select id="favorisPourUnUtilisateur">

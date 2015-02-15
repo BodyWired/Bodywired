@@ -1,10 +1,12 @@
 package org.bodywired.api.service.impl;
 
 import java.util.List;
+import java.util.Set;
 
 import org.bodywired.api.dao.AlimentDao;
 import org.bodywired.api.dao.RecetteDao;
 import org.bodywired.api.model.Aliment;
+import org.bodywired.api.model.Declinaison;
 import org.bodywired.api.model.menu.CategorieRecette;
 import org.bodywired.api.model.menu.IngredientAliment;
 import org.bodywired.api.model.menu.IngredientRecette;
@@ -24,7 +26,12 @@ public class RecetteServiceImpl implements RecetteService {
 	
 	@Override
 	public List<Recette> getAllRecettes() {
-		return recetteDao.getAllRecettes();
+		List<Recette> recettes = recetteDao.getAllRecettes();
+		for (Recette recette : recettes) {
+			if (recette.getCalories() == null || recette.getCalories().equals(Integer.valueOf(0)))
+				calculerCaloriesRecette(recette);
+		}
+		return recettes;
 	}
 
 	@Override
@@ -156,5 +163,26 @@ public class RecetteServiceImpl implements RecetteService {
 	@Override
 	public List<CategorieRecette> getAllCategories() {
 		return recetteDao.getAllCategories();
+	}
+
+	private void calculerCaloriesRecette(Recette recette) {
+		Double calories = 0.0;
+		for(IngredientAliment ingredient : recette.getAliments()){
+			Double moyenne = 0.0;
+			Set<Declinaison> declinaisons = ingredient.getAliment().getDeclinaisons(); 
+			for(Declinaison dec : declinaisons) {
+				moyenne = moyenne + dec.getNutriments().getCalorie().getApport();
+			}
+			moyenne = moyenne / declinaisons.size();
+			calories =  (calories + ((moyenne * ingredient.getQuantite()) / 100));
+		}
+		for(IngredientRecette ingredientRecette: recette.getRecettes()){
+			Recette rec = ingredientRecette.getRecetteAssociee();
+			if(rec.getCalories() == null || rec.getCalories() == 0) 
+				calculerCaloriesRecette(rec);
+			calories = calories + rec.getCalories();			
+		}
+		recette.setCalories(calories.intValue());
+		recetteDao.sauvegarderRecette(recette);
 	}
 }
