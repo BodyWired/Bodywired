@@ -133,8 +133,8 @@ app.controller('formulaireDeclinaisonsCtrl',['$scope','$http','$modalInstance', 
 	var loadNutriments=function(){
 		$http.get(path+"/nutriments/types").success(function(data,status){
 			$scope.nutrimentsUnused=[];
-			for(var i=0;i<data.length;i++){
-				$scope.nutrimentsUnused.push({name:data[i]});
+			for(var i=0;i<data.vitamines.length;i++){
+				$scope.nutrimentsUnused.push({name:"Vitamine "+data.vitamines[i].code});
 			}
 		});
 	};

@@ -11,32 +11,32 @@
         </div>
         <table class="table table-striped">
             <tr><td colspan="2"><strong>Calories</strong></td></tr>
-            <tr><td>Calorie</td><td>{{nutriments.calorie.apport * coefficient}}</td></tr>
+            <tr><td>Calorie</td><td>{{nutriments.calorie.apport * coefficient/100}} {{nutriments.calorie.unite}}</td></tr>
             <tr><td colspan="2"><strong>Cholesterol</strong></td></tr>
-            <tr><td>Cholesterol</td><td>{{nutriments.cholesterol.apport * coefficient}}</td></tr>
+            <tr><td>Cholesterol</td><td>{{nutriments.cholesterol.apport * coefficient/100}} {{nutriments.cholesterol.unite}}</td></tr>
             <tr><td colspan="2"><strong>Lipides</strong></td></tr>
             <tr ng-repeat="lipide in nutriments.lipides">
-                <td>{{lipide.nom}}</td><td>{{lipide.value * coefficient}}</td>
+                <td>{{lipide.nom}}</td><td>{{lipide.value * coefficient/100}} {{lipide.unite}}</td>
             </tr>
             <tr><td colspan="2"><strong>Glucides</strong></td></tr>
             <tr ng-repeat="glucide in nutriments.glucides">
-                <td>{{glucide.nom}}</td><td>{{glucide.value * coefficient}}</td>
+                <td>{{glucide.nom}}</td><td>{{glucide.value * coefficient/100}} {{glucide.unite}}</td>
             </tr>
             <tr><td colspan="2"><strong>Protéines</strong></td></tr>
-            <tr><td>{{nutriments.proteine.details}}</td><td>{{nutriments.proteine.apport * coefficient}}</td></tr>
+            <tr><td>{{nutriments.proteine.details}}</td><td>{{nutriments.proteine.apport * coefficient/100}} {{nutriments.proteine.unite}}</td></tr>
             <tr><td colspan="2"><strong>Eau</strong></td></tr>
-            <tr><td>Eau</td><td>{{nutriments.eau.apport * coefficient}}</td></tr>
+            <tr><td>Eau</td><td>{{nutriments.eau.apport * coefficient/100}} {{nutriments.eau.unite}}</td></tr>
             <tr><td colspan="2"><strong>Vitamines</strong></td></tr>
             <tr ng-repeat="vitamine in nutriments.vitamines">
-                <td>{{vitamine.details}}</td><td>{{vitamine.apport * coefficient}}</td>
+                <td>{{vitamine.details}}</td><td>{{vitamine.apport * coefficient/100}} {{vitamine.unite}}</td>
             </tr>
             <tr><td colspan="2"><strong>Mineraux</strong></td></tr>
             <tr ng-repeat="minerau in nutriments.mineraux">
-                <td>{{minerau.details}}</td><td>{{minerau.apport * coefficient}}</td>
+                <td>{{minerau.details}}</td><td>{{minerau.apport * coefficient/100}} {{minerau.unite}}</td>
             </tr>
             <tr><td colspan="2"><strong>Oligo-élements</strong></td></tr>
             <tr ng-repeat="oligo in nutriments.oligoElements">
-                <td>{{oligo.details}}</td><td>{{oligo.apport * coefficient}}</td>
+                <td>{{oligo.details}}</td><td>{{oligo.apport * coefficient/100}} {{oligo.unite}}</td>
             </tr>
         </table>
     </div>
@@ -71,7 +71,7 @@
         <div ng-if="selectedRecette.recettes.length > 0">
             <h1>Recettes associées</h1>
             <table class="table table-striped">
-                <tr><th>Recette</th><th>Quantité</th></tr>
+                <tr><th>Recette</th><th>Quantité (grammes)</th></tr>
                 <tr ng-repeat="recette in selectedRecette.recettes">
                     <td><a ng-click="selectRecette(recette.recetteAssociee.id, selectedRecette.id)" onClick="showRecette()">{{recette.recetteAssociee.nom}}</a></td>
                     <td>{{recette.quantite}}</td>
@@ -80,7 +80,7 @@
         </div>
         <h1>Ingredients</h1>
         <table class="table table-striped">
-            <tr><th>Aliment</th><th>Quantité</th></tr>
+            <tr><th>Aliment</th><th>Quantité (grammes)</th></tr>
             <tr ng-repeat="aliment in selectedRecette.aliments">
                 <td><a onClick="showDescription()" ng-click="getNutriments(aliment.aliment.id)">{{aliment.aliment.nom}}</a></td>
                 <td>{{aliment.quantite}}</td>

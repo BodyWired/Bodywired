@@ -30,7 +30,7 @@ BodyWiredApp.service('UserService', function($location, $http, Toast, User) {
 	var oThis=this;
 	var urlConnexion = baseURL+"users/signin";
 	var urlEdit = "/user/edit";
-	var urlRegister = baseURL+"/users/ajouter";
+	var urlRegister = baseURL+"users/ajouter";
 	this.signin = function(user) {
 		$http.get(urlConnexion+"/"+user.login+"/"+user.password)
 			.success(function(data) {
