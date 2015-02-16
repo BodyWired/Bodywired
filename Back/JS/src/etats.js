@@ -57,13 +57,14 @@ app.controller('formulaireEtatCtrl',['$scope','$http','$modalInstance','data', f
 	}
 
 	$scope.save = function (){
-		var data={nom:$scope.nom,id:globalData.id};
 		if(globalData!=undefined){
+			var data={nom:$scope.nom,id:globalData.id};
 			$http({url:path+'/declinaison/etat/modifier',method:'PUT',data:angular.toJson(data)}).success(function(data,status){
 				$modalInstance.close();
 			});
 		}
 		else{
+			var data={nom:$scope.nom};
 			$http({url:path+'/declinaison/etat/ajouter',method:'POST',data:angular.toJson(data)}).success(function(data,status){
 				$modalInstance.close();
 			});

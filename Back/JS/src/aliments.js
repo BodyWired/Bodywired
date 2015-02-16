@@ -133,9 +133,21 @@ app.controller('formulaireDeclinaisonsCtrl',['$scope','$http','$modalInstance', 
 	var loadNutriments=function(){
 		$http.get(path+"/nutriments/types").success(function(data,status){
 			$scope.nutrimentsUnused=[];
-			for(var i=0;i<data.length;i++){
-				$scope.nutrimentsUnused.push({name:data[i]});
+			for(var i=0;i<data.vitamines.length;i++){
+				$scope.nutrimentsUnused.push({name:"Vitamine "+data.vitamines[i].code});
 			}
+			for(var i=0;i<data.oligosElements.length;i++){
+				$scope.nutrimentsUnused.push({name:data.oligosElements[i].code});
+			}
+			for(var i=0;i<data.mineraux.length;i++){
+				$scope.nutrimentsUnused.push({name:data.mineraux[i].code});
+			}
+			$scope.nutrimentsUnused.push({name:"calorie"});
+			$scope.nutrimentsUnused.push({name:"cholesterol"});
+			$scope.nutrimentsUnused.push({name:"eau"});
+			$scope.nutrimentsUnused.push({name:"glucide"});
+			$scope.nutrimentsUnused.push({name:"lipide"});
+			$scope.nutrimentsUnused.push({name:"proteine"});
 		});
 	};
 
