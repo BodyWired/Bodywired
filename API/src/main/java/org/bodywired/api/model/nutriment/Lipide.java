@@ -1,42 +1,45 @@
 package org.bodywired.api.model.nutriment;
 
-import org.bodywired.api.model.ApportNutritionnel;
-
 public class Lipide extends AbstractNutriment {
 
-	private double dontGrasSature;
-	private double dontGrasMonoInsature;
-	private double dontGrasPolyInsature;
+	private double grasSature;
+	private double grasMonoInsature;
+	private double grasPolyInsature;
 
-	public double getDontGrasSature() {
-		return dontGrasSature;
+	public double getGrasSature() {
+		return grasSature;
 	}
 
-	public void setDontGrasSature(double dontGrasSature) {
-		this.dontGrasSature = dontGrasSature;
+	public void setGrasSature(double grasSature) {
+		this.grasSature = grasSature;
 	}
 
-	public double getDontGrasMonoInsature() {
-		return dontGrasMonoInsature;
+	public double getGrasMonoInsature() {
+		return grasMonoInsature;
 	}
 
-	public void setDontGrasMonoInsature(double dontGrasMonoInsature) {
-		this.dontGrasMonoInsature = dontGrasMonoInsature;
+	public void setGrasMonoInsature(double grasMonoInsature) {
+		this.grasMonoInsature = grasMonoInsature;
 	}
 
-	public double getDontGrasPolyInsature() {
-		return dontGrasPolyInsature;
+	public double getGrasPolyInsature() {
+		return grasPolyInsature;
 	}
 
-	public void setDontGrasPolyInsature(double dontGrasPolyInsature) {
-		this.dontGrasPolyInsature = dontGrasPolyInsature;
+	public void setGrasPolyInsature(double grasPolyInsature) {
+		this.grasPolyInsature = grasPolyInsature;
 	}
 
-	public Lipide(ApportNutritionnel apportNutritionnel) {
-		super(apportNutritionnel);
-		dontGrasMonoInsature = 0;
-		dontGrasPolyInsature = 0;
-		dontGrasSature = 0;
+	public Lipide() {
+		super();
+		grasMonoInsature = 0;
+		grasPolyInsature = 0;
+		grasSature = 0;
+	}
+
+	@Override
+	public Ref getRef() {
+		return Ref.LIP;
 	}
 
 }

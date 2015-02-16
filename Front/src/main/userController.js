@@ -2,6 +2,7 @@ BodyWiredApp.factory('User', function(){
     var user = function(data) {
         angular.extend(this, {
             login: "",
+	    favoris:[],
             isConnected: function() {
                 if (this.login.length > 0) {
                     return true;
@@ -10,28 +11,36 @@ BodyWiredApp.factory('User', function(){
             },
             fullname: function() {
                 return this.name + " " + this.lastname;
-            }
+            },
+	    isFavoris:function(id){
+		console.log("id : "+id);
+		for(var fav in this.favoris){
+			if(this.favoris[fav].id==id){
+				return true;
+			}
+		}
+		return false;
+	    }
         }, data);
     }
     return user;
 });
 
 BodyWiredApp.service('UserService', function($location, $http, Toast, User) {
-    this.user = new User({});
-	var urlConnexion = "/user/connexion";
+    	this.user = new User({});
+	var oThis=this;
+	var urlConnexion = baseURL+"users/signin";
 	var urlEdit = "/user/edit";
-	var urlRegister = "/user/enregistrement";
+	var urlRegister = baseURL+"/users/ajouter";
 	this.signin = function(user) {
-        $http.post(urlConnexion, {email:user.email, password:user.password})
-		.success(function(data) {
-            return new User(data);
-		}).error(function(error) {
-            Toast.error("Mauvais email et/ou mot de passe");
-		});
-        if (user.email == 'twx@twx.fr' && user.password == "123") {
-            this.user = new User({id:'0', login:'TwX', email:'twx@twx.fr', name:'Alexandre', lastname:'FRANCOIS'});
-            $location.path('/');
-        }
+		$http.get(urlConnexion+"/"+user.login+"/"+user.password)
+			.success(function(data) {
+		    	//oThis.user = new User({id:'0', login:'TwX', email:'twx@twx.fr', name:'Alexandre', lastname:'FRANCOIS'});
+			oThis.user = new User(data);
+		    	$location.path('/');
+			}).error(function(error) {
+		    Toast.error("Mauvais email et/ou mot de passe");
+			});
 	}
     this.logout = function() {
         this.user = new User({id:'', login:'', email:'', name:'', lastname:''});
@@ -39,12 +48,14 @@ BodyWiredApp.service('UserService', function($location, $http, Toast, User) {
         Toast.info("Vous êtes déconnecté");
     }
     this.register = function(user) {
-        $http.post(urlRegister, {login:user.login, email:user.email, password:user.password})
-            .success(function(data) {
-                Toast.info("Vous êtes enregisté, vous pouvez vous connecter");
-            }).error(function(data) {
-                Toast.error("Une erreur est survenu lors de votre enregistrement");
-            });
+	if(user.password==user.passwordAgain){
+	        $http.get(urlRegister+"/"+user.login+"/"+user.password)
+        	    .success(function(data) {
+        	        Toast.info("Vous êtes enregisté, vous pouvez vous connecter");
+        	    }).error(function(data) {
+        	        Toast.error("Une erreur est survenu lors de votre enregistrement");
+        	    });
+	}
     }
     this.update = function(user) {
         this.user = user;

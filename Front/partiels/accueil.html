@@ -5,6 +5,17 @@
 </div>
 <div class="jumbotron" ng-if="user.isConnected()">
   <h1>Votre calendrier</h1>
+  <div class="well" ng-controller="CalendarController">
+	<div class="row-fluid">
+		<div class="span8">
+			<tabset>
+				<tab select="renderCalender('myCalendar1');">
+					<div class="calendar" ng-model="eventSources" calendar="myCalendar1" ui-calendar="uiConfig.calendar"></div>
+				</tab>
+			</tabset>
+		</div>
+	</div>
+   </div>
 </div>
 <div class="row">
   <div class="col-lg-4">

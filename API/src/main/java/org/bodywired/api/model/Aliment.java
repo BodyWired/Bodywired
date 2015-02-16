@@ -1,47 +1,56 @@
 package org.bodywired.api.model;
 
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.bodywired.api.model.classement.CategorieAliment;
+import org.bodywired.api.model.classement.Categorie;
+import org.bodywired.api.model.menu.Ingredient;
+import org.bodywired.api.utils.TypeIngredient;
 
-public class Aliment extends AbstractBaseModel {
-	private String nom;
+public class Aliment extends AbstractBaseModel implements Ingredient {
 
-	public Aliment() {
-		declinaisons = new HashSet<Declinaison>();
+	private String				nom;
+
+	private Set <Categorie>		categories;
+
+	private Set <Declinaison>	declinaisons;
+
+	public Aliment () {
+		categories = new LinkedHashSet <Categorie>();
 	}
 
-	public Aliment(String nom) {
-		this();
-		this.nom = nom;
-	}
-
-	/*Variete variete;
-	FamilleVariete familleVariete;*/
-	
-	private CategorieAliment categorieAliment;
-	Set<Declinaison> declinaisons;
-	
-	public void setCategorieAliment(CategorieAliment categorieAliment) {
-		this.categorieAliment = categorieAliment;
-	}
-
-	public String getNom() {
+	public String getNom () {
 		return nom;
 	}
 
-	public Set<Declinaison> getDeclinaisons() {
-		return Collections.unmodifiableSet(declinaisons);
+	public Set <Declinaison> getDeclinaisons () {
+		return declinaisons;
 	}
-	
-	public CategorieAliment getCategorieAliment() {
-		return categorieAliment;
-	}
-	
-	public void setNom(String nom) {
+
+	public void setNom ( String nom ) {
 		this.nom = nom;
 	}
 
+	public void setDeclinaisons ( Set <Declinaison> declinaisons ) {
+		this.declinaisons = declinaisons;
+	}
+
+	public void addCategorieAliment ( Categorie categorieAliment ) {}
+
+	public Set <Categorie> getCategories () {
+		return categories;
+	}
+
+	public void setCategories ( Set <Categorie> categories ) {
+		this.categories = categories;
+	}
+
+	public void addCategorie ( Categorie categorieAliment ) {
+		categories.add(categorieAliment);
+	}
+
+	@Override
+	public TypeIngredient getType () {
+		return TypeIngredient.ALI;
+	}
 }

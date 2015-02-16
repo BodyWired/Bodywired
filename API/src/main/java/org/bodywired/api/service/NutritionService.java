@@ -1,10 +1,16 @@
 package org.bodywired.api.service;
 
-import org.bodywired.api.model.ApportNutritionnel;
+import java.util.List;
+
 import org.bodywired.api.model.Declinaison;
+import org.bodywired.api.model.WrapperListNutriment;
+import org.bodywired.api.model.nutriment.AbstractNutriment;
 
 public interface NutritionService {
 
-	public boolean sauvegarderApportNutritionnel(
-			ApportNutritionnel apportNutritionnel, Declinaison declinaison);
+	public List<AbstractNutriment> getNutriments(Integer id);
+
+	Boolean sauvegarderApportNutritionnel(AbstractNutriment apportNutritionnel, Declinaison declinaison);
+
+	public WrapperListNutriment listerNutriments();
 }
