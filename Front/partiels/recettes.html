@@ -96,9 +96,9 @@
     </div>
     <div class="panel-body">
         <table class="table table-striped">
-            <tr><th><span class="glyphicon glyphicon-star" style="color:yellow"></span></th><th>Recette</th><th>Voir</th></tr>
+            <tr><th><span class="glyphicon glyphicon-star" style="color:yellow; cursor:default"></span></th><th>Recette</th><th>Voir</th></tr>
             <tr ng-repeat="recette in recettes | filter:rechercheRecette:strict">
-		<td><span ng-class="isFavoris(recette.id) ? 'glyphicon glyphicon-star' : 'glyphicon glyphicon-star-empty'" style="color:yellow" ng-click="setFavoris(recette.id)"></span></td>
+		<td><span ng-class="isFavoris(recette.id) ? 'glyphicon glyphicon-star' : 'glyphicon glyphicon-star-empty'" style="color:yellow; cursor:pointer" ng-click="setFavoris(recette.id)"></span></td>
                 <td>{{recette.nom}}</td>
                 <td><a ng-click="selectRecette(recette.id)" onClick="showRecette()"><span class="glyphicon glyphicon-eye-open"/></a></td>
             </tr>
