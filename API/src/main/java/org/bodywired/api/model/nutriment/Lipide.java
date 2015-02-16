@@ -42,4 +42,8 @@ public class Lipide extends AbstractNutriment {
 		return Ref.LIP;
 	}
 
+	public String getUnite() {
+		return "g";
+	}
+
 }

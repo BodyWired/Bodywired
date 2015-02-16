@@ -17,4 +17,8 @@ public class Glucide extends AbstractNutriment {
 		return Ref.GLU;
 	}
 
+	public String getUnite() {
+		return "g";
+	}
+
 }

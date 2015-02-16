@@ -7,4 +7,8 @@ public class Eau extends AbstractNutriment {
 		return Ref.EAU;
 	}
 
+	public String getUnite() {
+		return "g";
+	}
+
 }

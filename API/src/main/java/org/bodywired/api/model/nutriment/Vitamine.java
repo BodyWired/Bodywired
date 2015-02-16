@@ -19,4 +19,8 @@ public class Vitamine extends AbstractNutriment {
 	public void setCode(String code) {
 		this.code = code;
 	}
+
+	public String getUnite() {
+		return "mg";
+	}
 }

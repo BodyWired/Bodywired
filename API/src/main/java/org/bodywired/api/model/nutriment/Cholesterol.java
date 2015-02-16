@@ -7,4 +7,8 @@ public class Cholesterol extends AbstractNutriment {
 		return Ref.CHO;
 	}
 
+	public String getUnite() {
+		return "mg";
+	}
+
 }

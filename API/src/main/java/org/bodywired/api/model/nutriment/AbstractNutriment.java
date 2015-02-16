@@ -2,13 +2,13 @@ package org.bodywired.api.model.nutriment;
 
 import org.bodywired.api.model.AbstractBaseModel;
 
-public abstract class AbstractNutriment extends AbstractBaseModel {
+public class AbstractNutriment extends AbstractBaseModel {
 
 	public enum Ref {
 		CAL, CHO, EAU, PRO, LIP, GLU, VIT, MIN, OEL
 	}
 
-	public abstract Ref getRef();
+	public Ref getRef() {return null;}
 
 	/**
 	 * Quantité apports nutritionnel pour 100 grammes de la déclinaison
@@ -39,4 +39,7 @@ public abstract class AbstractNutriment extends AbstractBaseModel {
 		this.apport = apport;
 	}
 
+	public String getUnite() {
+		return null;
+	}
 }

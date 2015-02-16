@@ -7,4 +7,8 @@ public class Calorie extends AbstractNutriment {
 		return Ref.CAL;
 	}
 
+	public String getUnite() {
+		return "kCal";
+	}
+
 }

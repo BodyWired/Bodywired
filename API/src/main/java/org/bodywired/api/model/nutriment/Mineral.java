@@ -20,4 +20,8 @@ public class Mineral extends AbstractNutriment {
 		return Ref.MIN;
 	}
 
+	public String getUnite() {
+		return "mg";
+	}
+
 }

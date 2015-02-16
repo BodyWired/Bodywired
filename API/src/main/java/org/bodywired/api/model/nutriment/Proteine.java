@@ -7,4 +7,8 @@ public class Proteine extends AbstractNutriment {
 		return Ref.PRO;
 	}
 
+	public String getUnite() {
+		return "g";
+	}
+
 }

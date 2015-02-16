@@ -19,4 +19,8 @@ public class OligoElement extends AbstractNutriment {
 	public Ref getRef() {
 		return Ref.OEL;
 	}
+
+	public String getUnite() {
+		return "mg";
+	}
 }
