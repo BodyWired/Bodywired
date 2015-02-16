@@ -1,7 +1,7 @@
 <div ng-controller="PartielsController">
 	<div id="connexion" ng-include="connexionForm.url"></div>
-	<input type="button" id="button1" onClick="showHideRegister()" value="S'enregistrer">
-	<input type="button" id="button2" onClick="showHideRegister()" value="Se connecter" hidden="true">
+	<input type="button" id="button1" onClick="showHideRegister()" value="S'enregistrer" class="btn">
+	<input type="button" id="button2" onClick="showHideRegister()" value="Se connecter" hidden="true" class="btn">
 	<div id="register" ng-include="registerForm.url" hidden="true"></div>
 </div>
 <script>
