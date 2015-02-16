@@ -1,4 +1,4 @@
-BodyWiredApp.controller('CalendarController', function($scope,$http,uiCalendarConfig,UserService) {
+BodyWiredApp.controller('CalendarController', function($scope,$http,$location,uiCalendarConfig,UserService) {
 
     var date = new Date();
     var d = date.getDate();
@@ -20,8 +20,8 @@ BodyWiredApp.controller('CalendarController', function($scope,$http,uiCalendarCo
     var loadPlanning=function(){
 	$http.get(baseURL+"users/plannings/"+UserService.user.id)
         .success(function(data) {
+		$scope.events.splice(0,$scope.events.length)
         	for(var p in data){
-			$scope.events.splice(0,$scope.events.length)
 			var title=data[p].recette.nom;
 			var className="";
 			switch(data[p].repas){
@@ -32,7 +32,7 @@ BodyWiredApp.controller('CalendarController', function($scope,$http,uiCalendarCo
 			var date=new Date(parseInt(data[p].date));
 			var day=date.getDate()<9?'0'+date.getDate():date.getDate();
 			var month=date.getMonth()<9?'0'+(date.getMonth()+1):(date.getMonth()+1);
-			$scope.events.push({title:title,start:date.getFullYear()+"-"+month+"-"+day,className:[className]});
+			$scope.events.push({title:title,start:date.getFullYear()+"-"+month+"-"+day,className:[className],recette:data[p]});
 	    	}
 	}).error(function(error) {
             Toast.error("Une erreur est survenue lors de la récuperation des favoris");
@@ -49,7 +49,8 @@ BodyWiredApp.controller('CalendarController', function($scope,$http,uiCalendarCo
     };
     /* alert on eventClick */
     $scope.alertOnEventClick = function( date, jsEvent, view){
-        alert("event");
+	$location.url("/recettes/"+date.recette.recette.id);
+       	console.log(date,jsEvent,view);
     };
     /* alert on Drop */
      $scope.alertOnDrop = function(event, delta, revertFunc, jsEvent, ui, view){
@@ -102,7 +103,7 @@ BodyWiredApp.controller('CalendarController', function($scope,$http,uiCalendarCo
       calendar:{
         height: 250,
         defaultView: 'basicWeek',
-        editable: false,
+        editable: true,
         header:{
           left: 'title',
           center: '',

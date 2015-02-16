@@ -2,9 +2,9 @@
     <h3 class="modal-title">Ajouter au planning la recette : {{recette.nom}}</h3>
 </div>
 <div class="modal-body">
-    <datepicker ng-model="dt" min-date="minDate" show-weeks="false" class="well well-sm"></datepicker>
+    <datepicker ng-model="date" min-date="minDate" show-weeks="false" class="well well-sm"></datepicker>
     <label>Repas du : </label>
-    <select>
+    <select ng-model="repas">
 	<option value="1">Matin</option>
 	<option value="2">Midi</option>
 	<option value="3">Soir</option>

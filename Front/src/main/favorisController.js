@@ -21,7 +21,7 @@ BodyWiredApp.service('FavorisService', function($http, Toast){
     };
 });
 
-BodyWiredApp.controller('FavorisController', function($scope,MenuService, AlimentService,UserService){
+BodyWiredApp.controller('FavorisController', function($scope,MenuService, AlimentService,UserService,$modal){
     $scope.previousRecette = undefined;
     $scope.recettes=UserService.user.favoris;
 
@@ -40,4 +40,17 @@ BodyWiredApp.controller('FavorisController', function($scope,MenuService, Alimen
     $scope.getNumber = function(num) {
         return new Array(num);   
     };
+    $scope.addPlanning=function(recette){
+	var modalInstance = $modal.open({
+		      templateUrl: 'partiels/addPlanning.html',
+		      controller: 'AddPlanningController',
+		      size: 'sm',
+		      resolve:{
+			recette : function(){
+				return recette;
+			}
+		      }
+    	});
+
+     };
 });

@@ -46,6 +46,9 @@
         <a ng-if="previousRecette !== undefined" ng-click="selectRecette(previousRecette)" onClick="showRecette()"><span class="glyphicon glyphicon-chevron-left"/></a>
         <a ng-if="previousRecette === undefined" onClick="showList()"><span class="glyphicon glyphicon-chevron-left"/></a>
         {{selectedRecette.nom}}
+	<div style="float:right;">
+		<span class="glyphicon glyphicon-calendar" style="cursor:pointer;" ng-click="addPlanning(selectedRecette)"></span>
+	</div>
     </div>
     <div class="panel-body">
         <h1>Information</h1>
