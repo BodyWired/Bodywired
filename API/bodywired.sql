@@ -1,4 +1,4 @@
-DROP SCHEMA IF EXISTS aliment cascade;
+﻿DROP SCHEMA IF EXISTS aliment cascade;
 DROP SCHEMA IF EXISTS nutrition cascade;
 DROP SCHEMA IF EXISTS recette cascade;
 DROP SCHEMA IF EXISTS utilisateur cascade;
@@ -8,29 +8,17 @@ CREATE SCHEMA nutrition;
 CREATE SCHEMA recette;
 CREATE SCHEMA utilisateur;
 
-/*
-CREATE TABLE aliment.Variete (
-	var_id SERIAL PRIMARY KEY,
-	var_nom varchar(255) UNIQUE
-);
-
-CREATE TABLE aliment.FamilleVariete (
-	fmv_id SERIAL PRIMARY KEY,
-	fmv_nom varchar(255) UNIQUE
-);*/
-
 CREATE TABLE aliment.Categorie (
 	cat_id serial PRIMARY KEY,
 	cat_nom varchar(255) NOT NULL,
-	cat_description varchar(20000)
+	cat_description varchar(20000),
+	cat_href varchar(255)
 );
 
 CREATE TABLE aliment.Aliment (
 	ali_id serial PRIMARY KEY,
-	ali_nom varchar(255) NOT NULL
-	/*ali_id_cat integer references aliment.Categorie(cat_id) NOT NULL
-	ali_id_var integer references aliment.Variete(var_id),
-	ali_id_fmv integer references aliment.FamilleVariete(fmv_id)*/
+	ali_nom varchar(255) NOT NULL,
+	ali_href varchar(255)
 );
 
 CREATE TABLE aliment.Categorie_Aliment (
@@ -46,7 +34,8 @@ CREATE TABLE aliment.Etat(
 
 CREATE TABLE aliment.Declinaison(
 	dec_id serial primary key,
-	dec_id_ali integer references aliment.Aliment(ali_id) ON DELETE CASCADE NOT NULL
+	dec_id_ali integer references aliment.Aliment(ali_id) ON DELETE CASCADE NOT NULL,
+	dec_href varchar(255)
 );
 
 CREATE TABLE aliment.Etat_Declinaison(
@@ -55,67 +44,21 @@ CREATE TABLE aliment.Etat_Declinaison(
 	ede_id_dec integer references aliment.Declinaison(dec_id) ON DELETE CASCADE NOT NULL
 );
 
-
-
-/*
-*
-*
-*/
-
 CREATE TABLE nutrition.Type (
 	typ_id serial primary key,
 	typ_code varchar(255)
 );
-
-INSERT INTO nutrition.type(
-            typ_code)
-    VALUES ('CAL'), ('CHO'), ('EAU'), ('PRO');
 
 CREATE TABLE nutrition.Type_Vitamine(
 	tvi_id serial primary key,
 	tvi_code varchar(10)
 );
 
-INSERT INTO nutrition.type(
-            typ_code)
-    VALUES ('VIT');
-    
-INSERT INTO nutrition.type_vitamine(tvi_code)
-    VALUES 
-    ('A'), 
-    ('B1'), 
-    ('B2'), 
-    ('B3'), 
-    ('B5'), 
-    ('B6'), 
-    ('B9'), 
-    ('B12'), 
-    ('C'), 
-    ('D'), 
-    ('E'),
-    ('K');
-
-        
 CREATE TABLE nutrition.Type_Mineral(
 	tmi_id serial primary key,
 	tmi_nom varchar(100),
 	tmi_code varchar(10)
 );
-
-INSERT INTO nutrition.type_mineral(
-            tmi_nom, tmi_code)
-    VALUES
-    ('Ca', 'calcium'),
-    ('Mg', 'magnesium'),
-    ('P','phosphore'),
-    ('K','potassium'),
-    ('Na','sodium');
-
-INSERT INTO nutrition.type(
-            typ_code)
-    VALUES ('MIN');
-
-
 
 CREATE TABLE nutrition.Type_Oligo_Element(
 	toe_id serial primary key,
@@ -123,18 +66,6 @@ CREATE TABLE nutrition.Type_Oligo_Element(
 	toe_code varchar(10)
 );
 
-INSERT INTO nutrition.type_oligo_element(
-	toe_nom, toe_code)
-    VALUES 
-    ('Fe', 'fer'),
-    ('Zn', 'zinc'),
-    ('Cu', 'cuivre'),
-    ('Se', 'selenium');
-
-INSERT INTO nutrition.type(
-            typ_code)
-    VALUES ('OEL');
-    
 CREATE TABLE nutrition.Nutriment(
 	nut_id serial primary key,
 	nut_id_typ integer references nutrition.Type(typ_id), 
@@ -155,42 +86,18 @@ CREATE TABLE nutrition.Lipide(
 	lip_gras_monoinsature float default 0.0,
 	lip_gras_polyinsature float default 0.0
 );
-INSERT INTO nutrition.type(
-            typ_code)
-    VALUES ('LIP');
-    
+  
 CREATE TABLE nutrition.Glucide(
 	glu_id serial primary key,
 	glu_fibres_alimentaires float default 0.0,
 	glu_id_nut integer references nutrition.Nutriment(nut_id)
 );
-INSERT INTO nutrition.type(
-            typ_code)
-    VALUES ('GLU');
-    
-/*
-CREATE TABLE nutrition.Vitamine(
-	vit_id serial primary key,
-	vit_type integer references nutrition.Type_Vitamine(tvi_id),
-	vit_id_nut integer references nutrition.Nutriment(nut_id)
-);
-    
-CREATE TABLE nutrition.Mineral(
-	min_id serial primary key,
-	min_type integer references nutrition.Type_Mineral(tmi_id),
-	min_id_nut integer references nutrition.Nutriment(nut_id)
-);
-    
-CREATE TABLE nutrition.OligoElement(
-	oel_id serial primary key,
-	oel_type integer references nutrition.Type_Oligo_Element(toe_id),
-	oel_id_nut integer references nutrition.Nutriment(nut_id)
-);*/
     
 /* RECETTES */
 CREATE TABLE recette.Categorie (
 	cat_id serial PRIMARY KEY,
-	cat_nom varchar(255) NOT NULL
+	cat_nom varchar(255) NOT NULL,
+	cat_href varchar(255)
 );
 
 CREATE TABLE recette.Recette (
@@ -201,16 +108,17 @@ CREATE TABLE recette.Recette (
 	rec_tmp_cuisson integer,
 	rec_tmp_refrigeration integer,
 	rec_tmp_maceration integer,
-	rec_preparation varchar(255),
-	rec_calories integer
+	rec_preparation text,
+	rec_calories integer,
+	rec_href varchar(255) 
 );
 
 CREATE TABLE recette.Ingredient (
 	ing_id serial PRIMARY KEY,
 	ing_type varchar(30) NOT NULL,
 	ing_quantite integer,
-	ing_id_ali integer references aliment.Aliment(ali_id),
-	ing_id_rec integer references recette.Recette(rec_id),
+	ing_id_ali integer references aliment.Aliment(ali_id) ON DELETE CASCADE,
+	ing_id_rec integer references recette.Recette(rec_id) ON DELETE CASCADE,
 	ing_id_concernee_rec integer references recette.Recette(rec_id) ON DELETE CASCADE
 );
 
@@ -245,3 +153,61 @@ CREATE TABLE utilisateur.Planning (
 	pla_repas integer NOT NULL,
 	pla_date date NOT NULL
 );
+
+
+INSERT INTO nutrition.type(
+            typ_code)
+    VALUES ('CAL'), ('CHO'), ('EAU'), ('PRO');
+    
+INSERT INTO nutrition.type(
+            typ_code)
+    VALUES ('VIT');
+    
+INSERT INTO nutrition.type_vitamine(tvi_code)
+    VALUES 
+    ('A'), 
+    ('B1'), 
+    ('B2'), 
+    ('B3'), 
+    ('B5'), 
+    ('B6'), 
+    ('B9'), 
+    ('B12'), 
+    ('C'), 
+    ('D'), 
+    ('E'),
+    ('K');
+
+INSERT INTO nutrition.type_mineral(
+            tmi_nom, tmi_code)
+    VALUES
+    ('Ca', 'calcium'),
+    ('Mg', 'magnesium'),
+    ('P','phosphore'),
+    ('K','potassium'),
+    ('Na','sodium');
+
+INSERT INTO nutrition.type(
+            typ_code)
+    VALUES ('MIN');
+
+INSERT INTO nutrition.type_oligo_element(
+	toe_nom, toe_code)
+    VALUES 
+    ('Fe', 'fer'),
+    ('Zn', 'zinc'),
+    ('Cu', 'cuivre'),
+    ('Se', 'selenium');
+
+INSERT INTO nutrition.type(
+            typ_code)
+    VALUES ('OEL');
+
+ 
+INSERT INTO nutrition.type(
+            typ_code)
+    VALUES ('LIP');
+
+INSERT INTO nutrition.type(
+            typ_code)
+    VALUES ('GLU');

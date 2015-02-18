@@ -36,4 +36,6 @@ public interface RecetteService {
 	public Boolean ajouterCategorie(CategorieRecette categorie);
 	
 	public List<CategorieRecette> getAllCategories();
+
+	public Recette rechercherRecetteParHref(String href);
 }

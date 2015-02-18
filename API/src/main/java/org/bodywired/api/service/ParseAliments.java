@@ -3,10 +3,13 @@ package org.bodywired.api.service;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
 import org.bodywired.api.model.Aliment;
 import org.bodywired.api.model.Declinaison;
 import org.bodywired.api.model.classement.Categorie;
@@ -21,6 +24,7 @@ import org.bodywired.api.model.nutriment.Mineral;
 import org.bodywired.api.model.nutriment.OligoElement;
 import org.bodywired.api.model.nutriment.Proteine;
 import org.bodywired.api.model.nutriment.Vitamine;
+import org.bodywired.api.service.impl.AlimentServiceImpl;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -43,11 +47,9 @@ public class ParseAliments {
 	public Document getDoc(String httpurl) {
 		try {
 			URL url = new URL(httpurl);
-			// Proxy proxy = new Proxy(Proxy.Type.HTTP, new
-			// InetSocketAddress("cache.univ-lille1.fr", 3128));
-			// HttpURLConnection uc = (HttpURLConnection)
-			// url.openConnection(proxy);
-			HttpURLConnection uc = (HttpURLConnection) url.openConnection();
+//			Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("cache.univ-lille1.fr", 3128));
+//			HttpURLConnection uc = (HttpURLConnection) url.openConnection(proxy);
+			 HttpURLConnection uc = (HttpURLConnection) url.openConnection();
 
 			uc.connect();
 
@@ -59,11 +61,13 @@ public class ParseAliments {
 			}
 			return Jsoup.parse(String.valueOf(tmp));
 		} catch (Exception ex) {
-			System.err.println("EX : " + httpurl);
+			LOGGER.error("EX : " + httpurl, ex);
 			return null;
 		}
 
 	}
+
+	private static final Logger LOGGER = Logger.getLogger(ParseAliments.class);
 
 	public void run() throws Exception {
 		// Document doc =
@@ -75,6 +79,7 @@ public class ParseAliments {
 		// Document doc = Jsoup.connect("http://www.google.com").get();
 
 		long start = System.currentTimeMillis();
+		LOGGER.debug("GOOOOO");
 
 		Document listeDesCategoriesDoc = getDoc("http://www.guide-des-aliments.com/dietetique/aliments_par_categorie.html");
 
@@ -85,6 +90,8 @@ public class ParseAliments {
 
 			Categorie categorie = new Categorie();
 			categorie.setNom(categorieElement.html());
+
+			LOGGER.debug(categorie.getNom());
 
 			// ALIMENT
 			Document listeDesAlimentsDoc = getDoc("http://www.guide-des-aliments.com/dietetique/" + categorieElement.attr("href"));
@@ -102,7 +109,8 @@ public class ParseAliments {
 				Aliment aliment = null;
 				String nom = alimentElement.html();
 
-				aliment = alimentService.getAliment(nom);
+				// aliment = alimentService.getAliment(nom);
+				aliment = alimentService.rechercherAlimentParHref("http://www.guide-des-aliments.com/dietetique/" + alimentElement.attr("href"));
 				if (aliment != null) {
 					categorieService.ajouterAlimentDansCategorie(aliment, categorie);
 					continue;
@@ -122,6 +130,7 @@ public class ParseAliments {
 					continue;
 				}
 
+				aliment.setHref("http://www.guide-des-aliments.com/dietetique/" + alimentElement.attr("href"));
 				alimentService.sauvegarderAliment(aliment);
 				categorieService.ajouterAlimentDansCategorie(aliment, categorie);
 
@@ -233,15 +242,16 @@ public class ParseAliments {
 						oeType = getOEType(dataElements, n);
 					}
 
+					declinaison.setHref("http://www.guide-des-aliments.com/dietetique/" + declinaisonElement.attr("href"));
 					declinaisonService.sauvegarderDeclinaison(declinaison);
 				}
 			}
 
-			System.out.println(categorie.getNom());
+			LOGGER.debug(categorie.getNom());
 
 		}
 
-		System.out.println("FINISH : " + (System.currentTimeMillis() - start));
+		LOGGER.debug("FINISH : " + (System.currentTimeMillis() - start));
 
 	}
 

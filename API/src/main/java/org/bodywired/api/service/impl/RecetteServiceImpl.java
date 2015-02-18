@@ -3,6 +3,7 @@ package org.bodywired.api.service.impl;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.bodywired.api.dao.AlimentDao;
 import org.bodywired.api.dao.RecetteDao;
 import org.bodywired.api.model.Aliment;
@@ -20,10 +21,10 @@ public class RecetteServiceImpl implements RecetteService {
 
 	@Autowired
 	private RecetteDao recetteDao;
-	
+
 	@Autowired
 	private AlimentDao alimentDao;
-	
+
 	@Override
 	public List<Recette> getAllRecettes() {
 		List<Recette> recettes = recetteDao.getAllRecettes();
@@ -41,25 +42,30 @@ public class RecetteServiceImpl implements RecetteService {
 
 	@Override
 	public Boolean sauvegarderRecette(Recette recette) {
-		if ( recetteDao.sauvegarderRecette(recette) == 0)
+		Recette exitante = rechercherRecetteParNom(recette.getNom());
+		if (exitante != null) {
+			recette.setId(exitante.getId());
+			return true;
+		}
+		if (recetteDao.sauvegarderRecette(recette) == 0)
 			return false;
-		
+
 		for (CategorieRecette categorie : recette.getCategories()) {
-			if ( recetteDao.sauvegarderCategorieRecette(categorie, recette) == 0 )
+			if (recetteDao.sauvegarderCategorieRecette(categorie, recette) == 0)
 				return false;
 		}
-		
+
 		for (IngredientAliment aliment : recette.getAliments()) {
-			if ( recetteDao.sauvegarderIngredientAliment(aliment.getAliment(), aliment.getQuantite(), recette) == 0)
+			if (recetteDao.sauvegarderIngredientAliment(aliment.getAliment(), aliment.getQuantite(), recette) == 0)
 				return false;
-			
+
 		}
-		
+
 		for (IngredientRecette ingredientRecette : recette.getRecettes()) {
-			if ( recetteDao.sauvegarderIngredientRecette(ingredientRecette.getRecetteAssociee(), ingredientRecette.getQuantite(), recette) == 0)
+			if (recetteDao.sauvegarderIngredientRecette(ingredientRecette.getRecetteAssociee(), ingredientRecette.getQuantite(), recette) == 0)
 				return false;
 		}
-		
+
 		return true;
 	}
 
@@ -120,8 +126,11 @@ public class RecetteServiceImpl implements RecetteService {
 
 	@Override
 	public Recette rechercherRecetteParNom(String nom) {
+		LOGGER.debug("recherche : [" + nom + "]");
 		return recetteDao.rechercherRecetteParNom(nom);
 	}
+	
+	private static final Logger LOGGER = Logger.getLogger(AlimentServiceImpl.class);
 
 	@Override
 	public List<Recette> rechercherRecetteIngredient(String nom) {
@@ -135,7 +144,11 @@ public class RecetteServiceImpl implements RecetteService {
 
 	@Override
 	public Boolean ajouterCategorieRecette(CategorieRecette catRecette, Recette recette) {
-		return recetteDao.sauvegarderCategorieRecette(catRecette, recette) > 0;
+		if (!recetteDao.recetteEstDansCategorie(recette, catRecette)) {
+			return recetteDao.sauvegarderCategorieRecette(catRecette, recette) > 0;
+		} else {
+			return true;
+		}
 
 	}
 
@@ -184,5 +197,11 @@ public class RecetteServiceImpl implements RecetteService {
 		}
 		recette.setCalories(calories.intValue());
 		recetteDao.sauvegarderRecette(recette);
+	}
+
+	@Override
+	public Recette rechercherRecetteParHref(String href) {
+		LOGGER.debug("Recherche R : " + href);
+		return recetteDao.rechercherRecetteParHref(href);
 	}
 }

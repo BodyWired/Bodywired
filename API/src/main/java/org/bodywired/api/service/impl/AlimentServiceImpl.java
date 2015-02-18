@@ -1,5 +1,6 @@
 package org.bodywired.api.service.impl;
 
+import org.apache.log4j.Logger;
 import org.bodywired.api.dao.AlimentDao;
 import org.bodywired.api.model.Aliment;
 import org.bodywired.api.model.classement.Categorie;
@@ -22,6 +23,10 @@ public class AlimentServiceImpl implements AlimentService {
 
 	@Override
 	public Boolean sauvegarderAliment(Aliment aliment) {
+		Aliment existant = rechercherAlimentParHref(aliment.getHref());
+		if (existant != null) {
+			aliment.setId(existant.getId());
+		}
 		alimentDao.sauvegarderAliment(aliment);
 		for (Categorie categorie : aliment.getCategories()) {
 			categorieService.ajouterAlimentDansCategorie(aliment, categorie);
@@ -61,5 +66,13 @@ public class AlimentServiceImpl implements AlimentService {
 			return false;
 		return alimentDao.modifierAliment(aliment) == 1;
 	}
+
+	@Override
+	public Aliment rechercherAlimentParHref(String href) {
+		LOGGER.debug("Recherche A : ["+href+"]");
+		return alimentDao.rechercherAlimentParHref(href);
+	}
+	
+	private static final Logger LOGGER = Logger.getLogger(AlimentServiceImpl.class);
 
 }

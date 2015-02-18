@@ -18,4 +18,6 @@ public interface AlimentService {
 	
 	public Boolean modifierAliment(Aliment aliment);
 
+	public Aliment rechercherAlimentParHref(String href);
+
 }

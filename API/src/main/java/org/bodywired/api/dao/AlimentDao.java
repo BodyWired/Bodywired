@@ -19,4 +19,6 @@ public interface AlimentDao {
 	
 	public Integer modifierAliment(@Param("ali") Aliment aliment);
 
+	public Aliment rechercherAlimentParHref(@Param("href") String href);
+
 }

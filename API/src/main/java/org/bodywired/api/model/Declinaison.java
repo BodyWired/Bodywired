@@ -6,6 +6,8 @@ import java.util.List;
 import org.bodywired.api.model.classement.Etat;
 
 public class Declinaison extends AbstractBaseModel {
+	
+	private String href;
 
 	private Aliment aliment;
 
@@ -44,6 +46,14 @@ public class Declinaison extends AbstractBaseModel {
 
 	public void setNutriments(WrapperListNutriment nutriments) {
 		this.nutriments = nutriments;
+	}
+
+	public String getHref() {
+		return href;
+	}
+
+	public void setHref(String href) {
+		this.href = href;
 	}
 
 }

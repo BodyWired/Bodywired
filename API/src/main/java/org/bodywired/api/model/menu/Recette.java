@@ -9,40 +9,34 @@ import org.bodywired.api.utils.TypeIngredient;
 
 public class Recette extends AbstractBaseModel implements Ingredient {
 
-	private String							nom;
+	private String nom;
 
-	private List <CategorieRecette>			categories;
-	private Integer							note;
+	private String href;
 
-	// Pour 500g
-	private List <IngredientRecette>		recettes;
-	private List <IngredientAliment>		aliments;
-
-	private Integer							tmpPreparation;
-	private Integer							tmpCuisson;
-	private Integer							tmpRefrigeration;
-	private Integer							tmpMaceration;
-
-	private String							preparation;
+	private List<CategorieRecette> categories;
+	private Integer note;
 
 	// Pour 500g
-	private Integer							calories;
+	private List<IngredientRecette> recettes;
+	private List<IngredientAliment> aliments;
 
-	public Recette () {
-		this.categories = new ArrayList <CategorieRecette>();
-		this.recettes = new ArrayList <IngredientRecette>();
-		this.aliments = new ArrayList <IngredientAliment>();
+	private Integer tmpPreparation;
+	private Integer tmpCuisson;
+	private Integer tmpRefrigeration;
+	private Integer tmpMaceration;
+
+	private String preparation;
+
+	// Pour 500g
+	private Integer calories;
+
+	public Recette() {
+		this.categories = new ArrayList<CategorieRecette>();
+		this.recettes = new ArrayList<IngredientRecette>();
+		this.aliments = new ArrayList<IngredientAliment>();
 	}
-	
-	
 
-	public Recette(String nom,
-			Integer tmpPreparation,
-			Integer tmpCuisson,
-			Integer tmpRefrigeration,
-			Integer tmpMaceration,
-			String preparation,
-			Integer calories) {
+	public Recette(String nom, Integer tmpPreparation, Integer tmpCuisson, Integer tmpRefrigeration, Integer tmpMaceration, String preparation, Integer calories) {
 		super();
 		this.nom = nom;
 		this.tmpPreparation = tmpPreparation;
@@ -51,17 +45,15 @@ public class Recette extends AbstractBaseModel implements Ingredient {
 		this.tmpMaceration = tmpMaceration;
 		this.preparation = preparation;
 		this.calories = calories;
-		this.categories = new ArrayList <CategorieRecette>();
-		this.recettes = new ArrayList <IngredientRecette>();
-		this.aliments = new ArrayList <IngredientAliment>();
+		this.categories = new ArrayList<CategorieRecette>();
+		this.recettes = new ArrayList<IngredientRecette>();
+		this.aliments = new ArrayList<IngredientAliment>();
 	}
-
-
 
 	/**
 	 * @return the nom
 	 */
-	public String getNom () {
+	public String getNom() {
 		return nom;
 	}
 
@@ -69,14 +61,14 @@ public class Recette extends AbstractBaseModel implements Ingredient {
 	 * @param nom
 	 *            the nom to set
 	 */
-	public void setNom ( String nom ) {
+	public void setNom(String nom) {
 		this.nom = nom;
 	}
 
 	/**
 	 * @return the categories
 	 */
-	public List <CategorieRecette> getCategories () {
+	public List<CategorieRecette> getCategories() {
 		return categories;
 	}
 
@@ -84,7 +76,7 @@ public class Recette extends AbstractBaseModel implements Ingredient {
 	 * @param categories
 	 *            the categories to set
 	 */
-	public void setCategories ( ArrayList <CategorieRecette> categories ) {
+	public void setCategories(ArrayList<CategorieRecette> categories) {
 		this.categories = categories;
 	}
 
@@ -92,14 +84,14 @@ public class Recette extends AbstractBaseModel implements Ingredient {
 	 * @param categorie
 	 *            the categorie to add
 	 */
-	public void addCategories ( CategorieRecette categorie ) {
+	public void addCategories(CategorieRecette categorie) {
 		this.categories.add(categorie);
 	}
 
 	/**
 	 * @return the aliments
 	 */
-	public List <IngredientAliment> getAliments () {
+	public List<IngredientAliment> getAliments() {
 		return aliments;
 	}
 
@@ -107,19 +99,18 @@ public class Recette extends AbstractBaseModel implements Ingredient {
 	 * @param ingredients
 	 *            the ingredients to set
 	 */
-	public void setAliments ( List <IngredientAliment> aliments ) {
+	public void setAliments(List<IngredientAliment> aliments) {
 		this.aliments = aliments;
 	}
 
-	public void addAliment ( Aliment aliment, int quantite ) {
+	public void addAliment(Aliment aliment, int quantite) {
 		this.aliments.add(new IngredientAliment(aliment, quantite));
 	}
-
 
 	/**
 	 * @return the recettes
 	 */
-	public List <IngredientRecette> getRecettes () {
+	public List<IngredientRecette> getRecettes() {
 		return recettes;
 	}
 
@@ -127,18 +118,18 @@ public class Recette extends AbstractBaseModel implements Ingredient {
 	 * @param recettes
 	 *            the recettes to set
 	 */
-	public void setRecettes ( List <IngredientRecette> recettes ) {
+	public void setRecettes(List<IngredientRecette> recettes) {
 		this.recettes = recettes;
 	}
 
-	public void addRecette ( Recette recette, int quantite ) {
+	public void addRecette(Recette recette, int quantite) {
 		this.recettes.add(new IngredientRecette(recette, quantite));
 	}
 
 	/**
 	 * @return the preparation
 	 */
-	public String getPreparation () {
+	public String getPreparation() {
 		return preparation;
 	}
 
@@ -146,14 +137,14 @@ public class Recette extends AbstractBaseModel implements Ingredient {
 	 * @param preparation
 	 *            the preparation to set
 	 */
-	public void setPreparation ( String preparation ) {
+	public void setPreparation(String preparation) {
 		this.preparation = preparation;
 	}
 
 	/**
 	 * @return the calories
 	 */
-	public Integer getCalories () {
+	public Integer getCalories() {
 		return calories;
 	}
 
@@ -161,44 +152,44 @@ public class Recette extends AbstractBaseModel implements Ingredient {
 	 * @param calories
 	 *            the calories to set
 	 */
-	public void setCalories ( Integer calories ) {
+	public void setCalories(Integer calories) {
 		this.calories = calories;
 	}
 
 	@Override
-	public TypeIngredient getType () {
+	public TypeIngredient getType() {
 		return TypeIngredient.REC;
 	}
 
-	public Integer getTmpPreparation () {
+	public Integer getTmpPreparation() {
 		return tmpPreparation;
 	}
 
-	public void setTmpPreparation ( Integer tmpPreparation ) {
+	public void setTmpPreparation(Integer tmpPreparation) {
 		this.tmpPreparation = tmpPreparation;
 	}
 
-	public Integer getTmpCuisson () {
+	public Integer getTmpCuisson() {
 		return tmpCuisson;
 	}
 
-	public void setTmpCuisson ( Integer tmpCuisson ) {
+	public void setTmpCuisson(Integer tmpCuisson) {
 		this.tmpCuisson = tmpCuisson;
 	}
 
-	public Integer getTmpRefrigeration () {
+	public Integer getTmpRefrigeration() {
 		return tmpRefrigeration;
 	}
 
-	public void setTmpRefrigeration ( Integer tmpRefrigeration ) {
+	public void setTmpRefrigeration(Integer tmpRefrigeration) {
 		this.tmpRefrigeration = tmpRefrigeration;
 	}
 
-	public Integer getTmpMaceration () {
+	public Integer getTmpMaceration() {
 		return tmpMaceration;
 	}
 
-	public void setTmpMaceration ( Integer tmpMaceration ) {
+	public void setTmpMaceration(Integer tmpMaceration) {
 		this.tmpMaceration = tmpMaceration;
 	}
 
@@ -212,6 +203,19 @@ public class Recette extends AbstractBaseModel implements Ingredient {
 
 	public void setNote(Integer note) {
 		this.note = note;
+	}
+
+	public String getHref() {
+		return href;
+	}
+
+	public void setHref(String href) {
+		this.href = href;
+	}
+
+	@Override
+	public String toString() {
+		return getId() + " : " + getNom() + " - " + getHref();
 	}
 
 }
